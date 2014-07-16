@@ -1,8 +1,8 @@
 package main
 
 import (
+	"db"
 	"fmt"
-	"tinyblog/db"
 )
 
 func main() {
