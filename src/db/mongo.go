@@ -6,14 +6,6 @@ import (
 	"time"
 )
 
-type Post struct {
-	Id      string
-	Title   string
-	Content string
-	Auth    string
-	AddDate string
-}
-
 func InitDB() {
 
 	log.Println("start tinyblog database ...")
