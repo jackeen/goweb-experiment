@@ -1,4 +1,4 @@
-package db
+package mongo
 
 import (
 	"labix.org/v2/mgo"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func InitDB() {
+func Init() {
 
 	log.Println("start tinyblog database ...")
 
@@ -20,11 +20,11 @@ func InitDB() {
 	firstTime := time.Now().Format("2006-01-02 15:04:05")
 
 	firstPost := &Post{
-		Id:      "1",
-		Title:   "my first post",
-		Content: "hello world!",
-		Auth:    "tiny",
-		AddDate: firstTime,
+		id:      "1",
+		title:   "my first post",
+		content: "hello world!",
+		auth:    "tiny",
+		addDate: firstTime,
 	}
 
 	c := s.DB("tinyblog").C("post")

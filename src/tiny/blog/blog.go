@@ -1,11 +1,11 @@
 package main
 
 import (
-	"db"
 	"fmt"
+	"tiny/db/mongo"
 )
 
 func main() {
-	db.InitDB()
+	mongo.Init()
 	fmt.Println("haha")
 }
