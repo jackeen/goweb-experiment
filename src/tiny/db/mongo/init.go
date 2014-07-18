@@ -6,6 +6,48 @@ import (
 	"time"
 )
 
+func initPost(db *mgo.Database) {
+
+	firstTime := time.Now().Format("2006-01-02 15:04:05")
+
+	firstPost := &Post{
+		Id:      "2",
+		Title:   "my first post",
+		Content: "hello world!",
+		Auth:    "tiny",
+		AddDate: firstTime,
+	}
+
+	c := db.C("post")
+	err := c.Insert(firstPost)
+
+	if err != nil {
+		panic(err)
+	}
+	log.Println(firstPost)
+	log.Println("The post collction is done!")
+}
+
+func initCate(db *mgo.Database) {
+
+	rootCate := &Cate{
+		Id:       "0",
+		Name:     "root",
+		Explain:  "",
+		Children: []string{},
+		Parent:   "-1",
+	}
+
+	c := db.C("cate")
+	err := c.Insert(rootCate)
+
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("The cate collction is done!")
+}
+
 func Init() {
 
 	log.Println("start tinyblog database ...")
@@ -17,22 +59,9 @@ func Init() {
 		panic(err)
 	}
 
-	firstTime := time.Now().Format("2006-01-02 15:04:05")
+	db := s.DB("tinyblog")
 
-	firstPost := &Post{
-		id:      "1",
-		title:   "my first post",
-		content: "hello world!",
-		auth:    "tiny",
-		addDate: firstTime,
-	}
+	initPost(db)
+	initCate(db)
 
-	c := s.DB("tinyblog").C("post")
-	err = c.Insert(firstPost)
-
-	if err != nil {
-		panic(err)
-	}
-
-	log.Println(err)
 }

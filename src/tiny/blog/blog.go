@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"tiny/db/mongo"
+	mdb "tiny/db/mongo"
 )
 
 func main() {
-	mongo.Init()
+	mdb.Init()
 	fmt.Println("haha")
 }

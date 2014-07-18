@@ -1,23 +1,23 @@
 package mongo
 
 type Post struct {
-	id      string
-	title   string
-	content string
-	auth    string
-	addDate string
+	Id      string
+	Title   string
+	Content string
+	Auth    string
+	AddDate string
 }
 
 type Cate struct {
-	id       string
-	name     string
-	explain  string
-	children []string
-	parent   string
+	Id       string
+	Name     string
+	Explain  string
+	Children []string
+	Parent   string
 }
 
 type Tag struct {
-	id      string
-	name    string
-	explain string
+	Id      string
+	Name    string
+	Explain string
 }
