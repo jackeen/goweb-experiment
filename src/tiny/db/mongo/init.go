@@ -24,7 +24,7 @@ func initPost(db *mgo.Database) {
 	if err != nil {
 		panic(err)
 	}
-	log.Println(firstPost)
+
 	log.Println("The post collction is done!")
 }
 
