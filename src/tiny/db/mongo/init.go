@@ -2,24 +2,51 @@ package mongo
 
 import (
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 	"log"
 	"time"
 )
 
 func initPost(db *mgo.Database) {
 
-	firstTime := time.Now().Format("2006-01-02 15:04:05")
+	//firstTime := time.Now().Format("2006-01-02 15:04:05")
 
-	firstPost := &Post{
-		Id:      "2",
-		Title:   "my first post",
-		Content: "hello world!",
-		Auth:    "tiny",
-		AddDate: firstTime,
+	type Tpost struct {
+		Title      string
+		Content    string
+		Auth       mgo.DBRef
+		CreateTime time.Time
 	}
 
+	firstPost := &Tpost{
+		/*Title        string
+		Content      string
+		Auth         mgo.DBRef
+		Cate         mgo.DBRef
+		Tags         mgo.DBRef
+		CreateTime   time.Time
+		LastEditTime time.Time
+		EditState    bool
+		AllowComment bool
+		Comment      mgo.DBRef*/
+
+		Title:      "my first post",
+		Content:    "hello world!",
+		CreateTime: time.Now(),
+	}
+
+	res := &User{}
+	err := db.C("user").Find(bson.M{}).One(res)
+
+	ref := mgo.DBRef{
+		Collection: "user",
+		Id:         res.Name,
+	}
+
+	firstPost.Auth = ref
+
 	c := db.C("post")
-	err := c.Insert(firstPost)
+	err = c.Insert(firstPost)
 
 	if err != nil {
 		panic(err)
@@ -28,6 +55,7 @@ func initPost(db *mgo.Database) {
 	log.Println("The post collction is done!")
 }
 
+/*
 func initCate(db *mgo.Database) {
 
 	rootCate := &Cate{
@@ -46,6 +74,25 @@ func initCate(db *mgo.Database) {
 	}
 
 	log.Println("The cate collction is done!")
+}*/
+
+func initUser(db *mgo.Database) {
+
+	root := &User{
+		Name:       "admin",
+		Nick:       "admin",
+		Pass:       "123456",
+		CreateTime: time.Now(),
+	}
+
+	c := db.C("user")
+	err := c.Insert(root)
+
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("The user collction is done!")
 }
 
 func Init() {
@@ -61,7 +108,8 @@ func Init() {
 
 	db := s.DB("tinyblog")
 
+	initUser(db)
+	//initCate(db)
 	initPost(db)
-	initCate(db)
 
 }
