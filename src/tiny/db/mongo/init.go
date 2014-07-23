@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
+type Tpost struct {
+	Title      string
+	Content    string
+	Auth       mgo.DBRef
+	CreateTime time.Time
+}
+
 func initPost(db *mgo.Database) {
 
 	//firstTime := time.Now().Format("2006-01-02 15:04:05")
-
-	type Tpost struct {
-		Title      string
-		Content    string
-		Auth       mgo.DBRef
-		CreateTime time.Time
-	}
 
 	firstPost := &Tpost{
 		/*Title        string
@@ -33,6 +33,7 @@ func initPost(db *mgo.Database) {
 		Title:      "my first post",
 		Content:    "hello world!",
 		CreateTime: time.Now(),
+		//Auth:       mgo.DBRef{"user", "admin"},
 	}
 
 	res := &User{}
@@ -95,6 +96,16 @@ func initUser(db *mgo.Database) {
 	log.Println("The user collction is done!")
 }
 
+func selPost(db *mgo.Database) {
+
+	res := &Tpost{}
+
+	q := db.C("post").Find(bson.M{})
+	err := q.One(res)
+
+	log.Println(res.Auth, err)
+}
+
 func Init() {
 
 	log.Println("start tinyblog database ...")
@@ -111,5 +122,7 @@ func Init() {
 	initUser(db)
 	//initCate(db)
 	initPost(db)
+
+	selPost(db)
 
 }
