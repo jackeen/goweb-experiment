@@ -15,21 +15,21 @@ type IdNum struct {
 }
 
 type Post struct {
-	//	Id           int
+	Id           int
 	Title        string
 	Content      string
-	Auth         mgo.DBRef
-	Cate         mgo.DBRef
-	Tags         mgo.DBRef
+	Auth         int
+	Cate         int
+	Tags         int
 	CreateTime   time.Time
 	LastEditTime time.Time
 	EditState    bool
 	AllowComment bool
-	Comment      mgo.DBRef
+	Comment      []interface{}
 }
 
 type Comment struct {
-	//	Id      int
+	Id      int
 	PostId  int
 	Content string
 	Auth    string
@@ -39,7 +39,7 @@ type Comment struct {
 }
 
 type Cate struct {
-	//	Id       int
+	Id       int
 	Name     string
 	Explain  string
 	Children mgo.DBRef
@@ -47,7 +47,7 @@ type Cate struct {
 }
 
 type Tag struct {
-	//	Id      int
+	Id      int
 	Name    string
 	Explain string
 }
@@ -56,7 +56,7 @@ type UserGroup struct {
 }
 
 type User struct {
-	//	Id          int
+	Id         int
 	Name       string
 	Pass       string
 	Nick       string

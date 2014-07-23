@@ -101,9 +101,10 @@ func selPost(db *mgo.Database) {
 	res := &Tpost{}
 
 	q := db.C("post").Find(bson.M{})
+
 	err := q.One(res)
 
-	log.Println(res.Auth, err)
+	log.Println(res, err)
 }
 
 func Init() {
@@ -119,9 +120,9 @@ func Init() {
 
 	db := s.DB("tinyblog")
 
-	initUser(db)
+	//initUser(db)
 	//initCate(db)
-	initPost(db)
+	//initPost(db)
 
 	selPost(db)
 
