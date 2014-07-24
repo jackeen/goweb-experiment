@@ -8,10 +8,18 @@ import (
 )
 
 type Tpost struct {
+	Id_        bson.ObjectId `bson:"_id"`
 	Title      string
 	Content    string
 	Auth       mgo.DBRef
 	CreateTime time.Time
+}
+
+type Tuser struct {
+	Id_  bson.ObjectId `bson:"_id"`
+	Name string
+	Pass string
+	Nick string
 }
 
 func initPost(db *mgo.Database) {
@@ -19,29 +27,18 @@ func initPost(db *mgo.Database) {
 	//firstTime := time.Now().Format("2006-01-02 15:04:05")
 
 	firstPost := &Tpost{
-		/*Title        string
-		Content      string
-		Auth         mgo.DBRef
-		Cate         mgo.DBRef
-		Tags         mgo.DBRef
-		CreateTime   time.Time
-		LastEditTime time.Time
-		EditState    bool
-		AllowComment bool
-		Comment      mgo.DBRef*/
-
+		Id_:        bson.NewObjectId(),
 		Title:      "my first post",
 		Content:    "hello world!",
 		CreateTime: time.Now(),
-		//Auth:       mgo.DBRef{"user", "admin"},
 	}
 
-	res := &User{}
+	res := &Tuser{}
 	err := db.C("user").Find(bson.M{}).One(res)
 
 	ref := mgo.DBRef{
 		Collection: "user",
-		Id:         res.Name,
+		Id:         res.Id_,
 	}
 
 	firstPost.Auth = ref
@@ -79,11 +76,11 @@ func initCate(db *mgo.Database) {
 
 func initUser(db *mgo.Database) {
 
-	root := &User{
-		Name:       "admin",
-		Nick:       "admin",
-		Pass:       "123456",
-		CreateTime: time.Now(),
+	root := &Tuser{
+		Id_:  bson.NewObjectId(),
+		Name: "admin",
+		Pass: "123456",
+		Nick: "admin",
 	}
 
 	c := db.C("user")
@@ -98,13 +95,15 @@ func initUser(db *mgo.Database) {
 
 func selPost(db *mgo.Database) {
 
-	res := &Tpost{}
+	var posts []Tpost
 
-	q := db.C("post").Find(bson.M{})
+	q := db.C("post").Find(nil)
 
-	err := q.One(res)
+	err := q.All(&posts)
 
-	log.Println(res, err)
+	usrRef := posts[0].Auth
+
+	log.Println(usrRef, err)
 }
 
 func Init() {
@@ -121,7 +120,7 @@ func Init() {
 	db := s.DB("tinyblog")
 
 	//initUser(db)
-	//initCate(db)
+
 	//initPost(db)
 
 	selPost(db)

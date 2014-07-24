@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 	"time"
 )
 
@@ -15,20 +16,22 @@ type IdNum struct {
 }
 
 type Post struct {
+	Id_          bson.ObjectId `bson:_id`
 	Id           int
 	Title        string
 	Content      string
-	Auth         int
-	Cate         int
-	Tags         int
+	Auth         mgo.DBRef
+	Cate         mgo.DBRef
+	Tags         mgo.DBRef
 	CreateTime   time.Time
 	LastEditTime time.Time
 	EditState    bool
 	AllowComment bool
-	Comment      []interface{}
+	Comment      []Comment
 }
 
 type Comment struct {
+	Id_     bson.ObjectId `bson:_id`
 	Id      int
 	PostId  int
 	Content string
@@ -39,23 +42,27 @@ type Comment struct {
 }
 
 type Cate struct {
+	Id_      bson.ObjectId `bson:_id`
 	Id       int
 	Name     string
 	Explain  string
-	Children mgo.DBRef
-	Parent   int
+	Children []mgo.DBRef
+	Parent   mgo.DBRef
 }
 
 type Tag struct {
+	Id_     bson.ObjectId `bson:_id`
 	Id      int
 	Name    string
 	Explain string
 }
 
 type UserGroup struct {
+	Id_ bson.ObjectId `bson:_id`
 }
 
 type User struct {
+	Id_        bson.ObjectId `bson:_id`
 	Id         int
 	Name       string
 	Pass       string
