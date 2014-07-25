@@ -103,7 +103,11 @@ func selPost(db *mgo.Database) {
 
 	usrRef := posts[0].Auth
 
-	log.Println(usrRef, err)
+	rq := db.FindRef(&usrRef)
+	refUser := &Tuser{}
+	err = rq.One(refUser)
+
+	log.Println(refUser, err)
 }
 
 func Init() {

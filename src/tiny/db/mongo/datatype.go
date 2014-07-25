@@ -33,21 +33,20 @@ type Post struct {
 type Comment struct {
 	Id_     bson.ObjectId `bson:_id`
 	Id      int
-	PostId  int
 	Content string
 	Auth    string
 	Email   string
 	host    string
 	Ip      string
+	Reply   []Comment
 }
 
 type Cate struct {
-	Id_      bson.ObjectId `bson:_id`
-	Id       int
-	Name     string
-	Explain  string
-	Children []mgo.DBRef
-	Parent   mgo.DBRef
+	Id_     bson.ObjectId `bson:_id`
+	Id      int
+	Name    string
+	Explain string
+	Parent  mgo.DBRef
 }
 
 type Tag struct {
@@ -68,6 +67,13 @@ type User struct {
 	Pass       string
 	Nick       string
 	CreateTime time.Time
+}
+
+/**/
+
+type Nav struct {
+	Id   string
+	Name string
 }
 
 type Config struct {
