@@ -10,7 +10,6 @@ type IdNum struct {
 	Post      int
 	Cate      int
 	Tag       int
-	Comment   int
 	User      int
 	UserGroup int
 }
@@ -27,6 +26,7 @@ type Post struct {
 	LastEditTime time.Time
 	EditState    bool
 	AllowComment bool
+	TotalComment int
 	Comment      []Comment
 }
 
@@ -69,7 +69,7 @@ type User struct {
 	CreateTime time.Time
 }
 
-/**/
+/* cms config */
 
 type Nav struct {
 	Id   string

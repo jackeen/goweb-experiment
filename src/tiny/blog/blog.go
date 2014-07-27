@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
-	mdb "tiny/db/mongo"
+	db "tiny/db/mongo"
 )
 
+func insertPost() {
+
+}
+
 func main() {
-	mdb.Init()
+
 	fmt.Println("haha")
 }
