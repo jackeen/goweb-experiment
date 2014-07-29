@@ -19,7 +19,7 @@ type Post struct {
 	Id           int
 	Title        string
 	Content      string
-	Auth         mgo.DBRef
+	Auth         string
 	Cate         mgo.DBRef
 	Tags         mgo.DBRef
 	CreateTime   time.Time

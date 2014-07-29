@@ -20,49 +20,40 @@ type TabName struct {
 	Config string
 }
 
-type DataService struct {
-	DBC *DBConfig
-	Tab *TabName
-	s   *mgo.Session
-	db  *mgo.Database
-	c   *mgo.Collection
-}
-
-func (self *DataService) Close() {
-	self.s.Close()
-}
-
-func (self *DataService) Connect() {
-
-	dbc := self.DBC
-
-	/*mongodb://user:password@hostname/dbname*/
-	dbQuery := "mongodb://" + dbc.DBUser + ":" + dbc.DBPass + "@" + dbc.DBHost + "/" + dbc.DBName
-
-	s, err := mgo.Dial(dbQuery)
-	if err != nil {
-		panic(err)
+func getTabName() *TabName {
+	tableName := &TabName{
+		Post:   "post",
+		Cate:   "cate",
+		Tag:    "tag",
+		Nav:    "nav",
+		Config: "config",
 	}
-	self.s = s
-	self.db = s.DB(dbc.DBName)
+	return tableName
 }
 
-func (self *DataService) SelTab(tabName string) {
-	self.c = self.db.C(tabName)
-}
+type InsertFunc func(*mgo.Collection, interface{})
 
-func (self *DataService) Insert(data interface{}) {
-	c := self.c
+func DBInsert(c *mgo.Collection, data interface{}) {
 	err := c.Insert(data)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (self *DataService) Update() {
+func DBConnect(dbc *DBConfig, fn InsertFunc, tabName string, data interface{}) {
 
-}
+	/*mongodb://user:password@hostname/dbname*/
+	dbQuery := "mongodb://" + dbc.DBUser + ":" + dbc.DBPass + "@" + dbc.DBHost + "/" + dbc.DBName
 
-func (self *DataService) Select() {
+	s, err := mgo.Dial(dbQuery)
+	defer s.Close()
 
+	if err != nil {
+		panic(err)
+	}
+
+	db := s.DB(dbc.DBName)
+	c := db.C(tabName)
+
+	fn(c, data)
 }

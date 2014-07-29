@@ -14,20 +14,7 @@ func main() {
 		DBName: "tinyblog",
 	}
 
-	tableName := &db.TabName{
-		Post:   "post",
-		Cate:   "cate",
-		Tag:    "tag",
-		Nav:    "nav",
-		Config: "config",
-	}
-
-	postService := &db.PostService{
-		DBC: dbc,
-		Tab: tableName,
-	}
-
-	postService.Insert("aa", "this is a")
+	db.PostInsert(dbc, "aa", "this is a")
 
 	fmt.Println("haha")
 }

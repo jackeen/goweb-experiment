@@ -7,26 +7,7 @@ import (
 	"time"
 )
 
-type PostService struct {
-	DBC *DBConfig
-	Tab *TabName
-}
-
-/*
-func (self *PostService) Select(selector map[string]interface{}) []map[string]interface{} {
-
-}*/
-
-func (self *PostService) Insert(title string, content string) {
-
-	ds := &DataService{
-		DBC: self.DBC,
-		Tab: self.Tab,
-	}
-	defer ds.Close()
-
-	ds.Connect()
-	ds.SelTab(ds.Tab.Post)
+func PostInsert(dbc *DBConfig, title string, content string) {
 
 	data := &Post{
 		Id_:        bson.NewObjectId(),
@@ -35,10 +16,7 @@ func (self *PostService) Insert(title string, content string) {
 		Content:    content,
 		CreateTime: time.Now(),
 	}
-	ds.Insert(data)
 
-}
-
-func (self *PostService) Update() {
+	DBConnect(dbc, DBInsert, getTabName().Post, data)
 
 }
