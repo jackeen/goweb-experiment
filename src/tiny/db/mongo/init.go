@@ -110,7 +110,7 @@ func selPost(db *mgo.Database) {
 	log.Println(refUser, err)
 }
 
-func Init() {
+func init() {
 
 	log.Println("start tinyblog database ...")
 
