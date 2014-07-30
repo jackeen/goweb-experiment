@@ -1,5 +1,6 @@
-package mongo
+package main
 
+/*
 import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
@@ -53,7 +54,6 @@ func initPost(db *mgo.Database) {
 	log.Println("The post collction is done!")
 }
 
-/*
 func initCate(db *mgo.Database) {
 
 	rootCate := &Cate{
@@ -72,7 +72,7 @@ func initCate(db *mgo.Database) {
 	}
 
 	log.Println("The cate collction is done!")
-}*/
+}
 
 func initUser(db *mgo.Database) {
 
@@ -130,3 +130,4 @@ func init() {
 	selPost(db)
 
 }
+*/

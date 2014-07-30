@@ -5,11 +5,11 @@ import (
 	//"labix.org/v2/mgo/bson"
 )
 
-type DBConfig struct {
-	DBHost string
-	DBUser string
-	DBPass string
-	DBName string
+type Config struct {
+	Host string
+	User string
+	Pass string
+	Name string
 }
 
 type TabName struct {
@@ -20,7 +20,7 @@ type TabName struct {
 	Config string
 }
 
-func getTabName() *TabName {
+func GetTabName() *TabName {
 	tableName := &TabName{
 		Post:   "post",
 		Cate:   "cate",
@@ -33,17 +33,17 @@ func getTabName() *TabName {
 
 type InsertFunc func(*mgo.Collection, interface{})
 
-func DBInsert(c *mgo.Collection, data interface{}) {
+func Insert(c *mgo.Collection, data interface{}) {
 	err := c.Insert(data)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func DBConnect(dbc *DBConfig, fn InsertFunc, tabName string, data interface{}) {
+func Execute(dbc *Config, tabName string, fn InsertFunc, data interface{}) {
 
 	/*mongodb://user:password@hostname/dbname*/
-	dbQuery := "mongodb://" + dbc.DBUser + ":" + dbc.DBPass + "@" + dbc.DBHost + "/" + dbc.DBName
+	dbQuery := "mongodb://" + dbc.User + ":" + dbc.Pass + "@" + dbc.Host + "/" + dbc.Name
 
 	s, err := mgo.Dial(dbQuery)
 	defer s.Close()
@@ -52,7 +52,7 @@ func DBConnect(dbc *DBConfig, fn InsertFunc, tabName string, data interface{}) {
 		panic(err)
 	}
 
-	db := s.DB(dbc.DBName)
+	db := s.DB(dbc.Name)
 	c := db.C(tabName)
 
 	fn(c, data)
