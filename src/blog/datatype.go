@@ -15,13 +15,13 @@ type IdNum struct {
 }
 
 type Post struct {
-	Id_          bson.ObjectId `bson:_id`
+	//Id_          bson.ObjectId `bson:_id`
 	Id           int
 	Title        string
 	Content      string
 	Auth         string
-	Cate         mgo.DBRef
-	Tags         mgo.DBRef
+	Cate         int
+	Tags         string
 	CreateTime   time.Time
 	LastEditTime time.Time
 	EditState    bool
@@ -31,7 +31,7 @@ type Post struct {
 }
 
 type Comment struct {
-	Id_     bson.ObjectId `bson:_id`
+	//Id_     bson.ObjectId `bson:_id`
 	Id      int
 	Content string
 	Auth    string
@@ -42,7 +42,7 @@ type Comment struct {
 }
 
 type Cate struct {
-	Id_     bson.ObjectId `bson:_id`
+	//Id_     bson.ObjectId `bson:_id`
 	Id      int
 	Name    string
 	Explain string
@@ -50,18 +50,14 @@ type Cate struct {
 }
 
 type Tag struct {
-	Id_     bson.ObjectId `bson:_id`
-	Id      int
-	Name    string
-	Explain string
+	Id   int
+	Name string
 }
 
 type UserGroup struct {
-	Id_ bson.ObjectId `bson:_id`
 }
 
 type User struct {
-	Id_        bson.ObjectId `bson:_id`
 	Id         int
 	Name       string
 	Pass       string
