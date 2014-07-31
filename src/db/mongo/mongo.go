@@ -12,48 +12,40 @@ type Config struct {
 	Name string
 }
 
-type TabName struct {
-	Post   string
-	Cate   string
-	Tag    string
-	Nav    string
-	Config string
-}
+var dbc *Config
+var dbQuery string
 
-func GetTabName() *TabName {
-	tableName := &TabName{
-		Post:   "post",
-		Cate:   "cate",
-		Tag:    "tag",
-		Nav:    "nav",
-		Config: "config",
+func InitDBC(conf map[string]string) {
+	dbc = &Config{
+		Host: conf["Host"],
+		User: conf["User"],
+		Pass: conf["Pass"],
+		Name: conf["Name"],
 	}
-	return tableName
+	dbQuery = "mongodb://" + dbc.User + ":" + dbc.Pass + "@" + dbc.Host + "/" + dbc.Name
 }
 
-type InsertFunc func(*mgo.Collection, interface{})
-
-func Insert(c *mgo.Collection, data interface{}) {
-	err := c.Insert(data)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func Execute(dbc *Config, tabName string, fn InsertFunc, data interface{}) {
-
-	/*mongodb://user:password@hostname/dbname*/
-	dbQuery := "mongodb://" + dbc.User + ":" + dbc.Pass + "@" + dbc.Host + "/" + dbc.Name
+func connect() (*mgo.Session, *mgo.Database) {
 
 	s, err := mgo.Dial(dbQuery)
-	defer s.Close()
 
 	if err != nil {
 		panic(err)
 	}
 
 	db := s.DB(dbc.Name)
-	c := db.C(tabName)
+	return s, db
+}
 
-	fn(c, data)
+func Insert(tabName string, data interface{}) {
+
+	s, db := connect()
+	defer s.Close()
+
+	c := db.C(tabName)
+	err := c.Insert(data)
+
+	if err != nil {
+		panic(err)
+	}
 }

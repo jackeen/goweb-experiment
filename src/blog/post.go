@@ -2,11 +2,15 @@ package main
 
 import (
 	db "db/mongo"
-	//"log"
+	"log"
 	"time"
 )
 
-func InsertPost(dbc *db.Config, tab *db.TabName, title string, content string) {
+func FindPost() {
+
+}
+
+func InsertPost(title string, content string) {
 
 	data := &Post{
 		Id:         1,
@@ -18,20 +22,14 @@ func InsertPost(dbc *db.Config, tab *db.TabName, title string, content string) {
 		CreateTime: time.Now(),
 	}
 
-	db.Execute(dbc, tab.Post, db.Insert, data)
+	db.InitDBC(DBConfig)
+
+	db.Insert(DBTable["Post"], data)
 
 }
 
 func main() {
 
-	dbc := &db.Config{
-		Host: "localhost",
-		User: "tinyblog",
-		Pass: "1234",
-		Name: "tinyblog",
-	}
-	tab := db.GetTabName()
-
-	InsertPost(dbc, tab, "title a", "content")
-
+	InsertPost("title a", "content")
+	log.Println("aa")
 }
