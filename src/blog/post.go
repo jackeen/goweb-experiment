@@ -1,16 +1,12 @@
 package main
 
 import (
-	db "db/mongo"
 	"log"
+	"reflect"
 	"time"
 )
 
-func FindPost() {
-
-}
-
-func InsertPost(title string, content string) {
+func insertPost(dbc *MDBC, title string, content string) {
 
 	data := &Post{
 		Id:         1,
@@ -22,14 +18,25 @@ func InsertPost(title string, content string) {
 		CreateTime: time.Now(),
 	}
 
-	db.InitDBC(DBConfig)
-
-	db.Insert(DBTable["Post"], data)
-
+	c := dbc.DB.C(POST_TAB)
+	err := c.Insert(data)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
-func main() {
+func findPost(dbc *MDBC, sel Selector, res *[]Post) {
 
-	InsertPost("title a", "content")
-	log.Println("aa")
+	c := dbc.DB.C(POST_TAB)
+	f := c.Find(sel)
+
+	//aa := &Post{}
+	//ss := reflect.Type(Post).FieldByIndex("Title")
+	//ss := reflect.TypeOf(aa).Elem().FieldByIndex(Post.Title)
+	//log.Println("xxx", ss)
+
+	err := f.Limit(3).All(res)
+	if err != nil {
+		log.Println(err)
+	}
 }

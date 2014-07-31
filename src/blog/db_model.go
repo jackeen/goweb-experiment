@@ -14,7 +14,7 @@ type IdNum struct {
 
 type Post struct {
 	Id           int
-	Title        string
+	Title        string "title"
 	Content      string
 	Auth         string
 	Cate         int
