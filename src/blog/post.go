@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"reflect"
+	//"reflect"
 	"time"
 )
 
@@ -29,11 +29,6 @@ func findPost(dbc *MDBC, sel Selector, res *[]Post) {
 
 	c := dbc.DB.C(POST_TAB)
 	f := c.Find(sel)
-
-	//aa := &Post{}
-	//ss := reflect.Type(Post).FieldByIndex("Title")
-	//ss := reflect.TypeOf(aa).Elem().FieldByIndex(Post.Title)
-	//log.Println("xxx", ss)
 
 	err := f.Limit(3).All(res)
 	if err != nil {

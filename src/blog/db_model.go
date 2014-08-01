@@ -49,6 +49,7 @@ type Tag struct {
 	Name string
 }
 
+/*
 type UserGroup struct {
 }
 
@@ -59,6 +60,7 @@ type User struct {
 	Nick       string
 	CreateTime time.Time
 }
+*/
 
 type Nav struct {
 	Id   string
