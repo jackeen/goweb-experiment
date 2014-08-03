@@ -1,12 +1,16 @@
 package main
 
 import (
-	"log"
+	//"log"
 	//"reflect"
+	//"errors"
 	"time"
 )
 
-func insertPost(dbc *MDBC, title string, content string) {
+type PostService struct {
+}
+
+func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 
 	data := &Post{
 		Id:         1,
@@ -17,21 +21,18 @@ func insertPost(dbc *MDBC, title string, content string) {
 		Tags:       "",
 		CreateTime: time.Now(),
 	}
-
-	c := dbc.DB.C(POST_TAB)
-	err := c.Insert(data)
-	if err != nil {
-		log.Println(err)
-	}
+	dbc.Insert(POST_TAB, data)
 }
 
-func findPost(dbc *MDBC, sel Selector, res *[]Post) {
+func (self *PostService) Find(dbc *MDBC, selector BSON, sort string, offset int, limit int, res *[]Post) {
 
-	c := dbc.DB.C(POST_TAB)
-	f := c.Find(sel)
-
-	err := f.Limit(3).All(res)
-	if err != nil {
-		log.Println(err)
+	if sort == "" {
+		sort = "id"
 	}
+
+	dbc.Select(POST_TAB, nil, sort, offset, limit, res)
+}
+
+func (self *PostService) Update(dbc *MDBC, selector BSON, data interface{}) {
+	dbc.UpdateSet(POST_TAB, selector, data)
 }

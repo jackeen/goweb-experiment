@@ -29,8 +29,11 @@ func main() {
 	var postList []Post
 
 	initDB("localhost", "tinyblog", "1234", "tinyblog")
-	//insertPost(dbc, "title", "content")
-	findPost(dbc, nil, &postList)
+	postSer := &PostService{}
+
+	//postSer.Insert(dbc, "title", "content")
+	//postSer.Find(dbc, nil, "id", 0, 2, &postList)
+	postSer.Update(dbc, BSON{"id": 1}, BSON{"title": "hahahaha"})
 	log.Println(postList)
 
 }
