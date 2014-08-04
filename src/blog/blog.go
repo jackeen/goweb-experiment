@@ -5,6 +5,7 @@ import (
 )
 
 const (
+	NUM_TAB    = "num"
 	POST_TAB   = "post"
 	CATE_TAB   = "cate"
 	TAG_TAB    = "tag"
@@ -31,9 +32,9 @@ func main() {
 	initDB("localhost", "tinyblog", "1234", "tinyblog")
 	postSer := &PostService{}
 
-	//postSer.Insert(dbc, "title", "content")
+	postSer.Insert(dbc, "title", "content")
 	//postSer.Find(dbc, nil, "id", 0, 2, &postList)
-	postSer.Update(dbc, BSON{"id": 1}, BSON{"title": "hahahaha"})
+	//postSer.Update(dbc, BSON{"id": 1}, BSON{"title": "hahahaha"})
 	log.Println(postList)
 
 }

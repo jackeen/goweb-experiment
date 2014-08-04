@@ -18,9 +18,10 @@ type MDBC struct {
 	DB   *mgo.Database
 }
 
+/*
 func (self *MDBC) GetMongoId() MongoId {
 	return bson.NewObjectId()
-}
+}*/
 
 func (self *MDBC) Init() {
 
@@ -56,6 +57,15 @@ func (self *MDBC) UpdateSet(tab string, selector BSON, data interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Update(selector, BSON{"$set": data})
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (self *MDBC) UpdateInc(tab string, selector BSON, name string, inc int) {
+
+	c := self.DB.C(tab)
+	err := c.Update(selector, BSON{"$inc": BSON{name: inc}})
 	if err != nil {
 		panic(err)
 	}

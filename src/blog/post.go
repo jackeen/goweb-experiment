@@ -4,8 +4,17 @@ import (
 	//"log"
 	//"reflect"
 	//"errors"
+	"labix.org/v2/mgo/bson"
 	"time"
 )
+
+func increaseNumId(dbc *MDBC, colName string, i int) *IdNum {
+
+	res := &IdNum{}
+	dbc.UpdateInc(NUM_TAB, nil, colName, i)
+	dbc.Select(NUM_TAB, nil, "", 0, 1, res)
+	return res
+}
 
 type PostService struct {
 }
@@ -13,8 +22,8 @@ type PostService struct {
 func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 
 	data := &Post{
-		Id_:        dbc.GetMongoId(),
-		Id:         1,
+		Id_:        bson.NewObjectId(),
+		Id:         increaseNumId(dbc, "post", 1).Post,
 		Title:      title,
 		Content:    content,
 		Auth:       "admin",
