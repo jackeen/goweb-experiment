@@ -18,6 +18,10 @@ type MDBC struct {
 	DB   *mgo.Database
 }
 
+func (self *MDBC) GetMongoId() MongoId {
+	return bson.NewObjectId()
+}
+
 func (self *MDBC) Init() {
 
 	dbQuery := "mongodb://" + self.User + ":" + self.Pass + "@" + self.Host + "/" + self.Name

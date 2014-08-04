@@ -5,14 +5,13 @@ import (
 )
 
 type IdNum struct {
-	Post      int
-	Cate      int
-	Tag       int
-	User      int
-	UserGroup int
+	Post int
+	Cate int
+	Tag  int
 }
 
 type Post struct {
+	Id_          MongoId `bosn:"_id"`
 	Id           int
 	Title        string "title"
 	Content      string
@@ -28,6 +27,7 @@ type Post struct {
 }
 
 type Comment struct {
+	Id_     MongoId `bosn:"_id"`
 	Id      int
 	Content string
 	Auth    string
@@ -38,6 +38,7 @@ type Comment struct {
 }
 
 type Cate struct {
+	Id_     MongoId `bosn:"_id"`
 	Id      int
 	Name    string
 	Explain string

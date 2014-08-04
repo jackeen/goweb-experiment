@@ -13,6 +13,7 @@ type PostService struct {
 func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 
 	data := &Post{
+		Id_:        dbc.GetMongoId(),
 		Id:         1,
 		Title:      title,
 		Content:    content,
