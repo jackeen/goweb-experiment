@@ -1,7 +1,6 @@
 package main
 
 import (
-	"labix.org/v2/mgo/bson"
 	"time"
 )
 
@@ -12,7 +11,7 @@ type IdNum struct {
 }
 
 type Post struct {
-	Id_          bson.ObjectId `bosn:"_id"`
+	Id_          MongoId `bosn:"_id"`
 	Id           int
 	Title        string "title"
 	Content      string

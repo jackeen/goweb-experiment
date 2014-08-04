@@ -18,10 +18,9 @@ type MDBC struct {
 	DB   *mgo.Database
 }
 
-/*
 func (self *MDBC) GetMongoId() MongoId {
-	return bson.NewObjectId()
-}*/
+	return MongoId(bson.NewObjectId())
+}
 
 func (self *MDBC) Init() {
 
@@ -49,7 +48,10 @@ func (self *MDBC) Select(tab string, selector BSON, sort string, offset int, lim
 	c := self.DB.C(tab)
 
 	query := c.Find(selector)
-	query = query.Sort(sort).Skip(offset).Limit(limit)
+	if sort != "" {
+		query = query.Sort(sort)
+	}
+	query = query.Skip(offset).Limit(limit)
 	query.All(res)
 }
 

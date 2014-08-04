@@ -4,7 +4,7 @@ import (
 	//"log"
 	//"reflect"
 	//"errors"
-	"labix.org/v2/mgo/bson"
+
 	"time"
 )
 
@@ -22,7 +22,7 @@ type PostService struct {
 func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 
 	data := &Post{
-		Id_:        bson.NewObjectId(),
+		Id_:        dbc.GetMongoId(),
 		Id:         increaseNumId(dbc, "post", 1).Post,
 		Title:      title,
 		Content:    content,
@@ -35,10 +35,6 @@ func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 }
 
 func (self *PostService) Find(dbc *MDBC, selector BSON, sort string, offset int, limit int, res *[]Post) {
-
-	if sort == "" {
-		sort = "id"
-	}
 
 	dbc.Select(POST_TAB, nil, sort, offset, limit, res)
 }
