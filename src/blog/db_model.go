@@ -1,19 +1,20 @@
 package main
 
 import (
+	"labix.org/v2/mgo/bson"
 	"time"
 )
 
-type IdNum struct {
+type Num struct {
 	Post int
 	Cate int
 	Tag  int
 }
 
 type Post struct {
-	Id_          MongoId `bosn:"_id"`
+	Id_          bson.ObjectId `bson:"_id"`
 	Id           int
-	Title        string "title"
+	Title        string
 	Content      string
 	Auth         string
 	Cate         int
@@ -27,7 +28,7 @@ type Post struct {
 }
 
 type Comment struct {
-	Id_     MongoId `bosn:"_id"`
+	Id_     bson.ObjectId `bson:"_id"`
 	Id      int
 	Content string
 	Auth    string
@@ -38,7 +39,7 @@ type Comment struct {
 }
 
 type Cate struct {
-	Id_     MongoId `bosn:"_id"`
+	Id_     bson.ObjectId `bson:"_id"`
 	Id      int
 	Name    string
 	Explain string
@@ -49,18 +50,17 @@ type Tag struct {
 	Name string
 }
 
-/*
 type UserGroup struct {
 }
 
 type User struct {
+	Id_        bson.ObjectId `bson:"_id"`
 	Id         int
 	Name       string
 	Pass       string
 	Nick       string
 	CreateTime time.Time
 }
-*/
 
 type Nav struct {
 	Id   string

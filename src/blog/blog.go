@@ -33,8 +33,8 @@ func main() {
 	postSer := &PostService{}
 
 	postSer.Insert(dbc, "title", "content")
-	//postSer.Find(dbc, nil, "id", 0, 2, &postList)
-	//postSer.Update(dbc, BSON{"id": 1}, BSON{"title": "hahahaha"})
+	postSer.Find(dbc, Selector{"id": 2}, "id", 0, 2, &postList)
+	//postSer.Update(dbc, Selector{"id": 1}, Selector{"title": "hahahaha"})
 	log.Println(postList)
 
 }

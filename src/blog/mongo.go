@@ -6,9 +6,6 @@ import (
 	"log"
 )
 
-type BSON bson.M
-type MongoId bson.ObjectId
-
 type MDBC struct {
 	Host string
 	User string
@@ -18,9 +15,7 @@ type MDBC struct {
 	DB   *mgo.Database
 }
 
-func (self *MDBC) GetMongoId() MongoId {
-	return MongoId(bson.NewObjectId())
-}
+type Selector bson.M
 
 func (self *MDBC) Init() {
 
@@ -43,32 +38,46 @@ func (self *MDBC) Insert(tab string, data interface{}) {
 	}
 }
 
-func (self *MDBC) Select(tab string, selector BSON, sort string, offset int, limit int, res interface{}) {
+func (self *MDBC) SelectOne(tab string, sel Selector, res interface{}) {
 
 	c := self.DB.C(tab)
+	err := c.Find(sel).One(res)
+	if err != nil {
+		log.Println("select one:", err)
+	}
+}
 
-	query := c.Find(selector)
+func (self *MDBC) Select(tab string, sel Selector, sort string, offset int, limit int, res interface{}) {
+
+	c := self.DB.C(tab)
+	query := c.Find(sel)
+
 	if sort != "" {
 		query = query.Sort(sort)
 	}
+
 	query = query.Skip(offset).Limit(limit)
-	query.All(res)
-}
 
-func (self *MDBC) UpdateSet(tab string, selector BSON, data interface{}) {
-
-	c := self.DB.C(tab)
-	err := c.Update(selector, BSON{"$set": data})
+	err := query.All(res)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 }
 
-func (self *MDBC) UpdateInc(tab string, selector BSON, name string, inc int) {
+func (self *MDBC) UpdateSet(tab string, sel Selector, data interface{}) {
 
 	c := self.DB.C(tab)
-	err := c.Update(selector, BSON{"$inc": BSON{name: inc}})
+	err := c.Update(sel, bson.M{"$set": data})
 	if err != nil {
-		panic(err)
+		log.Println(err)
+	}
+}
+
+func (self *MDBC) UpdateInc(tab string, sel Selector, name string, inc int) {
+
+	c := self.DB.C(tab)
+	err := c.Update(sel, bson.M{"$inc": bson.M{name: inc}})
+	if err != nil {
+		log.Println(err)
 	}
 }
