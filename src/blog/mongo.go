@@ -17,6 +17,14 @@ type MDBC struct {
 
 type Selector bson.M
 
+func (self *MDBC) GetDBRef(tab string, _id bson.ObjectId) mgo.DBRef {
+	ref := mgo.DBRef{
+		Collection: tab,
+		Id:         _id,
+	}
+	return ref
+}
+
 func (self *MDBC) Init() {
 
 	dbQuery := "mongodb://" + self.User + ":" + self.Pass + "@" + self.Host + "/" + self.Name
