@@ -9,6 +9,7 @@ type Num struct {
 	Post int
 	Cate int
 	Tag  int
+	User int
 }
 
 type Post struct {
@@ -50,15 +51,13 @@ type Tag struct {
 	Name string
 }
 
-type UserGroup struct {
-}
-
 type User struct {
 	Id_        bson.ObjectId `bson:"_id"`
 	Id         int
 	Name       string
 	Pass       string
 	Nick       string
+	Email      string
 	CreateTime time.Time
 }
 

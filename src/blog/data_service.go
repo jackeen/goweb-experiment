@@ -25,7 +25,44 @@ func (self *NumService) incId(dbc *MDBC, colName string, i int) *Num {
 
 var IncNum *NumService = new(NumService)
 
-//
+//user
+type UserService struct{}
+
+func (self *UserService) Insert(dbc *MDBC, name string, pass string, nick string, email string) {
+
+	user := &User{
+		Id_:        bson.NewObjectId(),
+		Id:         IncNum.incId(dbc, "user", 1).User,
+		Name:       name,
+		Pass:       pass,
+		Nick:       nick,
+		Email:      email,
+		CreateTime: time.Now(),
+	}
+	dbc.Insert(USER_TAB, user)
+}
+
+func (self *UserService) Update(dbc *MDBC, sel Selector, data interface{}) {
+	dbc.UpdateSet(USER_TAB, sel, data)
+}
+
+func (self *UserService) Find(dbc *MDBC) {
+
+}
+
+func (self *UserService) Delete(dbc *MDBC) {
+
+}
+
+func (self *UserService) HasUser(dbc *MDBC, name string) bool {
+	res := &User{}
+	dbc.SelectOne(USER_TAB, Selector{"name": name}, res)
+	if res.Name == "" {
+		return false
+	} else {
+		return true
+	}
+}
 
 //post data I/O
 type PostService struct{}

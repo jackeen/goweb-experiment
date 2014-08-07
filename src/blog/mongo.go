@@ -6,6 +6,12 @@ import (
 	"log"
 )
 
+func logErr(err error) {
+	if err != nil {
+		log.Println(err)
+	}
+}
+
 type MDBC struct {
 	Host string
 	User string
@@ -41,18 +47,14 @@ func (self *MDBC) Insert(tab string, data interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Insert(data)
-	if err != nil {
-		log.Println(err)
-	}
+	logErr(err)
 }
 
 func (self *MDBC) SelectOne(tab string, sel Selector, res interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Find(sel).One(res)
-	if err != nil {
-		log.Println("select one:", err)
-	}
+	logErr(err)
 }
 
 func (self *MDBC) Select(tab string, sel Selector, sort string, offset int, limit int, res interface{}) {
@@ -67,25 +69,26 @@ func (self *MDBC) Select(tab string, sel Selector, sort string, offset int, limi
 	query = query.Skip(offset).Limit(limit)
 
 	err := query.All(res)
-	if err != nil {
-		log.Println(err)
-	}
+	logErr(err)
 }
 
 func (self *MDBC) UpdateSet(tab string, sel Selector, data interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$set": data})
-	if err != nil {
-		log.Println(err)
-	}
+	logErr(err)
 }
 
 func (self *MDBC) UpdateInc(tab string, sel Selector, name string, inc int) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$inc": bson.M{name: inc}})
-	if err != nil {
-		log.Println(err)
-	}
+	logErr(err)
+}
+
+func (self *MDBC) Delete(tab string, sel Selector) {
+
+	c := self.DB.C(tab)
+	err := c.Remove(sel)
+	logErr(err)
 }
