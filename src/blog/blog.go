@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 )
 
@@ -27,14 +28,17 @@ func initDB(host string, user string, pass string, name string) {
 
 func main() {
 
+	pid := flag.Int("pid", 0, "post select id")
+	flag.Parse()
+
 	var postList []Post
 
 	initDB("localhost", "tinyblog", "1234", "tinyblog")
 	postSer := &PostService{}
 
-	postSer.Insert(dbc, "title", "content")
-	postSer.Find(dbc, Selector{"id": 2}, "id", 0, 2, &postList)
+	//postSer.Insert(dbc, "title", "content")
+	postSer.Find(dbc, Selector{"id": *pid}, "id", 0, 2, &postList)
 	//postSer.Update(dbc, Selector{"id": 1}, Selector{"title": "hahahaha"})
-	log.Println(postList)
+	log.Println(*pid, postList)
 
 }
