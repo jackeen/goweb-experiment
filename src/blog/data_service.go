@@ -25,7 +25,7 @@ func (self *NumService) incId(dbc *MDBC, colName string, i int) *Num {
 
 var IncNum *NumService = new(NumService)
 
-//user
+//user data IO
 type UserService struct{}
 
 func (self *UserService) Insert(dbc *MDBC, name string, pass string, nick string, email string) {
