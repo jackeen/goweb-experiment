@@ -42,4 +42,7 @@ func main() {
 	//postSer.Update(dbc, Selector{"id": 1}, Selector{"title": "hahahaha"})
 	log.Println(*pid, postList)
 
+	userSer := &UserService{}
+	userSer.Insert(dbc, "admin", "1234", "firstuser", "")
+
 }

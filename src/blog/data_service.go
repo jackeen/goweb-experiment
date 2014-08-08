@@ -13,7 +13,7 @@ import (
 type NumService struct{}
 
 func (self *NumService) Init(dbc *MDBC) {
-	dbc.Insert(NUM_TAB, &Num{0, 0, 0})
+	dbc.Insert(NUM_TAB, &Num{0, 0, 0, 0})
 }
 
 func (self *NumService) incId(dbc *MDBC, colName string, i int) *Num {

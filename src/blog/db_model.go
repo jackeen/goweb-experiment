@@ -52,12 +52,13 @@ type Tag struct {
 }
 
 type User struct {
-	Id_        bson.ObjectId `bson:"_id"`
-	Id         int
-	Name       string
-	Pass       string
-	Nick       string
-	Email      string
+	Id_   bson.ObjectId `bson:"_id"`
+	Id    int
+	Name  string
+	Pass  string
+	Nick  string
+	Email string
+
 	CreateTime time.Time
 }
 
