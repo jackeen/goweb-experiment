@@ -67,7 +67,7 @@ func (self *UserService) HasUser(dbc *MDBC, name string) bool {
 //post data I/O
 type PostService struct{}
 
-func (self *PostService) Insert(dbc *MDBC, title string, content string) {
+func (self *PostService) Insert(dbc *MDBC, title string, content string, author int, cate int, tags []string) {
 
 	incId := IncNum.incId(dbc, "post", 1).Post
 	currentTime := time.Now()
@@ -77,9 +77,9 @@ func (self *PostService) Insert(dbc *MDBC, title string, content string) {
 		Id:           incId,
 		Title:        title,
 		Content:      content,
-		Auth:         "admin",
-		Cate:         -1,
-		Tags:         "",
+		Author:       author,
+		Cate:         cate,
+		Tags:         tags,
 		CreateTime:   currentTime,
 		LastEditTime: currentTime,
 	}
@@ -93,6 +93,18 @@ func (self *PostService) Find(dbc *MDBC, sel Selector, sort string, offset int, 
 
 func (self *PostService) Update(dbc *MDBC, sel Selector, data interface{}) {
 	dbc.UpdateSet(POST_TAB, sel, data)
+}
+
+func (self *PostService) InsertComment(dbc *MDBC, postId bson.ObjectId, data *Comment) {
+
+}
+
+func (self *PostService) deleteComment(dbc *MDBC, postId bson.ObjectId) {
+
+}
+
+func (self *PostService) updateComment(dbc *MDBC, id bson.ObjectId, data *Comment) {
+
 }
 
 //

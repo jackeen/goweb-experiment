@@ -37,12 +37,12 @@ func main() {
 	initDB("localhost", "tinyblog", "1234", "tinyblog")
 	postSer := &PostService{}
 
-	//postSer.Insert(dbc, "title", "content")
+	postSer.Insert(dbc, "hi world", "this is a", 1, -1, []string{})
 	postSer.Find(dbc, Selector{"id": *pid}, "id", 0, 2, &postList)
 	//postSer.Update(dbc, Selector{"id": 1}, Selector{"title": "hahahaha"})
 	log.Println(*pid, postList)
 
-	userSer := &UserService{}
-	userSer.Insert(dbc, "admin", "1234", "firstuser", "")
+	//userSer := &UserService{}
+	//userSer.Insert(dbc, "admin", "1234", "firstuser", "")
 
 }

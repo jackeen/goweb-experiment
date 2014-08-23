@@ -17,9 +17,9 @@ type Post struct {
 	Id           int
 	Title        string
 	Content      string
-	Auth         string
+	Author       int
 	Cate         int
-	Tags         string
+	Tags         []string
 	CreateTime   time.Time
 	LastEditTime time.Time
 	EditState    bool
@@ -36,15 +36,16 @@ type Comment struct {
 	Email   string
 	host    string
 	Ip      string
-	Reply   []Comment
+	Display bool
+	ReplyId bson.ObjectId
 }
 
 type Cate struct {
-	Id_     bson.ObjectId `bson:"_id"`
-	Id      int
-	Name    string
-	Explain string
-	Parent  int
+	Id_      bson.ObjectId `bson:"_id"`
+	Id       int
+	Name     string
+	Explain  string
+	ParentId int
 }
 
 type Tag struct {
@@ -52,22 +53,25 @@ type Tag struct {
 }
 
 type User struct {
-	Id_   bson.ObjectId `bson:"_id"`
-	Id    int
-	Name  string
-	Pass  string
-	Nick  string
-	Email string
-
+	Id_        bson.ObjectId `bson:"_id"`
+	Id         int
+	Name       string
+	Pass       string
+	Nick       string
+	Email      string
 	CreateTime time.Time
 }
 
 type Nav struct {
-	Id   string
-	Name string
+	Id         string
+	Name       string
+	CreateTime time.Time
+	EditTime   time.Time
 }
 
 type Config struct {
-	Host      string
-	Copyright string
+	Host       string
+	Copyright  string
+	CreateTime time.Time
+	EditTime   time.Time
 }
