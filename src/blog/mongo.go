@@ -8,7 +8,7 @@ import (
 
 func logErr(err error) {
 	if err != nil {
-		log.Println(err)
+		log.Println("mongo", err)
 	}
 }
 
@@ -57,6 +57,10 @@ func (self *MDBC) SelectOne(tab string, sel Selector, res interface{}) {
 	logErr(err)
 }
 
+func (self *MDBC) SelectArray() {
+
+}
+
 func (self *MDBC) Select(tab string, sel Selector, sort string, offset int, limit int, res interface{}) {
 
 	c := self.DB.C(tab)
@@ -83,6 +87,20 @@ func (self *MDBC) UpdateInc(tab string, sel Selector, name string, inc int) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$inc": bson.M{name: inc}})
+	logErr(err)
+}
+
+func (self *MDBC) UpdatePush(tab string, sel Selector, colName string, data interface{}) {
+
+	c := self.DB.C(tab)
+	err := c.Update(sel, bson.M{"$push": bson.M{colName: data}})
+	logErr(err)
+}
+
+func (self *MDBC) UpdatePull(tab string, sel Selector, colName string, colSel Selector) {
+
+	c := self.DB.C(tab)
+	err := c.Update(sel, bson.M{"$pull": bson.M{colName: colSel}})
 	logErr(err)
 }
 

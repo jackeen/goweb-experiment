@@ -24,20 +24,22 @@ type Post struct {
 	LastEditTime time.Time
 	EditState    bool
 	AllowComment bool
-	TotalComment int
+	CommentNum   int
+	CommentIncId int
 	Comment      []Comment
 }
 
 type Comment struct {
-	Id_     bson.ObjectId `bson:"_id"`
-	Id      int
-	Content string
-	Auth    string
-	Email   string
-	host    string
-	Ip      string
-	Display bool
-	ReplyId bson.ObjectId
+	Id_        bson.ObjectId `bson:"_id"`
+	Id         int
+	Content    string
+	Auth       string
+	Email      string
+	host       string
+	Ip         string
+	Display    bool
+	ReplyId    int
+	CreateTime time.Time
 }
 
 type Cate struct {
@@ -63,7 +65,7 @@ type User struct {
 }
 
 type Nav struct {
-	Id         string
+	Id         int
 	Name       string
 	CreateTime time.Time
 	EditTime   time.Time
