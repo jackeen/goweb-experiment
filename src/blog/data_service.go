@@ -9,6 +9,16 @@ import (
 	"time"
 )
 
+const (
+	NUM_TAB    = "num"
+	POST_TAB   = "post"
+	CATE_TAB   = "cate"
+	USER_TAB   = "user"
+	TAG_TAB    = "tag"
+	NAV_TAB    = "nav"
+	CONFIG_TAB = "config"
+)
+
 //inc id num data I/O
 type NumService struct{}
 
@@ -46,7 +56,7 @@ func (self *UserService) Update(dbc *MDBC, sel Selector, data interface{}) {
 	dbc.UpdateSet(USER_TAB, sel, data)
 }
 
-func (self *UserService) Find(dbc *MDBC) {
+func (self *UserService) Select(dbc *MDBC) {
 
 }
 
@@ -62,4 +72,11 @@ func (self *UserService) HasUser(dbc *MDBC, name string) bool {
 	} else {
 		return true
 	}
+}
+
+//
+type CateService struct{}
+
+func (self *CateService) Inert(dbc *MDBC) {
+
 }

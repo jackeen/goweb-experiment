@@ -5,16 +5,6 @@ import (
 	"log"
 )
 
-const (
-	NUM_TAB    = "num"
-	POST_TAB   = "post"
-	CATE_TAB   = "cate"
-	USER_TAB   = "user"
-	TAG_TAB    = "tag"
-	NAV_TAB    = "nav"
-	CONFIG_TAB = "config"
-)
-
 var dbc *MDBC
 
 func initDB(host string, user string, pass string, name string) {

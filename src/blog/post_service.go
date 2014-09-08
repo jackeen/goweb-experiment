@@ -30,7 +30,12 @@ func (self *PostService) Insert(dbc *MDBC, title string, content string, author 
 	dbc.Insert(POST_TAB, data)
 }
 
-func (self *PostService) Select(dbc *MDBC, sel Selector, sort string, offset int, limit int, res *[]Post) {
+func (self *PostService) Select(dbc *MDBC,
+	sel Selector,
+	sort string,
+	offset int,
+	limit int,
+	res *[]Post) {
 
 	dbc.Select(POST_TAB, sel, sort, offset, limit, res)
 }
@@ -72,8 +77,11 @@ func (self *PostService) deleteComment(dbc *MDBC, postId int, commentId int) {
 	dbc.UpdateInc(POST_TAB, Selector{"id": postId}, "commentnum", -1)
 }
 
-func (self *PostService) updateComment(dbc *MDBC, postId int, commentId int, Selector sel) {
-	postSel := Selector{"id": postId}
-	commentSel := Selector{"id": commentId}
+//func (self *PostService) updateComment(dbc *MDBC, postId int, commentId int, Selector sel) {
 
-}
+//db.shcool.update({ "_id" : 2, "students.name" : "ajax"},{"$inc" : {"students.0.age" : 1} });
+//postSel := Selector{"id": postId}
+//commentSel := Selector{"id": commentId}
+//dbc.UpdateSet(POST_TAB, postSel, data)
+
+//}
