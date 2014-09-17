@@ -23,7 +23,7 @@ const (
 type NumService struct{}
 
 func (self *NumService) Init(dbc *MDBC) {
-	dbc.Insert(NUM_TAB, &Num{0, 0, 0, 0})
+	dbc.Insert(NUM_TAB, &Num{-1, -1, -1, -1})
 }
 
 func (self *NumService) incId(dbc *MDBC, colName string, i int) *Num {
@@ -77,6 +77,28 @@ func (self *UserService) HasUser(dbc *MDBC, name string) bool {
 //
 type CateService struct{}
 
-func (self *CateService) Inert(dbc *MDBC) {
+func (self *CateService) Inert(dbc *MDBC, name string, exp string, pid int) {
 
+	cate := &Cate{
+		Id_:      bson.NewObjectId(),
+		Id:       IncNum.incId(dbc, "cate", 1).Cate,
+		Name:     name,
+		Explain:  exp,
+		ParentId: pid,
+	}
+	dbc.Insert(CATE_TAB, cate)
+}
+
+func (self *CateService) Select(dbc *MDBC, id int, cate *Cate) {
+
+	dbc.SelectOne(CATE_TAB, Selector{"id": id}, cate)
+}
+
+func (self *CateService) Update(dbc *MDBC, id int, data interface{}) {
+
+	dbc.UpdateSet(CATE_TAB, Selector{"id": id}, data)
+}
+
+func (self *CateService) Delete(dbc *MDBC, id int) {
+	dbc.Delete(CATE_TAB, Selector{"id": id})
 }
