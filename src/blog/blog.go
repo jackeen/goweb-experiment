@@ -1,54 +1,61 @@
 package main
 
 import (
-	"flag"
+	//"flag"
 	"log"
 )
 
-var dbc *MDBC
+var (
+	handler *Handler
+	dbc     *MDBC
+)
 
-func initDB(host string, user string, pass string, name string) {
-	dbc = &MDBC{
-		Host: host,
-		User: user,
-		Pass: pass,
-		Name: name,
+func router(req *HTTPServerReq, res *HTTPServerRes) {
+
+	switch req.Path {
+
+	case "/":
+		handler.Home(req, res)
+		break
+	case "/post":
+		handler.PostInfo(req, res)
+		break
+	case "/cate":
+		handler.Cate(req, res)
+		break
+	case "/tag":
+		handler.Tag(req, res)
+		break
+	case "/date":
+		handler.Date(req, res)
+	default:
+		handler.NotFind(req, res)
+
 	}
-	dbc.Init()
 }
 
 func main() {
 
-	pid := flag.Int("pid", 0, "post select id")
-	cid := flag.Int("cid", 0, "cate select id")
-	flag.Parse()
+	//pid := flag.Int("pid", 0, "post select id")
+	//cid := flag.Int("cid", 0, "cate select id")
+	//flag.Parse()
 
-	var postList []Post
+	dbc = &MDBC{
+		Host: "localhost",
+		User: "tinyblog",
+		Pass: "1234",
+		Name: "tinyblog",
+	}
+	dbc.Init()
 
-	initDB("localhost", "tinyblog", "1234", "tinyblog")
-	postSer := &PostService{}
+	handler = &Handler{}
+	handler.Init(dbc)
 
-	//postSer.Insert(dbc, "hi world", "this is a", 1, -1, []string{}, false, false)
-	postSer.Select(dbc, Selector{"id": *pid}, "id", 0, 2, &postList)
-	//postSer.Update(dbc, *pid, Selector{"title": "hahahaha"})
-	log.Println(*pid, postList)
-
-	//postSer.InsertComment(dbc, *pid, -1, "my comments")
-	//postSer.deleteComment(dbc, *pid, 0)
-
-	//userSer := &UserService{}
-	//userSer.Insert(dbc, "admin", "1234", "firstuser", "")
-
-	log.Println("-------------------\n")
-	//numid := &NumService{}
-	//numid.Init(dbc)
-
-	cateSer := &CateService{}
-	//cate := &Cate{}
-	//cateSer.Inert(dbc, "js", "javascript", 0)
-	//cateSer.Update(dbc, *cid, Selector{"name": "ajax"})
-	//cateSer.Select(dbc, *cid, cate)
-	//log.Println(cate)
-	cateSer.Delete(dbc, *cid)
+	//http server start
+	log.Println("The http server start ....\n")
+	httpConfig := &HttpConfig{
+		Address: ":9090",
+	}
+	panic(MuxServe(httpConfig, router))
 
 }

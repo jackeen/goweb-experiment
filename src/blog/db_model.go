@@ -61,6 +61,7 @@ type User struct {
 	Pass       string
 	Nick       string
 	Email      string
+	Power      int
 	CreateTime time.Time
 }
 

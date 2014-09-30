@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	//"fmt"
 	"json"
@@ -20,3 +21,4 @@ func ReadConfig(path string, byteLen int) (map[string]interface{}, error) {
 	err := json.Unmarshal(filebyte, &m)
 	return m, err
 }
+*/
