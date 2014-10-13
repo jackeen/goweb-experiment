@@ -19,10 +19,8 @@ type StaticURL struct {
 }
 
 func (self *StaticURL) Parse(path string) []string {
-
-	reg := regexp.MustCompile(`[^/]+`)
-	s := reg.FindAllString(path, -1)
-
+	r := regexp.MustCompile(`[^/]+`)
+	s := r.FindAllString(path, -1)
 	return s
 }
 
@@ -49,17 +47,14 @@ func (self *StaticURL) getPost() {
 }
 
 func main() {
-	url := new(StaticURL)
+	Url := new(StaticURL)
 
-	catePath := "/cate/aa/bb/2/"
+	homePath := "/2/"
+	//catePath := "/cate/aa/bb/2/b"
 	//datePath := "/date/2008/01/01/cate/"
 
-	path, file := Path.Split(catePath)
-
-	pathArr := url.Parse(path)
-
-	url.Route(path)
+	path, file := Path.Split(homePath)
+	pathArr := Url.Parse(path)
 
 	log.Println(path, file, pathArr)
-
 }

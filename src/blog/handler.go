@@ -2,13 +2,24 @@ package main
 
 import (
 	//"log"
+	"html/template"
 	"strconv"
 )
 
+type WriteContent struct {
+	S string
+}
+
+func (self *WriteContent) Write(p []byte) (n int, err error) {
+	self.S += string(p)
+	return 0, nil
+}
+
 type Handler struct {
-	dbc  *MDBC
-	post *PostService
-	cate *CateService
+	TempLateDir string
+	dbc         *MDBC
+	post        *PostService
+	cate        *CateService
 }
 
 func (self *Handler) Init(dbc *MDBC) {

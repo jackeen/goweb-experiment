@@ -70,6 +70,7 @@ func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	w.WriteHeader(dataRes.State)
 	io.WriteString(w, dataRes.Response)
+
 }
 
 func MuxServe(conf *HttpConfig, h HttpServerHandler) error {

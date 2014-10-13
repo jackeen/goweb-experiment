@@ -48,7 +48,9 @@ func main() {
 	}
 	dbc.Init()
 
-	handler = &Handler{}
+	handler = &Handler{
+		TempLateDir: "../static/default",
+	}
 	handler.Init(dbc)
 
 	//http server start
