@@ -1,19 +1,10 @@
 package main
 
 import (
-	//"log"
-	"html/template"
-	"strconv"
+//"log"
+//"html/template"
+//"strconv"
 )
-
-type WriteContent struct {
-	S string
-}
-
-func (self *WriteContent) Write(p []byte) (n int, err error) {
-	self.S += string(p)
-	return 0, nil
-}
 
 type Handler struct {
 	TempLateDir string
@@ -31,16 +22,19 @@ func (self *Handler) Init(dbc *MDBC) {
 func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
 
 	var postList []Post
-	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
+	self.post.Select(self.dbc, Selector{}, "id", 0, 3, &postList)
 
-	restring := ""
+	/*content := new(WriteContent)
+	tpl := template.New("index")
+	s, _ := tpl.ParseFiles(self.TempLateDir + "index.html")
+	s.ExecuteTemplate(content, "index", postList)*/
 
-	for i, v := range postList {
-		restring += (strconv.Itoa(i) + ": " + v.Title + "\n")
+	tpl := &TPL{
+		TmpDir: self.TempLateDir,
 	}
 
 	res.State = 200
-	res.Response = restring
+	res.Response = tpl.PostList(postList)
 }
 
 func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {

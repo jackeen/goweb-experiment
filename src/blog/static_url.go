@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
-	Path "path"
+	//"log"
+	//Path "path"
 	"regexp"
 	//"strings"
 )
@@ -46,6 +46,7 @@ func (self *StaticURL) getPost() {
 
 }
 
+/*
 func main() {
 	Url := new(StaticURL)
 
@@ -58,3 +59,4 @@ func main() {
 
 	log.Println(path, file, pathArr)
 }
+*/

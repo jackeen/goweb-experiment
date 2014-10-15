@@ -1,5 +1,7 @@
 {{define "postList"}}
 <ul>
-	<li></li>
+{{range .}}
+	<li>{{.CreateTime}}</li>
+{{end}}
 </ul>
 {{end}}

@@ -1,18 +1,16 @@
 package main
 
-/*
 import (
-//"fmt"
-//"html/template"
+	//"fmt"
+	"html/template"
 )
 
-
 type WriteContent struct {
-	S string
+	Content string
 }
 
 func (self *WriteContent) Write(p []byte) (n int, err error) {
-	self.S += string(p)
+	self.Content += string(p)
 	return 0, nil
 }
 
@@ -20,27 +18,11 @@ type TPL struct {
 	TmpDir string
 }
 
-func (self *TPL) Home() {
-
+func (self *TPL) PostList(data interface{}) string {
+	name := "postList"
+	content := new(WriteContent)
+	tplFile := self.TmpDir + name + ".html"
+	tpl, _ := template.New(name).ParseFiles(tplFile)
+	tpl.ExecuteTemplate(content, name, data)
+	return content.Content
 }
-
-
-type User struct {
-	Name string
-	Age  int
-}
-
-func main() {
-	user := &User{
-		Name: "tome",
-		Age:  90,
-	}
-
-	c := new(WriteContent)
-
-	t := template.New("home")
-	s, _ := t.ParseFiles("../../static/default/index.html")
-	s.ExecuteTemplate(c, "home", user)
-	fmt.Println(c.S)
-}
-*/

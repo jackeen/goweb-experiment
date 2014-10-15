@@ -3,6 +3,9 @@ package main
 import (
 	//"flag"
 	"log"
+	"os/exec"
+	"path"
+	"strings"
 )
 
 var (
@@ -39,6 +42,10 @@ func main() {
 	//pid := flag.Int("pid", 0, "post select id")
 	//cid := flag.Int("cid", 0, "cate select id")
 	//flag.Parse()
+	apppath, _ := exec.LookPath("blog")
+	syspath, _ := path.Split(apppath)
+	baseDir := strings.TrimRight(syspath, "bin/")
+	staticDir := baseDir + "/static/"
 
 	dbc = &MDBC{
 		Host: "localhost",
@@ -49,12 +56,12 @@ func main() {
 	dbc.Init()
 
 	handler = &Handler{
-		TempLateDir: "../static/default",
+		TempLateDir: staticDir + "default/",
 	}
 	handler.Init(dbc)
 
 	//http server start
-	log.Println("The http server start ....\n")
+	log.Println("The http server bind on :9090 ....\n")
 	httpConfig := &HttpConfig{
 		Address: ":9090",
 	}
