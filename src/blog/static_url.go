@@ -30,6 +30,8 @@ func (self *StaticURL) Parse(path string, parmData *UrlParmData) {
 	switch pathItemList[0] {
 	case POST_URL:
 		self.postInfo(pathItemList, parmData)
+	case CATE_URL:
+		self.postListByCate(pathItemList, parmData)
 	}
 }
 
@@ -39,7 +41,7 @@ func (self *StaticURL) Parse(path string, parmData *UrlParmData) {
 	return s
 }*/
 
-func (self *StaticURL) postListByCate() {
+func (self *StaticURL) postListByCate(paths []string, parm *UrlParmData) {
 
 }
 

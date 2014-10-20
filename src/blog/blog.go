@@ -11,9 +11,13 @@ import (
 var (
 	handler *Handler
 	dbc     *MDBC
+	URL     *StaticURL
 )
 
 func router(req *HTTPServerReq, res *HTTPServerRes) {
+
+	parm := new(UrlParmData)
+	URL.Parse(req.Path, parm)
 
 	switch req.Path {
 
@@ -42,6 +46,7 @@ func main() {
 	//pid := flag.Int("pid", 0, "post select id")
 	//cid := flag.Int("cid", 0, "cate select id")
 	//flag.Parse()
+
 	apppath, _ := exec.LookPath("blog")
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
@@ -59,6 +64,8 @@ func main() {
 		TempLateDir: staticDir + "default/",
 	}
 	handler.Init(dbc)
+
+	URL = &StaticURL{}
 
 	//http server start
 	log.Println("The http server bind on :9090 ....\n")
