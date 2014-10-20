@@ -9,40 +9,45 @@ import (
 
 const (
 	HOME_URL = "/"
-	POST_URL = "/post"
-	CATE_URL = "/cate"
-	TAG_URL  = "/tag"
-	DATE_URL = "/date"
+	POST_URL = "post"
+	CATE_URL = "cate"
+	TAG_URL  = "tag"
+	DATE_URL = "date"
 )
+
+type UrlParmData struct {
+	Key   string
+	Value string
+}
 
 type StaticURL struct {
 }
 
-func (self *StaticURL) Parse(path string) []string {
+func (self *StaticURL) Parse(path string, parmData *UrlParmData) {
 	r := regexp.MustCompile(`[^/]+`)
-	s := r.FindAllString(path, -1)
-	return s
+	pathItemList := r.FindAllString(path, -1)
+
+	switch pathItemList[0] {
+	case POST_URL:
+		self.postInfo(pathItemList, parmData)
+	}
 }
 
-func (self *StaticURL) ParsePageNum(path string) string {
+/*func (self *StaticURL) ParsePageNum(path string) string {
 	r := regexp.MustCompile(`/[\d]+/`)
 	s := r.FindString(path)
 	return s
-}
+}*/
 
-func (self *StaticURL) Route(path string) {
-
-}
-
-func (self *StaticURL) getCate() {
+func (self *StaticURL) postListByCate() {
 
 }
 
-func (self *StaticURL) getDate() {
+func (self *StaticURL) postListByDate() {
 
 }
 
-func (self *StaticURL) getPost() {
+func (self *StaticURL) postInfo(paths []string, parm *UrlParmData) {
 
 }
 

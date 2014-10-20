@@ -6,11 +6,11 @@ import (
 )
 
 type WriteContent struct {
-	Content string
+	Str string
 }
 
 func (self *WriteContent) Write(p []byte) (n int, err error) {
-	self.Content += string(p)
+	self.Str += string(p)
 	return 0, nil
 }
 
@@ -24,5 +24,5 @@ func (self *TPL) PostList(data interface{}) string {
 	tplFile := self.TmpDir + name + ".html"
 	tpl, _ := template.New(name).ParseFiles(tplFile)
 	tpl.ExecuteTemplate(content, name, data)
-	return content.Content
+	return content.Str
 }

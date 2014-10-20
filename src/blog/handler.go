@@ -24,11 +24,6 @@ func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
 	var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 3, &postList)
 
-	/*content := new(WriteContent)
-	tpl := template.New("index")
-	s, _ := tpl.ParseFiles(self.TempLateDir + "index.html")
-	s.ExecuteTemplate(content, "index", postList)*/
-
 	tpl := &TPL{
 		TmpDir: self.TempLateDir,
 	}
