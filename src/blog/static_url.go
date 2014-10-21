@@ -2,7 +2,7 @@ package main
 
 import (
 	//"log"
-	//Path "path"
+	"path"
 	"regexp"
 	//"strings"
 )
@@ -16,18 +16,27 @@ const (
 )
 
 type UrlParmData struct {
-	Key   string
-	Value string
+	Module   string
+	Value    string
+	FileName string
+	PageNum  int
 }
 
 type StaticURL struct {
 }
 
-func (self *StaticURL) Parse(path string, parmData *UrlParmData) {
-	r := regexp.MustCompile(`[^/]+`)
-	pathItemList := r.FindAllString(path, -1)
+func (self *StaticURL) Parse(reqPath string, parmData *UrlParmData) {
 
-	switch pathItemList[0] {
+	filePath, fileName := path.Split(reqPath)
+	parmData.FileName = fileName
+
+	r := regexp.MustCompile(`[^/]+`)
+	pathItemList := r.FindAllString(filePath, -1)
+
+	moduleName := pathItemList[0]
+	parmData.Module = moduleName
+
+	switch moduleName {
 	case POST_URL:
 		self.postInfo(pathItemList, parmData)
 	case CATE_URL:

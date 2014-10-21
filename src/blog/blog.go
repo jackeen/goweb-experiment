@@ -9,15 +9,15 @@ import (
 )
 
 var (
-	handler *Handler
-	dbc     *MDBC
-	URL     *StaticURL
+	handler   *Handler
+	dbc       *MDBC
+	staticUrl *StaticURL
 )
 
 func router(req *HTTPServerReq, res *HTTPServerRes) {
 
 	parm := new(UrlParmData)
-	URL.Parse(req.Path, parm)
+	staticUrl.Parse(req.Path, parm)
 
 	switch req.Path {
 
@@ -65,7 +65,7 @@ func main() {
 	}
 	handler.Init(dbc)
 
-	URL = &StaticURL{}
+	staticUrl = &StaticURL{}
 
 	//http server start
 	log.Println("The http server bind on :9090 ....\n")
