@@ -5,6 +5,10 @@ import (
 	"html/template"
 )
 
+const (
+	fileTail = ".html"
+)
+
 type WriteContent struct {
 	Str string
 }
@@ -18,11 +22,19 @@ type TPL struct {
 	TmpDir string
 }
 
-func (self *TPL) PostList(data interface{}) string {
-	name := "postList"
+func (self *TPL) Stringify(data interface{}, name string) string {
+
 	content := new(WriteContent)
-	tplFile := self.TmpDir + name + ".html"
+	tplFile := self.TmpDir + name + fileTail
 	tpl, _ := template.New(name).ParseFiles(tplFile)
 	tpl.ExecuteTemplate(content, name, data)
 	return content.Str
+}
+
+func (self *TPL) PostList(data interface{}) string {
+	return self.Stringify(data, "postList")
+}
+
+func (self *TPL) Post(data interface{}) string {
+	return self.Stringify(data, "post")
 }

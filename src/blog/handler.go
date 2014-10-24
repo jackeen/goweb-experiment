@@ -40,8 +40,12 @@ func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {
 
 	self.post.SelectOne(self.dbc, sel, &p)
 
+	tpl := &TPL{
+		TmpDir: self.TempLateDir,
+	}
+
 	res.State = 200
-	res.Response = "post info"
+	res.Response = tpl.Post(p)
 }
 
 func (self *Handler) Cate(req *HTTPServerReq, res *HTTPServerRes) {
