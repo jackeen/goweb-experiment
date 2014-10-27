@@ -1,8 +1,8 @@
 package main
 
 import (
-//"log"
-//"strconv"
+	"log"
+	//"strconv"
 )
 
 type Handler struct {
@@ -35,10 +35,12 @@ func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {
 
 	var p Post
 	sel := Selector{
-		"title": "a",
+		"title": req.PathParm.FileName,
 	}
 
 	self.post.SelectOne(self.dbc, sel, &p)
+
+	log.Println(">>>", req.PathParm.FileName, p)
 
 	tpl := &TPL{
 		TmpDir: self.TempLateDir,

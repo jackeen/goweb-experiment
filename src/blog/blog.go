@@ -9,31 +9,33 @@ import (
 )
 
 var (
-	handler   *Handler
-	dbc       *MDBC
-	staticUrl *StaticURL
+	handler    *Handler
+	dbc        *MDBC
+	staticUrl  *StaticURL
+	moduleName *ModuleName
 )
 
 func router(req *HTTPServerReq, res *HTTPServerRes) {
 
 	parm := new(UrlParmData)
 	staticUrl.Parse(req.Path, parm)
+	req.PathParm = parm
 
-	switch req.Path {
+	switch parm.Module {
 
-	case "/":
+	case moduleName.Home:
 		handler.Home(req, res)
 		break
-	case "/post":
+	case moduleName.Post:
 		handler.PostInfo(req, res)
 		break
-	case "/cate":
+	case moduleName.Cate:
 		handler.Cate(req, res)
 		break
-	case "/tag":
+	case moduleName.Tag:
 		handler.Tag(req, res)
 		break
-	case "/date":
+	case moduleName.Date:
 		handler.Date(req, res)
 	default:
 		handler.NotFind(req, res)
@@ -64,6 +66,14 @@ func main() {
 		TempLateDir: staticDir + "default/",
 	}
 	handler.Init(dbc)
+
+	moduleName = &ModuleName{
+		Home: "",
+		Post: "post",
+		Cate: "cate",
+		Date: "date",
+		Tag:  "tag",
+	}
 
 	staticUrl = &StaticURL{}
 

@@ -7,19 +7,30 @@ import (
 	//"strings"
 )
 
+/*
 const (
-	HOME_URL = "/"
-	POST_URL = "post"
-	CATE_URL = "cate"
-	TAG_URL  = "tag"
-	DATE_URL = "date"
+	HOME = ""
+	POST = "post"
+	CATE = "cate"
+	TAG  = "tag"
+	DATE = "date"
 )
+*/
 
 type UrlParmData struct {
-	Module   string
-	Value    string
-	FileName string
-	PageNum  int
+	PathItems []string
+	Module    string
+	Value     string
+	FileName  string
+	PageNum   int
+}
+
+type ModuleName struct {
+	Home string
+	Post string
+	Cate string
+	Date string
+	Tag  string
 }
 
 type StaticURL struct {
@@ -33,15 +44,15 @@ func (self *StaticURL) Parse(reqPath string, parmData *UrlParmData) {
 	r := regexp.MustCompile(`[^/]+`)
 	pathItemList := r.FindAllString(filePath, -1)
 
-	moduleName := pathItemList[0]
-	parmData.Module = moduleName
-
-	switch moduleName {
-	case POST_URL:
-		self.postInfo(pathItemList, parmData)
-	case CATE_URL:
-		self.postListByCate(pathItemList, parmData)
+	var moduleName string
+	if len(pathItemList) > 0 {
+		moduleName = pathItemList[0]
+	} else {
+		moduleName = ""
 	}
+
+	parmData.Module = moduleName
+	parmData.PathItems = pathItemList
 }
 
 /*func (self *StaticURL) ParsePageNum(path string) string {

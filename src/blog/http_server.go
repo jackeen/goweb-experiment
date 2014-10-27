@@ -16,9 +16,10 @@ type HttpConfig struct {
 }
 
 type HTTPServerReq struct {
-	Path    string
-	Query   map[string][]string
-	Cookies map[string]string
+	Path     string
+	PathParm *UrlParmData
+	Query    map[string][]string
+	Cookies  map[string]string
 }
 
 type HTTPServerRes struct {
