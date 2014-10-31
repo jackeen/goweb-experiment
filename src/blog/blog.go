@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	handler    *Handler
-	dbc        *MDBC
-	staticUrl  *StaticURL
-	moduleName *ModuleName
+	handler     *Handler
+	jsonService *JsonService
+	dbc         *MDBC
+	staticUrl   *StaticURL
+	moduleName  *ModuleName
 )
 
 func router(req *HTTPServerReq, res *HTTPServerRes) {
@@ -37,6 +38,10 @@ func router(req *HTTPServerReq, res *HTTPServerRes) {
 		break
 	case moduleName.Date:
 		handler.Date(req, res)
+		break
+	case moduleName.Json:
+		jsonService.GetJson(req, res)
+		break
 	default:
 		handler.NotFind(req, res)
 
@@ -67,12 +72,17 @@ func main() {
 	}
 	handler.Init(dbc)
 
+	jsonService := &JsonService{}
+	jsonService.Init(dbc)
+
 	moduleName = &ModuleName{
-		Home: "",
-		Post: "post",
-		Cate: "cate",
-		Date: "date",
-		Tag:  "tag",
+		Home:  "",
+		Post:  "post",
+		Cate:  "cate",
+		Date:  "date",
+		Tag:   "tag",
+		Json:  "json",
+		Admin: "admin",
 	}
 
 	staticUrl = &StaticURL{}

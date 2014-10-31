@@ -26,11 +26,13 @@ type UrlParmData struct {
 }
 
 type ModuleName struct {
-	Home string
-	Post string
-	Cate string
-	Date string
-	Tag  string
+	Home  string
+	Post  string
+	Cate  string
+	Date  string
+	Tag   string
+	Json  string
+	Admin string
 }
 
 type StaticURL struct {
