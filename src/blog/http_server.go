@@ -3,12 +3,6 @@ package main
 import (
 	"io"
 	"net/http"
-
-	//"net/url"
-	//"path"
-	//"regexp"
-	//"strings"
-	//"log"
 )
 
 type HttpConfig struct {
@@ -19,12 +13,14 @@ type HTTPServerReq struct {
 	Path     string
 	PathParm *UrlParmData
 	Query    map[string][]string
+	Headers  map[string][]string
 	Cookies  map[string]string
 }
 
 type HTTPServerRes struct {
 	State    int
 	Cookies  map[string]string
+	Headers  map[string]string
 	Response string
 }
 
@@ -53,6 +49,12 @@ func (self *mux) parseCookie(c []*http.Cookie) map[string]string {
 	return m
 }
 
+func (self *mux) setHeaders(w http.ResponseWriter, h map[string]string) {
+	for i, v := range h {
+		w.Header().Set(i, v)
+	}
+}
+
 func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	path := req.URL.Path
@@ -63,15 +65,16 @@ func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		Path:    path,
 		Query:   query,
 		Cookies: self.parseCookie(cookies),
+		Headers: req.Header,
 	}
 	dataRes := &HTTPServerRes{}
 
 	self.ServerHandler(dataReq, dataRes)
 	self.setCookies(w, dataRes.Cookies)
+	self.setHeaders(w, dataRes.Headers)
 
 	w.WriteHeader(dataRes.State)
 	io.WriteString(w, dataRes.Response)
-
 }
 
 func MuxServe(conf *HttpConfig, h HttpServerHandler) error {

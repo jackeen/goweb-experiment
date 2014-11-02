@@ -21,12 +21,15 @@ func (self *Handler) Init(dbc *MDBC) {
 func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
 
 	var postList []Post
-	self.post.Select(self.dbc, Selector{}, "id", 0, 3, &postList)
+	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
 	tpl := &TPL{
 		TmpDir: self.TempLateDir,
 	}
 
+	res.Headers = map[string]string{
+		"Content-Type": "text/html; charset=utf-8",
+	}
 	res.State = 200
 	res.Response = tpl.PostList(postList)
 }

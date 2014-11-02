@@ -44,7 +44,6 @@ func router(req *HTTPServerReq, res *HTTPServerRes) {
 		break
 	default:
 		handler.NotFind(req, res)
-
 	}
 }
 
