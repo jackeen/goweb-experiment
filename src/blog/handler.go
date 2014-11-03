@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
-	//"strconv"
+//"log"
+//"strconv"
 )
 
 type Handler struct {
@@ -17,6 +17,11 @@ func (self *Handler) Init(dbc *MDBC) {
 	self.post = &PostService{}
 	self.cate = &CateService{}
 }
+
+/*
+func (self *Handler) isJsonType(q map[string][]string) bool {
+
+}*/
 
 func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
 
@@ -42,8 +47,6 @@ func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {
 	}
 
 	self.post.SelectOne(self.dbc, sel, &p)
-
-	log.Println(">>>", req.PathParm.FileName, p)
 
 	tpl := &TPL{
 		TmpDir: self.TempLateDir,

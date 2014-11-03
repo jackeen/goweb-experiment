@@ -11,25 +11,44 @@ type JsonService struct {
 	cateService *CateService
 }
 
-func (self *JsonService) post(q map[string][]string) map[string]interface{} {
+func (self *JsonService) Init(dbc *MDBC) {
+	self.dbc = dbc
+	self.postService = &PostService{}
+	self.cateService = &CateService{}
+}
+
+func (self *JsonService) postInfo(t []string) map[string]interface{} {
 	var (
-		title   string
 		p       Post
 		jsonMap map[string]interface{}
 	)
 
-	t := q["title"]
-
+	log.Println("xxxx", self.postService)
 	log.Println(t)
 
-	if len(t) == 1 {
-		title = t[0]
+	sel := Selector{
+		"title": t[0],
+	}
 
-		log.Println(title)
+	self.postService.SelectOne(self.dbc, sel, &p)
 
-		self.postService.SelectOne(self.dbc, Selector{"title": title}, &p)
+	log.Println(p)
 
-		log.Println(p)
+	jsonMap = map[string]interface{}{
+		"title":      p.Title,
+		"content":    p.Content,
+		"createtime": p.CreateTime,
+	}
+
+	/*if len(t) == 1 {
+
+		sel := Selector{
+			"title": t[0],
+		}
+
+		log.Println(sel)
+
+		self.postService.SelectOne(self.dbc, sel, &p)
 
 		jsonMap = map[string]interface{}{
 			"title":      p.Title,
@@ -38,7 +57,7 @@ func (self *JsonService) post(q map[string][]string) map[string]interface{} {
 		}
 	} else {
 		jsonMap = self.errorQuery()
-	}
+	}*/
 
 	return jsonMap
 }
@@ -51,12 +70,6 @@ func (self *JsonService) errorQuery() map[string]interface{} {
 	return err
 }
 
-func (self *JsonService) Init(dbc *MDBC) {
-	self.dbc = dbc
-	self.postService = &PostService{}
-	self.cateService = &CateService{}
-}
-
 func (self *JsonService) GetJson(req *HTTPServerReq, res *HTTPServerRes) {
 
 	var (
@@ -65,7 +78,7 @@ func (self *JsonService) GetJson(req *HTTPServerReq, res *HTTPServerRes) {
 
 	switch req.PathParm.FileName {
 	case "post":
-		queryJson = self.post(req.Query)
+		queryJson = self.postInfo(req.Query["title"])
 	default:
 		queryJson = self.errorQuery()
 	}

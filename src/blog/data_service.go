@@ -6,6 +6,7 @@ import (
 	//"errors"
 	//"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"log"
 	"time"
 )
 
@@ -141,6 +142,7 @@ func (self *PostService) Select(dbc *MDBC,
 }
 
 func (self *PostService) SelectOne(dbc *MDBC, sel Selector, res *Post) {
+	log.Println(">>>>>>>>", res)
 	dbc.SelectOne(POST_TAB, sel, res)
 }
 
