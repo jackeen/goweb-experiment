@@ -71,7 +71,7 @@ func main() {
 	}
 	handler.Init(dbc)
 
-	jsonService := &JsonService{}
+	jsonService = &JsonService{}
 	jsonService.Init(dbc)
 
 	moduleName = &ModuleName{

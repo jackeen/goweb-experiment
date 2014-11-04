@@ -2,7 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	//"log"
+)
+
+const (
+	DateFormatStr = "2006-01-02 15:04:05"
 )
 
 type JsonService struct {
@@ -23,41 +27,22 @@ func (self *JsonService) postInfo(t []string) map[string]interface{} {
 		jsonMap map[string]interface{}
 	)
 
-	log.Println("xxxx", self.postService)
-	log.Println(t)
-
-	sel := Selector{
-		"title": t[0],
-	}
-
-	self.postService.SelectOne(self.dbc, sel, &p)
-
-	log.Println(p)
-
-	jsonMap = map[string]interface{}{
-		"title":      p.Title,
-		"content":    p.Content,
-		"createtime": p.CreateTime,
-	}
-
-	/*if len(t) == 1 {
+	if len(t) == 1 {
 
 		sel := Selector{
 			"title": t[0],
 		}
-
-		log.Println(sel)
 
 		self.postService.SelectOne(self.dbc, sel, &p)
 
 		jsonMap = map[string]interface{}{
 			"title":      p.Title,
 			"content":    p.Content,
-			"createtime": p.CreateTime,
+			"createtime": p.CreateTime.Format(DateFormatStr),
 		}
 	} else {
 		jsonMap = self.errorQuery()
-	}*/
+	}
 
 	return jsonMap
 }
@@ -78,7 +63,7 @@ func (self *JsonService) GetJson(req *HTTPServerReq, res *HTTPServerRes) {
 
 	switch req.PathParm.FileName {
 	case "post":
-		queryJson = self.postInfo(req.Query["title"])
+		queryJson = self.postInfo(req.Query["t"])
 	default:
 		queryJson = self.errorQuery()
 	}
