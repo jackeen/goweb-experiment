@@ -11,6 +11,7 @@ import (
 var (
 	handler     *Handler
 	jsonService *JsonService
+	admin       *Admin
 	dbc         *MDBC
 	staticUrl   *StaticURL
 	moduleName  *ModuleName
@@ -42,6 +43,8 @@ func router(req *HTTPServerReq, res *HTTPServerRes) {
 	case moduleName.Json:
 		jsonService.GetJson(req, res)
 		break
+	case moduleName.Admin:
+		admin.Action(req, res)
 	default:
 		handler.NotFind(req, res)
 	}
@@ -58,6 +61,8 @@ func main() {
 	baseDir := strings.TrimRight(syspath, "bin/")
 	staticDir := baseDir + "/static/"
 
+	themName := "default"
+
 	dbc = &MDBC{
 		Host: "localhost",
 		User: "tinyblog",
@@ -67,12 +72,17 @@ func main() {
 	dbc.Init()
 
 	handler = &Handler{
-		TempLateDir: staticDir + "default/",
+		TempLateDir: staticDir + themName + "/",
 	}
 	handler.Init(dbc)
 
 	jsonService = &JsonService{}
 	jsonService.Init(dbc)
+
+	admin = &Admin{
+		DBC:    dbc,
+		TPLDIR: staticDir + themName + "/admin/",
+	}
 
 	moduleName = &ModuleName{
 		Home:  "",

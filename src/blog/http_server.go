@@ -15,6 +15,7 @@ type HTTPServerReq struct {
 	Query    map[string][]string
 	Headers  map[string][]string
 	Cookies  map[string]string
+	Req      *http.Request
 }
 
 type HTTPServerRes struct {

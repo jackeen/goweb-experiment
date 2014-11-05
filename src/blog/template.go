@@ -38,3 +38,12 @@ func (self *TPL) PostList(data interface{}) string {
 func (self *TPL) Post(data interface{}) string {
 	return self.Stringify(data, "post")
 }
+
+//admin template page
+func (self *TPL) Login(data interface{}) string {
+	return self.Stringify(data, "login")
+}
+
+func (self *TPL) LoginComplete(data interface{}) string {
+	return self.Stringify(data, "loginComplete")
+}
