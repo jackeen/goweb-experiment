@@ -47,8 +47,11 @@ func (self *Admin) entry(req *REQ, res *RES) {
 
 func (self *Admin) login(req *REQ, res *RES) {
 
+	user := req.GetFormValue("user")
+	pass := req.GetFormValue("pass")
+
 	res.State = 200
-	res.Response = "hi: " + req.GetFormValue("user")
+	res.Response = user + ":" + pass
 }
 
 func (self *Admin) logout(req *REQ, res *RES) {
@@ -56,7 +59,7 @@ func (self *Admin) logout(req *REQ, res *RES) {
 }
 
 //post
-func (self *Admin) addPost(req *REQ, res *RES) {
+func (self *Admin) post(req *REQ, res *RES) {
 
 }
 

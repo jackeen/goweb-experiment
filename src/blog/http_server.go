@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	//"log"
 	"net/http"
 )
 
@@ -28,8 +29,10 @@ func (self *REQ) GetUrlParm() map[string][]string {
 }
 
 func (self *REQ) GetUrlOneValue(k string) string {
+
 	m := self.GetUrlParm()
 	vals := m[k]
+
 	if len(vals) > 0 {
 		return vals[0]
 	} else {
@@ -38,7 +41,7 @@ func (self *REQ) GetUrlOneValue(k string) string {
 }
 
 func (self *REQ) GetFormValue(k string) string {
-	return self.r.PostForm.Get(k)
+	return self.r.FormValue(k)
 }
 
 func (self *REQ) GetCookies() map[string]string {
