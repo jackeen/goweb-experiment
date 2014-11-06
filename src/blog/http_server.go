@@ -37,6 +37,10 @@ func (self *REQ) GetUrlOneValue(k string) string {
 	}
 }
 
+func (self *REQ) GetFormValue(k string) string {
+	return self.r.PostForm.Get(k)
+}
+
 func (self *REQ) GetCookies() map[string]string {
 	m := make(map[string]string)
 	cookies := self.r.Cookies()
