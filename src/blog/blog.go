@@ -17,7 +17,7 @@ var (
 	moduleName  *ModuleName
 )
 
-func router(req *HTTPServerReq, res *HTTPServerRes) {
+func router(req *REQ, res *RES) {
 
 	parm := new(UrlParmData)
 	staticUrl.Parse(req.Path, parm)
@@ -44,7 +44,7 @@ func router(req *HTTPServerReq, res *HTTPServerRes) {
 		jsonService.GetJson(req, res)
 		break
 	case moduleName.Admin:
-		admin.Action(req, res)
+		admin.Router(req, res)
 	default:
 		handler.NotFind(req, res)
 	}

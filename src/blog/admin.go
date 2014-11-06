@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+//"log"
 )
 
 type LoginComplete struct {
@@ -13,41 +13,62 @@ type Admin struct {
 	TPLDIR string
 }
 
-func (self *Admin) Action(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Admin) Router(req *REQ, res *RES) {
 
 	switch req.PathParm.FileName {
-	case "login":
-		self.login(req, res)
+	case "entry":
+		self.entry(req, res)
 	default:
 		self.notFound(req, res)
 	}
 
 }
 
-func (self *Admin) login(req *HTTPServerReq, res *HTTPServerRes) {
-	/*
-		userName := req.Req.FormValue("user")
-		user := &LoginComplete{
-			Name: userName,
-		}*/
+//login and logout
+func (self *Admin) entry(req *REQ, res *RES) {
 
-	tpl := &TPL{
-		TmpDir: self.TPLDIR,
+	action := req.Query["action"]
+
+	loginPage := func() {
+		tpl := &TPL{
+			TmpDir: self.TPLDIR,
+		}
+		res.State = 200
+		res.Response = tpl.Login(nil)
 	}
 
+	if len(action) == 1 {
+
+		switch action[0] {
+		case "login":
+			self.login(req, res)
+		case "logout":
+			self.logout(req, res)
+		default:
+			loginPage()
+		}
+
+	} else {
+		loginPage()
+	}
+}
+
+func (self *Admin) login(req *REQ, res *RES) {
+
 	res.State = 200
-	res.Response = tpl.Login(nil)
+	res.Response = "x"
 }
 
-func (self *Admin) loginFn(req *HTTPServerReq, res *HTTPServerRes) {
-
-}
-
-func (self *Admin) addPost(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Admin) logout(req *REQ, res *RES) {
 
 }
 
-func (self *Admin) notFound(req *HTTPServerReq, res *HTTPServerRes) {
+//post
+func (self *Admin) addPost(req *REQ, res *RES) {
+
+}
+
+func (self *Admin) notFound(req *REQ, res *RES) {
 	res.State = 301
 	res.Headers = map[string]string{
 		"Location": "/",

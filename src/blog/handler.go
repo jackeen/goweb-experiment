@@ -23,7 +23,7 @@ func (self *Handler) isJsonType(q map[string][]string) bool {
 
 }*/
 
-func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) Home(req *REQ, res *RES) {
 
 	var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
@@ -39,7 +39,7 @@ func (self *Handler) Home(req *HTTPServerReq, res *HTTPServerRes) {
 	res.Response = tpl.PostList(postList)
 }
 
-func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) PostInfo(req *REQ, res *RES) {
 
 	var p Post
 	sel := Selector{
@@ -56,25 +56,25 @@ func (self *Handler) PostInfo(req *HTTPServerReq, res *HTTPServerRes) {
 	res.Response = tpl.Post(p)
 }
 
-func (self *Handler) Cate(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) Cate(req *REQ, res *RES) {
 
 	res.State = 200
 	res.Response = "post list"
 }
 
-func (self *Handler) Tag(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) Tag(req *REQ, res *RES) {
 
 	res.State = 200
 	res.Response = "link"
 }
 
-func (self *Handler) Date(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) Date(req *REQ, res *RES) {
 
 	res.State = 200
 	res.Response = "link"
 }
 
-func (self *Handler) NotFind(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *Handler) NotFind(req *REQ, res *RES) {
 
 	res.State = 404
 	res.Response = "none"

@@ -9,23 +9,22 @@ type HttpConfig struct {
 	Address string
 }
 
-type HTTPServerReq struct {
+type REQ struct {
 	Path     string
 	PathParm *UrlParmData
 	Query    map[string][]string
 	Headers  map[string][]string
 	Cookies  map[string]string
-	Req      *http.Request
 }
 
-type HTTPServerRes struct {
+type RES struct {
 	State    int
 	Cookies  map[string]string
 	Headers  map[string]string
 	Response string
 }
 
-type HttpServerHandler func(req *HTTPServerReq, res *HTTPServerRes)
+type HttpServerHandler func(req *REQ, res *RES)
 
 type mux struct {
 	ServerHandler HttpServerHandler
@@ -62,13 +61,13 @@ func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	query := req.URL.Query()
 	cookies := req.Cookies()
 
-	dataReq := &HTTPServerReq{
+	dataReq := &REQ{
 		Path:    path,
 		Query:   query,
 		Cookies: self.parseCookie(cookies),
 		Headers: req.Header,
 	}
-	dataRes := &HTTPServerRes{}
+	dataRes := &RES{}
 
 	self.ServerHandler(dataReq, dataRes)
 	self.setCookies(w, dataRes.Cookies)

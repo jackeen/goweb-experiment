@@ -55,7 +55,7 @@ func (self *JsonService) errorQuery() map[string]interface{} {
 	return err
 }
 
-func (self *JsonService) GetJson(req *HTTPServerReq, res *HTTPServerRes) {
+func (self *JsonService) GetJson(req *REQ, res *RES) {
 
 	var (
 		queryJson map[string]interface{}
