@@ -20,7 +20,7 @@ var (
 func router(req *REQ, res *RES) {
 
 	parm := new(UrlParmData)
-	staticUrl.Parse(req.Path, parm)
+	staticUrl.Parse(req.GetPath(), parm)
 	req.PathParm = parm
 
 	switch parm.Module {

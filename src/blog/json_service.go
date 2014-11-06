@@ -21,16 +21,16 @@ func (self *JsonService) Init(dbc *MDBC) {
 	self.cateService = &CateService{}
 }
 
-func (self *JsonService) postInfo(t []string) map[string]interface{} {
+func (self *JsonService) postInfo(t string) map[string]interface{} {
 	var (
 		p       Post
 		jsonMap map[string]interface{}
 	)
 
-	if len(t) == 1 {
+	if t != "" {
 
 		sel := Selector{
-			"title": t[0],
+			"title": t,
 		}
 
 		self.postService.SelectOne(self.dbc, sel, &p)
@@ -63,7 +63,7 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 
 	switch req.PathParm.FileName {
 	case "post":
-		queryJson = self.postInfo(req.Query["t"])
+		queryJson = self.postInfo(req.GetUrlOneValue("t"))
 	default:
 		queryJson = self.errorQuery()
 	}

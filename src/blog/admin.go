@@ -27,8 +27,6 @@ func (self *Admin) Router(req *REQ, res *RES) {
 //login and logout
 func (self *Admin) entry(req *REQ, res *RES) {
 
-	action := req.Query["action"]
-
 	loginPage := func() {
 		tpl := &TPL{
 			TmpDir: self.TPLDIR,
@@ -37,18 +35,12 @@ func (self *Admin) entry(req *REQ, res *RES) {
 		res.Response = tpl.Login(nil)
 	}
 
-	if len(action) == 1 {
-
-		switch action[0] {
-		case "login":
-			self.login(req, res)
-		case "logout":
-			self.logout(req, res)
-		default:
-			loginPage()
-		}
-
-	} else {
+	switch req.GetUrlOneValue("action") {
+	case "login":
+		self.login(req, res)
+	case "logout":
+		self.logout(req, res)
+	default:
 		loginPage()
 	}
 }
@@ -70,7 +62,5 @@ func (self *Admin) addPost(req *REQ, res *RES) {
 
 func (self *Admin) notFound(req *REQ, res *RES) {
 	res.State = 301
-	res.Headers = map[string]string{
-		"Location": "/",
-	}
+	res.SetHeader("Location", "/")
 }

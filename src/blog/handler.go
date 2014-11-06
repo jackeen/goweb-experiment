@@ -32,9 +32,7 @@ func (self *Handler) Home(req *REQ, res *RES) {
 		TmpDir: self.TempLateDir,
 	}
 
-	res.Headers = map[string]string{
-		"Content-Type": "text/html; charset=utf-8",
-	}
+	res.SetHeader("Content-Type", "text/html; charset=utf-8")
 	res.State = 200
 	res.Response = tpl.PostList(postList)
 }
