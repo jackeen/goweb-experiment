@@ -65,6 +65,14 @@ func (self *UserService) Delete(dbc *MDBC) {
 
 }
 
+func (self *UserService) LoginSelect(dbc *MDBC, u string, p string, res *User) {
+	sel := Selector{
+		"name": u,
+		"pass": p,
+	}
+	dbc.SelectOne(USER_TAB, sel, res)
+}
+
 func (self *UserService) HasUser(dbc *MDBC, name string) bool {
 	res := &User{}
 	dbc.SelectOne(USER_TAB, Selector{"name": name}, res)

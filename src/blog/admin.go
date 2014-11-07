@@ -11,6 +11,13 @@ type LoginComplete struct {
 type Admin struct {
 	DBC    *MDBC
 	TPLDIR string
+	tpl    *TPL
+}
+
+func (self *Admin) Init() {
+	self.tpl = &TPL{
+		TmpDir: self.TPLDIR,
+	}
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {
@@ -28,11 +35,9 @@ func (self *Admin) Router(req *REQ, res *RES) {
 func (self *Admin) entry(req *REQ, res *RES) {
 
 	loginPage := func() {
-		tpl := &TPL{
-			TmpDir: self.TPLDIR,
-		}
+
 		res.State = 200
-		res.Response = tpl.Login(nil)
+		res.Response = self.tpl.Login(nil)
 	}
 
 	switch req.GetUrlOneValue("action") {
@@ -47,11 +52,16 @@ func (self *Admin) entry(req *REQ, res *RES) {
 
 func (self *Admin) login(req *REQ, res *RES) {
 
-	user := req.GetFormValue("user")
-	pass := req.GetFormValue("pass")
+	u := req.GetFormValue("user")
+	p := req.GetFormValue("pass")
+
+	user := &User{}
+
+	uc := &UserService{}
+	uc.LoginSelect(self.DBC, u, p, user)
 
 	res.State = 200
-	res.Response = user + ":" + pass
+	res.Response = self.tpl.LoginComplete(user)
 }
 
 func (self *Admin) logout(req *REQ, res *RES) {
