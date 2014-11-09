@@ -1,0 +1,15 @@
+{{define "loginComplete"}}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>logined</title>
+</head>
+<body>
+	{{if eq .U.Name ""}}
+		{{.Msg}}
+	{{else}}
+		hi: {{.U.Name}}
+	{{end}}
+</body>
+</html>
+{{end}}
