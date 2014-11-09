@@ -9,15 +9,19 @@ type LoginComplete struct {
 }
 
 type Admin struct {
-	DBC    *MDBC
-	TPLDIR string
-	tpl    *TPL
+	DBC       *MDBC
+	BaseDir   string
+	Theme     string
+	tpl       *TPL
+	staticDir string
 }
 
 func (self *Admin) Init() {
+	staticDir := self.BaseDir + "/admin_static/" + self.Theme + "/"
 	self.tpl = &TPL{
-		TmpDir: self.TPLDIR,
+		TmpDir: staticDir,
 	}
+	self.staticDir = staticDir
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {
@@ -34,19 +38,14 @@ func (self *Admin) Router(req *REQ, res *RES) {
 //login and logout
 func (self *Admin) entry(req *REQ, res *RES) {
 
-	loginPage := func() {
-
-		res.State = 200
-		res.Response = self.tpl.Login(nil)
-	}
-
 	switch req.GetUrlOneValue("action") {
 	case "login":
 		self.login(req, res)
 	case "logout":
 		self.logout(req, res)
 	default:
-		loginPage()
+		res.State = 200
+		res.Response = self.tpl.Login(nil)
 	}
 }
 
@@ -70,6 +69,28 @@ func (self *Admin) logout(req *REQ, res *RES) {
 
 //post
 func (self *Admin) post(req *REQ, res *RES) {
+	switch req.GetUrlOneValue("action") {
+	case "add":
+		self.addPost(req, res)
+	case "edit":
+		self.editPost(req, res)
+	case "delete":
+		self.deletePost(req, res)
+	default:
+		res.State = 404
+		res.Response = "404"
+	}
+}
+
+func (self *Admin) addPost(req *REQ, res *RES) {
+
+}
+
+func (self *Admin) editPost(req *REQ, res *RES) {
+
+}
+
+func (self *Admin) deletePost(req *REQ, res *RES) {
 
 }
 

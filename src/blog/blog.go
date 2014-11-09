@@ -27,22 +27,16 @@ func router(req *REQ, res *RES) {
 
 	case moduleName.Home:
 		handler.Home(req, res)
-		break
 	case moduleName.Post:
 		handler.PostInfo(req, res)
-		break
 	case moduleName.Cate:
 		handler.Cate(req, res)
-		break
 	case moduleName.Tag:
 		handler.Tag(req, res)
-		break
 	case moduleName.Date:
 		handler.Date(req, res)
-		break
 	case moduleName.Json:
 		jsonService.GetJson(req, res)
-		break
 	case moduleName.Admin:
 		admin.Router(req, res)
 	default:
@@ -59,7 +53,7 @@ func main() {
 	apppath, _ := exec.LookPath("blog")
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
-	staticDir := baseDir + "/static/"
+	staticDir := baseDir + "/web_static/"
 
 	themName := "default"
 
@@ -80,9 +74,11 @@ func main() {
 	jsonService.Init(dbc)
 
 	admin = &Admin{
-		DBC:    dbc,
-		TPLDIR: staticDir + themName + "/admin/",
+		DBC:     dbc,
+		BaseDir: baseDir,
+		Theme:   "default",
 	}
+	admin.Init()
 
 	moduleName = &ModuleName{
 		Home:  "",
