@@ -9,19 +9,15 @@ type LoginComplete struct {
 }
 
 type Admin struct {
-	DBC       *MDBC
-	BaseDir   string
-	Theme     string
-	tpl       *TPL
-	staticDir string
+	DBC    *MDBC
+	tpl    *TPL
+	TplDir string
 }
 
 func (self *Admin) Init() {
-	staticDir := self.BaseDir + "/admin_static/" + self.Theme + "/"
 	self.tpl = &TPL{
-		TmpDir: staticDir,
+		TmpDir: self.TplDir,
 	}
-	self.staticDir = staticDir
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {

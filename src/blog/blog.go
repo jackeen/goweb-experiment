@@ -53,9 +53,7 @@ func main() {
 	apppath, _ := exec.LookPath("blog")
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
-	staticDir := baseDir + "/web_static/"
-
-	themName := "default"
+	tplDir := baseDir + "/tpl/"
 
 	dbc = &MDBC{
 		Host: "localhost",
@@ -66,7 +64,7 @@ func main() {
 	dbc.Init()
 
 	handler = &Handler{
-		TempLateDir: staticDir + themName + "/",
+		TempLateDir: tplDir,
 	}
 	handler.Init(dbc)
 
@@ -74,9 +72,8 @@ func main() {
 	jsonService.Init(dbc)
 
 	admin = &Admin{
-		DBC:     dbc,
-		BaseDir: baseDir,
-		Theme:   "default",
+		DBC:    dbc,
+		TplDir: tplDir + "admin/",
 	}
 	admin.Init()
 
