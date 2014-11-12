@@ -81,14 +81,14 @@ func (self *RES) SetHeader(k string, v string) {
 }
 
 //handler function type
-type HttpServerHandler func(req *REQ, res *RES)
+type HandlerFunc func(req *REQ, res *RES)
 
 //
-type mux struct {
-	ServerHandler HttpServerHandler
+type blogHandler struct {
+	Handler HandlerFunc
 }
 
-func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	dataReq := &REQ{}
 	dataReq.Init(req)
@@ -97,22 +97,21 @@ func (self *mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	dataRes.Init(w)
 
 	//execute define handler function
-	self.ServerHandler(dataReq, dataRes)
+	self.Handler(dataReq, dataRes)
 
 	w.WriteHeader(dataRes.State)
 	io.WriteString(w, dataRes.Response)
 }
 
-func MuxServe(conf *HttpConfig, h HttpServerHandler) error {
+func MuxServe(conf *HttpConfig, h HandlerFunc) {
 
-	m := &mux{
-		ServerHandler: h,
+	bh := &blogHandler{
+		Handler: h,
 	}
+	http.Handle("/", bh)
 
-	s := &http.Server{
-		Addr:    conf.Address,
-		Handler: m,
-	}
-	err := s.ListenAndServe()
-	return err
+	fh := http.FileServer(http.Dir("../static"))
+	http.Handle("/static/", fh)
+
+	http.ListenAndServe(conf.Address, nil)
 }

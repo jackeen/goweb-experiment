@@ -94,6 +94,7 @@ func main() {
 	httpConfig := &HttpConfig{
 		Address: ":9090",
 	}
-	panic(MuxServe(httpConfig, router))
+
+	MuxServe(httpConfig, router)
 
 }
