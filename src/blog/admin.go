@@ -9,15 +9,8 @@ type LoginComplete struct {
 }
 
 type Admin struct {
-	DBC    *MDBC
-	tpl    *TPL
-	TplDir string
-}
-
-func (self *Admin) Init() {
-	self.tpl = &TPL{
-		TmpDir: self.TplDir,
-	}
+	DBC *MDBC
+	TPL *AdminTPL
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {
@@ -41,7 +34,7 @@ func (self *Admin) entry(req *REQ, res *RES) {
 		self.logout(req, res)
 	default:
 		res.State = 200
-		res.Response = self.tpl.Login(nil)
+		res.Response = self.TPL.Login(nil)
 	}
 }
 
@@ -56,7 +49,7 @@ func (self *Admin) login(req *REQ, res *RES) {
 	uc.LoginSelect(self.DBC, u, p, user)
 
 	res.State = 200
-	res.Response = self.tpl.LoginComplete(user)
+	res.Response = self.TPL.LoginComplete(user)
 }
 
 func (self *Admin) logout(req *REQ, res *RES) {

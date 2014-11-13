@@ -15,6 +15,8 @@ var (
 	dbc         *MDBC
 	staticUrl   *StaticURL
 	moduleName  *ModuleName
+	tpl         *TPL
+	adminTpl    *AdminTPL
 )
 
 func router(req *REQ, res *RES) {
@@ -54,6 +56,15 @@ func main() {
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
 	tplDir := baseDir + "/tpl/"
+	staticDir := baseDir + "/static/"
+
+	tpl = &TPL{
+		Dir: tplDir,
+	}
+
+	adminTpl = &AdminTPL{
+		Dir: tplDir + "admin/",
+	}
 
 	dbc = &MDBC{
 		Host: "localhost",
@@ -64,7 +75,7 @@ func main() {
 	dbc.Init()
 
 	handler = &Handler{
-		TempLateDir: tplDir,
+		TPL: tpl,
 	}
 	handler.Init(dbc)
 
@@ -72,10 +83,9 @@ func main() {
 	jsonService.Init(dbc)
 
 	admin = &Admin{
-		DBC:    dbc,
-		TplDir: tplDir + "admin/",
+		DBC: dbc,
+		TPL: adminTpl,
 	}
-	admin.Init()
 
 	moduleName = &ModuleName{
 		Home:  "",
@@ -92,7 +102,8 @@ func main() {
 	//http server start
 	log.Println("The http server bind on :9090 ....\n")
 	httpConfig := &HttpConfig{
-		Address: ":9090",
+		StaticRootDir: staticDir,
+		Address:       ":9090",
 	}
 
 	MuxServe(httpConfig, router)

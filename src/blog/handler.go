@@ -6,10 +6,10 @@ import (
 )
 
 type Handler struct {
-	TempLateDir string
-	dbc         *MDBC
-	post        *PostService
-	cate        *CateService
+	TPL  *TPL
+	dbc  *MDBC
+	post *PostService
+	cate *CateService
 }
 
 func (self *Handler) Init(dbc *MDBC) {
@@ -18,23 +18,14 @@ func (self *Handler) Init(dbc *MDBC) {
 	self.cate = &CateService{}
 }
 
-/*
-func (self *Handler) isJsonType(q map[string][]string) bool {
-
-}*/
-
 func (self *Handler) Home(req *REQ, res *RES) {
 
 	var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
-	tpl := &TPL{
-		TmpDir: self.TempLateDir,
-	}
-
 	res.SetHeader("Content-Type", "text/html; charset=utf-8")
 	res.State = 200
-	res.Response = tpl.PostList(postList)
+	res.Response = self.TPL.PostList(postList)
 }
 
 func (self *Handler) PostInfo(req *REQ, res *RES) {
@@ -46,12 +37,8 @@ func (self *Handler) PostInfo(req *REQ, res *RES) {
 
 	self.post.SelectOne(self.dbc, sel, &p)
 
-	tpl := &TPL{
-		TmpDir: self.TempLateDir,
-	}
-
 	res.State = 200
-	res.Response = tpl.Post(p)
+	res.Response = self.TPL.Post(p)
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {

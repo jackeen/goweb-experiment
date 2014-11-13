@@ -4,10 +4,12 @@ import (
 	"io"
 	//"log"
 	"net/http"
+	"strings"
 )
 
 type HttpConfig struct {
-	Address string
+	StaticRootDir string
+	Address       string
 }
 
 //request struct
@@ -81,11 +83,11 @@ func (self *RES) SetHeader(k string, v string) {
 }
 
 //handler function type
-type HandlerFunc func(req *REQ, res *RES)
+type RouterFunc func(req *REQ, res *RES)
 
 //
 type blogHandler struct {
-	Handler HandlerFunc
+	Router RouterFunc
 }
 
 func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -96,22 +98,40 @@ func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	dataRes := &RES{}
 	dataRes.Init(w)
 
-	//execute define handler function
-	self.Handler(dataReq, dataRes)
+	//execute define blog router
+	self.Router(dataReq, dataRes)
 
 	w.WriteHeader(dataRes.State)
 	io.WriteString(w, dataRes.Response)
 }
 
-func MuxServe(conf *HttpConfig, h HandlerFunc) {
+//
+type staticHandler struct {
+	Pattern string
+	RootDir string
+}
+
+func (self *staticHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+
+	path := strings.TrimLeft(req.URL.Path, self.Pattern)
+	http.ServeFile(w, req, self.RootDir+path)
+}
+
+func MuxServe(conf *HttpConfig, h RouterFunc) {
+
+	homePattern := "/"
+	staticPattern := "/static/"
 
 	bh := &blogHandler{
-		Handler: h,
+		Router: h,
 	}
-	http.Handle("/", bh)
+	http.Handle(homePattern, bh)
 
-	fh := http.FileServer(http.Dir("../static"))
-	http.Handle("/static/", fh)
+	fh := &staticHandler{
+		Pattern: staticPattern,
+		RootDir: conf.StaticRootDir,
+	}
+	http.Handle(staticPattern, fh)
 
 	http.ListenAndServe(conf.Address, nil)
 }

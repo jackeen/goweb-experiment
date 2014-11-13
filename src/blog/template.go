@@ -6,44 +6,53 @@ import (
 )
 
 const (
-	fileTail = ".html"
+	FILE_TAIL = ".html"
 )
 
-type WriteContent struct {
+type writeContent struct {
 	Str string
 }
 
-func (self *WriteContent) Write(p []byte) (n int, err error) {
+func (self *writeContent) Write(p []byte) (n int, err error) {
 	self.Str += string(p)
 	return 0, nil
 }
 
-type TPL struct {
-	TmpDir string
-}
+//
+type TplParse struct{}
 
-func (self *TPL) Stringify(data interface{}, name string) string {
-
-	content := new(WriteContent)
-	tplFile := self.TmpDir + name + fileTail
-	tpl, _ := template.New(name).ParseFiles(tplFile)
-	tpl.ExecuteTemplate(content, name, data)
+func (self *TplParse) Stringify(data interface{}, p string, n string) string {
+	content := new(writeContent)
+	tplFile := p + n + FILE_TAIL
+	tpl, _ := template.New(n).ParseFiles(tplFile)
+	tpl.ExecuteTemplate(content, n, data)
 	return content.Str
 }
 
+//blog page template
+type TPL struct {
+	TplParse
+	Dir string
+}
+
 func (self *TPL) PostList(data interface{}) string {
-	return self.Stringify(data, "postList")
+	return self.Stringify(data, self.Dir, "postList")
 }
 
 func (self *TPL) Post(data interface{}) string {
-	return self.Stringify(data, "post")
+	return self.Stringify(data, self.Dir, "post")
 }
 
 //admin template page
-func (self *TPL) Login(data interface{}) string {
-	return self.Stringify(data, "login")
+type AdminTPL struct {
+	TplParse
+	Dir string
 }
 
-func (self *TPL) LoginComplete(data interface{}) string {
-	return self.Stringify(data, "loginComplete")
+func (self *AdminTPL) Login(data interface{}) string {
+	return self.Stringify(data, self.Dir, "login")
+}
+
+func (self *AdminTPL) LoginComplete(data interface{}) string {
+	return self.Stringify(data, self.Dir, "loginComplete")
 }
