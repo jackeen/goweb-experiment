@@ -58,6 +58,12 @@ func main() {
 	tplDir := baseDir + "/tpl/"
 	staticDir := baseDir + "/static/"
 
+	serverPort := "9090"
+	serverName := "localhost"
+	serverHost := serverName + ":" + serverPort
+	serverIP := ""
+	serverAddress := serverIP + ":" + serverPort
+
 	tpl = &TPL{
 		Dir: tplDir,
 	}
@@ -83,9 +89,11 @@ func main() {
 	jsonService.Init(dbc)
 
 	admin = &Admin{
-		DBC: dbc,
-		TPL: adminTpl,
+		DBC:           dbc,
+		TPL:           adminTpl,
+		StaticRootURL: serverHost + "/static/",
 	}
+	admin.Init()
 
 	moduleName = &ModuleName{
 		Home:  "",
@@ -103,7 +111,7 @@ func main() {
 	log.Println("The http server bind on :9090 ....\n")
 	httpConfig := &HttpConfig{
 		StaticRootDir: staticDir,
-		Address:       ":9090",
+		Address:       serverAddress,
 	}
 
 	MuxServe(httpConfig, router)
