@@ -5,57 +5,53 @@ import (
 	"encoding/json"
 )
 
-var (
-	dbc           *MDBC
-	tpl           *AdminTPL
-	entryMod      *entry
-	staticRootURL string
-)
-
-func adminNotFoundPage(req *REQ, res *RES) {
-
-}
-
-func adminNotFoundJson(req *REQ, res *RES) {
-	m := map[string]interface{}{
-		"success": false,
-		"code":    404,
-		"message": "not found",
-	}
-	bytes, _ := json.Marshal(m)
-	res.Response = string(bytes)
-}
-
 type Admin struct {
 	DBC           *MDBC
 	TPL           *AdminTPL
 	StaticRootURL string
+	entry         *EntryPage
 }
 
 func (self *Admin) Init() {
 
-	dbc = self.DBC
-	tpl = self.TPL
-	staticRootURL = self.StaticRootURL
-
-	entryMod = &entry{}
+	self.entry = &EntryPage{
+		Parent: self,
+	}
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {
 
 	switch req.PathParm.FileName {
 	case "entry":
-		entryMod.Route(req, res)
+		self.entry.Route(req, res)
 	default:
-		adminNotFoundPage(req, res)
+		self.AdminNotFoundPage(req, res)
 	}
 
 }
 
-//
-type entry struct{}
+func (self *Admin) AdminNotFoundPage(req *REQ, res *RES) {
+	res.State = 200
+	res.Response = "404 page"
+}
 
-func (self *entry) Route(req *REQ, res *RES) {
+func (self *Admin) AdminNotFoundJson(req *REQ, res *RES) {
+	m := map[string]interface{}{
+		"success": false,
+		"code":    404,
+		"message": "not found",
+	}
+	bytes, _ := json.Marshal(m)
+	res.State = 200
+	res.Response = string(bytes)
+}
+
+//
+type EntryPage struct {
+	Parent *Admin
+}
+
+func (self *EntryPage) Route(req *REQ, res *RES) {
 
 	switch req.GetUrlOneValue("serve") {
 	case "":
@@ -65,16 +61,16 @@ func (self *entry) Route(req *REQ, res *RES) {
 	case "logout":
 		self.logoutServe(req, res)
 	default:
-		adminNotFoundJson(req, res)
+		self.Parent.AdminNotFoundJson(req, res)
 	}
 }
 
-func (self *entry) loginPage(req *REQ, res *RES) {
+func (self *EntryPage) loginPage(req *REQ, res *RES) {
 	res.State = 200
-	res.Response = tpl.Login(nil)
+	res.Response = self.Parent.TPL.Login(nil)
 }
 
-func (self *entry) loginServe(req *REQ, res *RES) {
+func (self *EntryPage) loginServe(req *REQ, res *RES) {
 
 	u := req.GetFormValue("user")
 	p := req.GetFormValue("pass")
@@ -82,13 +78,13 @@ func (self *entry) loginServe(req *REQ, res *RES) {
 	user := &User{}
 
 	uc := &UserService{}
-	uc.LoginSelect(dbc, u, p, user)
+	uc.LoginSelect(self.Parent.DBC, u, p, user)
 
 	res.State = 200
-	res.Response = tpl.LoginComplete(user)
+	res.Response = self.Parent.TPL.LoginComplete(user)
 }
 
-func (self *entry) logoutServe(req *REQ, res *RES) {
+func (self *EntryPage) logoutServe(req *REQ, res *RES) {
 
 }
 
