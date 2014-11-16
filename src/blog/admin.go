@@ -1,15 +1,15 @@
 package main
 
 import (
-	//"log"
 	"encoding/json"
+	"log"
 )
 
 type Admin struct {
-	DBC           *MDBC
-	TPL           *AdminTPL
-	StaticRootURL string
-	entry         *EntryPage
+	DBC        *MDBC
+	TPL        *AdminTPL
+	StaticHost string
+	entry      *EntryPage
 }
 
 func (self *Admin) Init() {
@@ -66,8 +66,12 @@ func (self *EntryPage) Route(req *REQ, res *RES) {
 }
 
 func (self *EntryPage) loginPage(req *REQ, res *RES) {
+	d := &EntryPageData{
+		StaticHost: self.Parent.StaticHost,
+	}
+	log.Println(d)
 	res.State = 200
-	res.Response = self.Parent.TPL.Login(nil)
+	res.Response = self.Parent.TPL.Login(d)
 }
 
 func (self *EntryPage) loginServe(req *REQ, res *RES) {
@@ -81,73 +85,13 @@ func (self *EntryPage) loginServe(req *REQ, res *RES) {
 	uc.LoginSelect(self.Parent.DBC, u, p, user)
 
 	res.State = 200
-	res.Response = self.Parent.TPL.LoginComplete(user)
+	res.Response = u + ":" + user.Name
 }
 
 func (self *EntryPage) logoutServe(req *REQ, res *RES) {
 
 }
 
-/*
-
-//login and logout
-func (self *Admin) entry(req *REQ, res *RES) {
-
-	switch req.GetUrlOneValue("action") {
-	case "login":
-		self.login(req, res)
-	case "logout":
-		self.logout(req, res)
-	default:
-		res.State = 200
-		res.Response = self.TPL.Login(nil)
-	}
+type EntryPageData struct {
+	StaticHost string
 }
-
-func (self *Admin) login(req *REQ, res *RES) {
-
-	u := req.GetFormValue("user")
-	p := req.GetFormValue("pass")
-
-	user := &User{}
-
-	uc := &UserService{}
-	uc.LoginSelect(self.DBC, u, p, user)
-
-	res.State = 200
-	res.Response = self.TPL.LoginComplete(user)
-}
-
-func (self *Admin) logout(req *REQ, res *RES) {
-
-}
-
-//post
-func (self *Admin) post(req *REQ, res *RES) {
-	switch req.GetUrlOneValue("action") {
-	case "add":
-		self.addPost(req, res)
-	case "edit":
-		self.editPost(req, res)
-	case "delete":
-		self.deletePost(req, res)
-	default:
-		res.State = 404
-		res.Response = "404"
-	}
-}
-
-func (self *Admin) addPost(req *REQ, res *RES) {
-
-}
-
-func (self *Admin) editPost(req *REQ, res *RES) {
-
-}
-
-func (self *Admin) deletePost(req *REQ, res *RES) {
-
-}
-
-
-*/

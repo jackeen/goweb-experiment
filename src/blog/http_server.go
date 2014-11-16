@@ -4,7 +4,7 @@ import (
 	"io"
 	//"log"
 	"net/http"
-	"strings"
+	//"strings"
 )
 
 type HttpConfig struct {
@@ -105,18 +105,6 @@ func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, dataRes.Response)
 }
 
-//
-type staticHandler struct {
-	Pattern string
-	RootDir string
-}
-
-func (self *staticHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-
-	path := strings.TrimLeft(req.URL.Path, self.Pattern)
-	http.ServeFile(w, req, self.RootDir+path)
-}
-
 func MuxServe(conf *HttpConfig, h RouterFunc) {
 
 	homePattern := "/"
@@ -127,10 +115,9 @@ func MuxServe(conf *HttpConfig, h RouterFunc) {
 	}
 	http.Handle(homePattern, bh)
 
-	fh := &staticHandler{
-		Pattern: staticPattern,
-		RootDir: conf.StaticRootDir,
-	}
+	//static serve
+	staticDir := http.Dir(conf.StaticRootDir)
+	fh := http.StripPrefix(staticPattern, http.FileServer(staticDir))
 	http.Handle(staticPattern, fh)
 
 	http.ListenAndServe(conf.Address, nil)

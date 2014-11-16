@@ -9,11 +9,17 @@ const (
 	FILE_TAIL = ".html"
 )
 
-type writeContent struct {
+var TPLFuncMap = template.FuncMap{
+	"attr": func(s string) template.HTMLAttr {
+		return template.HTMLAttr(s)
+	},
+}
+
+type TPLWriteContent struct {
 	Str string
 }
 
-func (self *writeContent) Write(p []byte) (n int, err error) {
+func (self *TPLWriteContent) Write(p []byte) (n int, err error) {
 	self.Str += string(p)
 	return 0, nil
 }
@@ -22,9 +28,9 @@ func (self *writeContent) Write(p []byte) (n int, err error) {
 type TplParse struct{}
 
 func (self *TplParse) Stringify(data interface{}, p string, n string) string {
-	content := new(writeContent)
+	content := new(TPLWriteContent)
 	tplFile := p + n + FILE_TAIL
-	tpl, _ := template.New(n).ParseFiles(tplFile)
+	tpl, _ := template.New(n).Funcs(TPLFuncMap).ParseFiles(tplFile)
 	tpl.ExecuteTemplate(content, n, data)
 	return content.Str
 }

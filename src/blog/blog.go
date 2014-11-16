@@ -59,8 +59,9 @@ func main() {
 	staticDir := baseDir + "/static/"
 
 	serverPort := "9090"
-	serverName := "localhost"
-	serverHost := serverName + ":" + serverPort
+	//serverName := "localhost"
+	//serverHost := serverName + ":" + serverPort
+
 	serverIP := ""
 	serverAddress := serverIP + ":" + serverPort
 
@@ -89,9 +90,9 @@ func main() {
 	jsonService.Init(dbc)
 
 	admin = &Admin{
-		DBC:           dbc,
-		TPL:           adminTpl,
-		StaticRootURL: serverHost + "/static/",
+		DBC:        dbc,
+		TPL:        adminTpl,
+		StaticHost: "",
 	}
 	admin.Init()
 
