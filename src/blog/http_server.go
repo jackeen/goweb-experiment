@@ -107,18 +107,19 @@ func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 func MuxServe(conf *HttpConfig, h RouterFunc) {
 
-	homePattern := "/"
-	staticPattern := "/static/"
-
 	bh := &blogHandler{
 		Router: h,
 	}
-	http.Handle(homePattern, bh)
+	http.Handle("/", bh)
 
 	//static serve
-	staticDir := http.Dir(conf.StaticRootDir)
-	fh := http.StripPrefix(staticPattern, http.FileServer(staticDir))
-	http.Handle(staticPattern, fh)
+	jsDir := http.Dir(conf.StaticRootDir + "js/")
+	jsh := http.StripPrefix("/js/", http.FileServer(jsDir))
+	http.Handle("/js/", jsh)
+
+	styleDir := http.Dir(conf.StaticRootDir + "style/")
+	styleh := http.StripPrefix("/style/", http.FileServer(styleDir))
+	http.Handle("/style/", styleh)
 
 	http.ListenAndServe(conf.Address, nil)
 }
