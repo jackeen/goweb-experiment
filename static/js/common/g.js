@@ -4,11 +4,13 @@
 
 	var d = w.document;
 
+	var config = {
+		baseDir : '/js/',
+		jsFileTail : ".js",
+		cssFileTail : ".css"
+	};
+
 	var scriptMap = {};
-
-	function loadScriptList(){
-
-	}
 
 	function loadScript(url, fn){
 
@@ -25,6 +27,22 @@
 		};
 		d.body.appendChild(s);
 		scriptMap[url] = true;
+	}
+
+	function loadScriptList(){
+
+	}
+
+	function loadCss(url){
+		
+	}
+
+	function getJSIntactURL(modName){
+		return config.baseDir + modName + config.jsFileTail;
+	}
+
+	function getCSSIntactURL(modName){
+		return config.baseDir + modName + config.cssFileTail;
 	}
 
 	var $ = {
