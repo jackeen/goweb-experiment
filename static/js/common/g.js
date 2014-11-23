@@ -1,66 +1,112 @@
-//common base html5
+//common
 
-(function(w, globalName){
+(function(w){
 
-	var d = w.document;
+	var d = w.document,
+		l = w.location;
 
 	var config = {
-		baseDir : '/js/',
+		origin: '',
+		baseDir : '',
+		selfModDir: '',
 		jsFileTail : ".js",
 		cssFileTail : ".css"
 	};
 
-	var scriptMap = {};
+	//
+	var runTime = {};
 
-	function loadScript(url, fn){
+	//storge loaded module object
+	var moduleMap = {};
 
-		if (scriptMap[url]) {
-			fn();
-			return;
-		};
+	/*	this is a cache for loaded module executed.
+		the module of script run complete and dispatch load event to
+		loaded callback function, it read the cache value regist module.		
+	*/
+	var moduleCache = null;
 
-		s = d.createElement("script");
+	function getJSIntactURL(module){
+		return config.baseDir + module + config.jsFileTail;
+	}
+
+	function loadModule(module, callback){
+
+		if(moduleMap[module]) return;
+
+		var url = getJSIntactURL(module),
+			s = d.createElement("script");
 		s.type = "text/javascript";
+		s.setAttribute("data-name", module);
 		s.src = url;
-		s.onload = function(){
-			fn();
+		s.onload = function(e){
+			var t = e.target,
+				modName = t.getAttribute('data-name');
+			moduleMap[modName] = moduleCache;
+			callback(modName, moduleCache);
+			moduleCache = null;		
 		};
 		d.body.appendChild(s);
-		scriptMap[url] = true;
 	}
 
-	function loadScriptList(){
-
-	}
-
-	function loadCss(url){
+	function loadModules(modMap, callback){
 		
-	}
+		var modNum = 0,
+			loadedNum = 0,
+			m = {};
 
-	function getJSIntactURL(modName){
-		return config.baseDir + modName + config.jsFileTail;
-	}
-
-	function getCSSIntactURL(modName){
-		return config.baseDir + modName + config.cssFileTail;
-	}
-
-	var $ = {
-		
-		config: function(){
-
-		},
-
-		require: function(){
-
-		},
-
-		define: function(jsList, fn){
-
+		for(var i in modMap) {
+			modNum++;
+			loadModule(modMap[i], function(k, v){
+				loadedNum++;
+				m[k] = v;
+				if(loadedNum === modNum) callback(m);
+			});
 		}
+	}
 
+	
+	/**/
+	function getSelfElem(){
+		var s = d.getElementsByTagName('script');
+		return s[s.length-1];
+	}
+
+	w.require = function(deps, factory){
+
+		if(typeof deps === 'function') {
+			factory = deps;
+			factory(runTime, {});
+		} else {
+			loadModules(deps, function(m){
+				factory(runTime, m);
+			})
+		}
 	};
 
-	w[globalName] = $;
+	w.define = function(){
+		
+	};
 
-})(window, "$");
+	//init
+	function init(){
+		var self = getSelfElem(),
+			selfUrl = self.src,
+			mainMod = self.getAttribute('data-main');
+
+		self = null;
+		
+		var origin = l.origin,
+			path = selfUrl.replace(origin + '/', ''),
+			pathArr = path.split('/'),
+			jsRoot = pathArr.splice(0, 1)[0],
+			gName = pathArr.splice(pathArr.length-1, 1)[0],
+			gDir = pathArr.join('/');
+
+		config.origin = origin;
+		config.baseDir = '/' + jsRoot;
+		config.selfModDir = '/' + gDir;
+		
+	}
+	init();
+
+})(window);
