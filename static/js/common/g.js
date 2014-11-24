@@ -26,12 +26,15 @@
 	var moduleCache = null;
 
 	function getJSIntactURL(module){
-		return config.baseDir + module + config.jsFileTail;
+		return config.baseDir + '/' + module + config.jsFileTail;
 	}
 
 	function loadModule(module, callback){
 
-		if(moduleMap[module]) return;
+		if(moduleMap[module]) {
+			callback(module, moduleMap[module]);
+			return;
+		}
 
 		var url = getJSIntactURL(module),
 			s = d.createElement("script");
@@ -43,7 +46,7 @@
 				modName = t.getAttribute('data-name');
 			moduleMap[modName] = moduleCache;
 			callback(modName, moduleCache);
-			moduleCache = null;		
+			moduleCache = null;
 		};
 		d.body.appendChild(s);
 	}
@@ -54,13 +57,17 @@
 			loadedNum = 0,
 			m = {};
 
-		for(var i in modMap) {
-			modNum++;
-			loadModule(modMap[i], function(k, v){
+		function exeContext(alias, module){
+			loadModule(module, function(k, v){
 				loadedNum++;
-				m[k] = v;
+				m[alias] = v;
 				if(loadedNum === modNum) callback(m);
 			});
+		}
+
+		for(var i in modMap) {
+			modNum++;
+			exeContext(i, modMap[i]);
 		}
 	}
 
@@ -71,20 +78,23 @@
 		return s[s.length-1];
 	}
 
-	w.require = function(deps, factory){
-
+	function exeuteModule(deps, factory){
 		if(typeof deps === 'function') {
 			factory = deps;
-			factory(runTime, {});
+			moduleCache = factory(runTime, {});
 		} else {
 			loadModules(deps, function(m){
-				factory(runTime, m);
-			})
+				moduleCache = factory(runTime, m);
+			});
 		}
+	}
+
+	w.require = function(deps, factory){
+		exeuteModule(deps, factory);
 	};
 
-	w.define = function(){
-		
+	w.define = function(deps, factory){
+		exeuteModule(deps, factory);
 	};
 
 	//init
@@ -105,8 +115,14 @@
 		config.origin = origin;
 		config.baseDir = '/' + jsRoot;
 		config.selfModDir = '/' + gDir;
+
+		loadModule(mainMod, function(){});
 		
 	}
 	init();
+
+	//debug
+	w.mm = moduleMap;
+
 
 })(window);

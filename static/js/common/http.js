@@ -15,8 +15,6 @@ define(function(){
 
 	}
 
-	alert('http');
-
 	return {
 		ajax: ajax,
 		get: get,

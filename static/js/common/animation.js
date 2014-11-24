@@ -1,5 +1,10 @@
 define(function(){
 
+	function fadeIn(elem, conf){
 
-	alert("animation");
+	}
+
+	return {
+		fadeIn: fadeIn
+	};
 });
