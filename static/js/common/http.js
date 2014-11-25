@@ -8,18 +8,18 @@ define(function(){
 		xhr.open(conf.type, conf.url, conf.async);
 		xhr.send(conf.data);
 		xhr.onreadystatechange = onchange;
-		return xhr;
 	}
 
-	function get(){
-		var xhr = ajax({
+	function get(url, success){
+		ajax({
 			url: url,
 			type: 'get',
-			async: true
+			async: true,
+			data: null
 		}, function(e){
 			var t = e.target;
 			if(t.status === 4 && t.state == 200){
-				
+				success(t.respanse);
 			}
 		});
 	}
