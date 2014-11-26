@@ -1,31 +1,62 @@
 define(function(){
 
-	
+	function getAjaxData(obj) {
+		var s = '';
+		for(var i in obj) {
+			s += '&' + i + '=' + obj[i];
+		}
+		return s.replace('&', '');
+	}
 
-	function ajax(conf, onchange){
+	function ajax(conf, onchange) {
 		
-		var xhr = new XMLHttpRequest();
+		var xhr = new XMLHttpRequest(),
+			data = null;
+
+		if(conf.data) {
+			if(conf.dataType === 'json') {
+				data = JSON.stringify(conf.data);
+			} else {
+				data = getAjaxData(conf.data);
+			}
+		}
+
 		xhr.open(conf.type, conf.url, conf.async);
-		xhr.send(conf.data);
+
+		if (conf.dataType !== 'json') {
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		}
+
+		xhr.send(data);
 		xhr.onreadystatechange = onchange;
 	}
 
-	function get(url, success){
+	function get(url, data, success) {
 		ajax({
 			url: url,
 			type: 'get',
 			async: true,
 			data: null
-		}, function(e){
-			var t = e.target;
-			if(t.status === 4 && t.state == 200){
-				success(t.respanse);
+		}, function(e) {
+
+			if(this.readyState === 4 && this.status === 200){
+				success(this.responseText);
 			}
 		});
 	}
 
-	function post(){
+	function post(url, data, success) {
+		ajax({
+			url: url,
+			type: 'post',
+			async: true,
+			data: data
+		}, function(e) {
 
+			if(this.readyState === 4 && this.status === 200) {
+				success(this.responseText);
+			}
+		});
 	}
 
 	return {

@@ -8,7 +8,6 @@
 </head>
 <body>
 <form action="/admin/entry?serve=login" method="post" name="login">
-{{.StaticHost}}
 	<fieldset>
 		<span>username:</span>
 		<input type="text" name="user" />
@@ -16,7 +15,7 @@
 		<span>password:</span>
 		<input type="text" name="pass" />
 		<br/>
-		<input type="submit" />
+		<input type="button" name="submit" />
 	</fieldset>
 </form>
 <script type="text/javascript" src="{{attr .StaticHost}}/js/common/g.js" data-main="admin/longin"></script>

@@ -31,7 +31,7 @@ func (self *Admin) Router(req *REQ, res *RES) {
 }
 
 func (self *Admin) AdminNotFoundPage(req *REQ, res *RES) {
-	res.State = 200
+	res.State = 404
 	res.Response = "404 page"
 }
 
@@ -84,8 +84,18 @@ func (self *EntryPage) loginServe(req *REQ, res *RES) {
 	uc := &UserService{}
 	uc.LoginSelect(self.Parent.DBC, u, p, user)
 
+	m := make(map[string]interface{})
+	if user.Name == "" {
+		m["success"] = false
+		m["message"] = "user or pass error"
+	} else {
+		m["success"] = true
+		m["message"] = "welcome"
+	}
+	b, _ := json.Marshal(m)
+
 	res.State = 200
-	res.Response = u + ":" + user.Name
+	res.Response = string(b)
 }
 
 func (self *EntryPage) logoutServe(req *REQ, res *RES) {
