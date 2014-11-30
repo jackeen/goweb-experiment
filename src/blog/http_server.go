@@ -70,11 +70,11 @@ func (self *RES) Init(w http.ResponseWriter) {
 	self.w = w
 }
 
-func (self *RES) SetCookie(k string, v string) {
-	c := &http.Cookie{
-		Name:  k,
-		Value: v,
-	}
+func (self *RES) CreateCookie() *http.Cookie {
+	return new(http.Cookie)
+}
+
+func (self *RES) SetCookie(c *http.Cookie) {
 	http.SetCookie(self.w, c)
 }
 

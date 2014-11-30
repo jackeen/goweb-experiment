@@ -1,4 +1,8 @@
-//common
+/*
+
+module loader
+
+*/
 
 (function(w){
 
@@ -25,11 +29,11 @@
 	*/
 	var moduleCache = null;
 
-	function getJSIntactURL(module){
+	function getJSIntactURL(module) {
 		return config.baseDir + '/' + module + config.jsFileTail;
 	}
 
-	function loadModule(module, callback){
+	function loadModule(module, callback) {
 
 		if(moduleMap[module]) {
 			callback(module, moduleMap[module]);
@@ -38,12 +42,16 @@
 
 		var url = getJSIntactURL(module),
 			s = d.createElement("script");
+
 		s.type = "text/javascript";
 		s.setAttribute("data-name", module);
 		s.src = url;
-		s.onload = function(e){
+
+		s.onload = function(e) {
+			
 			var t = e.target,
 				modName = t.getAttribute('data-name');
+			
 			moduleMap[modName] = moduleCache;
 			callback(modName, moduleCache);
 			moduleCache = null;
@@ -51,14 +59,15 @@
 		d.body.appendChild(s);
 	}
 
-	function loadModules(modMap, callback){
+	function loadModules(modMap, callback) {
 		
 		var modNum = 0,
 			loadedNum = 0,
 			m = {};
 
-		function exeContext(alias, module){
-			loadModule(module, function(k, v){
+		function exeContext(alias, module) {
+
+			loadModule(module, function(k, v) {
 				loadedNum++;
 				m[alias] = v;
 				if(loadedNum === modNum) callback(m);
@@ -73,32 +82,40 @@
 
 	
 	/**/
-	function getSelfElem(){
+	function getSelfElem() {
 		var s = d.getElementsByTagName('script');
 		return s[s.length-1];
 	}
 
-	function exeuteModule(deps, factory){
+	function exeuteModule(deps, factory) {
+
 		if(typeof deps === 'function') {
 			factory = deps;
 			moduleCache = factory(runTime, {});
 		} else {
-			loadModules(deps, function(m){
+			loadModules(deps, function(m) {
 				moduleCache = factory(runTime, m);
 			});
 		}
 	}
 
-	w.require = function(deps, factory){
+	w.require = function(deps, factory) {
 		exeuteModule(deps, factory);
 	};
 
-	w.define = function(deps, factory){
+	w.define = function(deps, factory) {
 		exeuteModule(deps, factory);
+	};
+
+	w.config = function(conf) {
+		for (var i in conf) {
+			runTime[i] = conf[i];	
+		}
 	};
 
 	//init
-	function init(){
+	function init() {
+
 		var self = getSelfElem(),
 			selfUrl = self.src,
 			mainMod = self.getAttribute('data-main');
@@ -119,10 +136,7 @@
 		loadModule(mainMod, function(){});
 		
 	}
+
 	init();
-
-	//debug
-	w.mm = moduleMap;
-
 
 })(window);

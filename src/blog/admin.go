@@ -9,10 +9,15 @@ type Admin struct {
 	DBC        *MDBC
 	TPL        *AdminTPL
 	StaticHost string
+	session    *Session
 	entry      *EntryPage
 }
 
 func (self *Admin) Init() {
+
+	self.session = &Session{
+		Data: make(map[string]*SessionData),
+	}
 
 	self.entry = &EntryPage{
 		Parent: self,
@@ -27,6 +32,10 @@ func (self *Admin) Router(req *REQ, res *RES) {
 	default:
 		self.AdminNotFoundPage(req, res)
 	}
+
+}
+
+func (self *Admin) Auth(u string, p string) int {
 
 }
 
@@ -80,17 +89,40 @@ func (self *EntryPage) loginServe(req *REQ, res *RES) {
 	p := req.GetFormValue("pass")
 
 	user := &User{}
+	uuid := req.GetCookies()["uuid"]
+
+	m := make(map[string]interface{})
+
+	if self.Parent.session.Get(uuid) != nil {
+		m["success"] = true
+		m["message"] = "ready!"
+		b, _ := json.Marshal(m)
+		res.State = 200
+		res.Response = string(b)
+		return
+	}
 
 	uc := &UserService{}
 	uc.LoginSelect(self.Parent.DBC, u, p, user)
 
-	m := make(map[string]interface{})
 	if user.Name == "" {
 		m["success"] = false
 		m["message"] = "user or pass error"
 	} else {
 		m["success"] = true
 		m["message"] = "welcome"
+
+		sd := &SessionData{
+			User: user.Name,
+		}
+		uuid = self.Parent.session.New(sd)
+
+		c := res.CreateCookie()
+		c.Name = "uuid"
+		c.Value = uuid
+		c.HttpOnly = true
+		c.Path = "/"
+		res.SetCookie(c)
 	}
 	b, _ := json.Marshal(m)
 
