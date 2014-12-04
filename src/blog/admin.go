@@ -35,10 +35,6 @@ func (self *Admin) Router(req *REQ, res *RES) {
 
 }
 
-func (self *Admin) Auth(u string, p string) int {
-
-}
-
 func (self *Admin) AdminNotFoundPage(req *REQ, res *RES) {
 	res.State = 404
 	res.Response = "404 page"
@@ -113,7 +109,8 @@ func (self *EntryPage) loginServe(req *REQ, res *RES) {
 		m["message"] = "welcome"
 
 		sd := &SessionData{
-			User: user.Name,
+			User:  user.Name,
+			Power: user.Power,
 		}
 		uuid = self.Parent.session.New(sd)
 

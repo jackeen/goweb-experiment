@@ -14,7 +14,8 @@ const (
 )
 
 type SessionData struct {
-	User string
+	User  string
+	Power int
 }
 
 func CreateUUID() string {
@@ -51,4 +52,13 @@ func (self *Session) Set(k string, v *SessionData) {
 
 func (self *Session) Get(k string) *SessionData {
 	return self.Data[k]
+}
+
+func (self *Session) GetPowerCode(uuid string) int {
+	usrData := self.Data[uuid]
+	if usrData == nil {
+		return -1
+	} else {
+		return usrData.Power
+	}
 }
