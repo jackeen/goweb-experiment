@@ -62,3 +62,7 @@ func (self *Session) GetPowerCode(uuid string) int {
 		return usrData.Power
 	}
 }
+
+func (self *Session) Auth(uuid string) {
+
+}

@@ -59,6 +59,10 @@ func (self *Handler) Date(req *REQ, res *RES) {
 	res.Response = "link"
 }
 
+func (self *Handler) Entry(req *REQ, res *RES) {
+
+}
+
 func (self *Handler) NotFind(req *REQ, res *RES) {
 
 	res.State = 404
