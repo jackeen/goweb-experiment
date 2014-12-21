@@ -31,6 +31,7 @@ type ModuleName struct {
 	Cate  string
 	Date  string
 	Tag   string
+	Entry string
 	Json  string
 	Admin string
 }

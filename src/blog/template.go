@@ -49,14 +49,14 @@ func (self *TPL) Post(data interface{}) string {
 	return self.Stringify(data, self.Dir, "post")
 }
 
+func (self *TPL) Login(data interface{}) string {
+	return self.Stringify(data, self.Dir, "login")
+}
+
 //admin template page
 type AdminTPL struct {
 	TplParse
 	Dir string
-}
-
-func (self *AdminTPL) Login(data interface{}) string {
-	return self.Stringify(data, self.Dir, "login")
 }
 
 func (self *AdminTPL) LoginComplete(data interface{}) string {

@@ -6,10 +6,11 @@ import (
 )
 
 type Handler struct {
-	TPL  *TPL
-	dbc  *MDBC
-	post *PostService
-	cate *CateService
+	TPL        *TPL
+	StaticHost string
+	dbc        *MDBC
+	post       *PostService
+	cate       *CateService
 }
 
 func (self *Handler) Init(dbc *MDBC) {
@@ -61,6 +62,11 @@ func (self *Handler) Date(req *REQ, res *RES) {
 
 func (self *Handler) Entry(req *REQ, res *RES) {
 
+	d := &EntryPageData{
+		StaticHost: self.StaticHost,
+	}
+	res.State = 200
+	res.Response = self.TPL.Login(d)
 }
 
 func (self *Handler) NotFind(req *REQ, res *RES) {

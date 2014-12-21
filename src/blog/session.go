@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	SessionExpire = 10
+	SessionExpire = 60
 )
 
 type SessionData struct {
@@ -52,6 +52,15 @@ func (self *Session) Set(k string, v *SessionData) {
 
 func (self *Session) Get(k string) *SessionData {
 	return self.Data[k]
+}
+
+func (self *Session) IsLogin(uuid string) bool {
+	u := self.Get(uuid)
+	if u != nil {
+		return true
+	} else {
+		return false
+	}
 }
 
 func (self *Session) GetPowerCode(uuid string) int {

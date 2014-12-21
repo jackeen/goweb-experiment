@@ -7,7 +7,7 @@
 
 </head>
 <body>
-<form action="/admin/entry?serve=login" method="post" name="login">
+<form action="/json/login" method="post" name="login">
 	<fieldset>
 		<span>username:</span>
 		<input type="text" name="user" />
@@ -18,7 +18,7 @@
 		<input type="button" name="submit" />
 	</fieldset>
 </form>
-<script type="text/javascript" src="{{attr .StaticHost}}/js/common/g.js" data-main="admin/longin"></script>
+<script type="text/javascript" src="{{attr .StaticHost}}/js/common/g.js" data-main="blog/longin"></script>
 </body>
 </html>
 {{end}}

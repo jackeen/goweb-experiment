@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	session     *Session
 	handler     *Handler
 	jsonService *JsonService
 	admin       *Admin
@@ -37,6 +38,8 @@ func router(req *REQ, res *RES) {
 		handler.Tag(req, res)
 	case moduleName.Date:
 		handler.Date(req, res)
+	case moduleName.Entry:
+		handler.Entry(req, res)
 	case moduleName.Json:
 		jsonService.GetJson(req, res)
 	case moduleName.Admin:
@@ -81,20 +84,25 @@ func main() {
 	}
 	dbc.Init()
 
+	session = &Session{
+		Data: make(map[string]*SessionData),
+	}
+
 	handler = &Handler{
-		TPL: tpl,
+		TPL:        tpl,
+		StaticHost: "",
 	}
 	handler.Init(dbc)
 
 	jsonService = &JsonService{}
-	jsonService.Init(dbc)
+	jsonService.Init(dbc, session)
 
 	admin = &Admin{
 		DBC:        dbc,
 		TPL:        adminTpl,
 		StaticHost: "",
 	}
-	admin.Init()
+	admin.Init(session)
 
 	moduleName = &ModuleName{
 		Home:  "",
@@ -103,6 +111,7 @@ func main() {
 		Date:  "date",
 		Tag:   "tag",
 		Json:  "json",
+		Entry: "entry",
 		Admin: "admin",
 	}
 
