@@ -59,7 +59,7 @@ func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
 
 	m := make(map[string]interface{})
 
-	if self.session.Get(uuid) != nil {
+	if self.session.IsLogin(uuid) {
 		m["success"] = true
 		m["message"] = "ready!"
 		return m
