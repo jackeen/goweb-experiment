@@ -18,11 +18,21 @@ func (self *Admin) Init(s *Session) {
 
 func (self *Admin) Router(req *REQ, res *RES) {
 
-	/*switch req.PathParm.FileName {
-	case "entry":
-		self.entry.Route(req, res)
+	switch req.PathParm.FileName {
+	case "home":
+		self.home(req, res)
 	default:
-		self.AdminNotFoundPage(req, res)
-	}*/
+		self.NotFound(req, res)
+	}
 
+}
+
+func (self *Admin) home(req *REQ, res *RES) {
+	res.State = 200
+	res.Response = "admin home page"
+}
+
+func (self *Admin) NotFound(req *REQ, res *RES) {
+	res.State = 404
+	res.Response = "none"
 }

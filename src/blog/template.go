@@ -59,6 +59,6 @@ type AdminTPL struct {
 	Dir string
 }
 
-func (self *AdminTPL) LoginComplete(data interface{}) string {
-	return self.Stringify(data, self.Dir, "loginComplete")
+func (self *AdminTPL) Home(data interface{}) string {
+	return self.Stringify(data, self.Dir, "home")
 }
