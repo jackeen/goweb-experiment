@@ -10,9 +10,7 @@ module loader
 		l = w.location;
 
 	var config = {
-		origin: '',
-		baseDir : '',
-		selfModDir: '',
+		basePath : '',
 		jsFileTail : ".js",
 		cssFileTail : ".css"
 	};
@@ -30,7 +28,7 @@ module loader
 	var moduleCache = null;
 
 	function getJSIntactURL(module) {
-		return config.baseDir + '/' + module + config.jsFileTail;
+		return config.basePath + module + config.jsFileTail;
 	}
 
 	function loadModule(module, callback) {
@@ -113,6 +111,12 @@ module loader
 		}
 	};
 
+	var Utils = {
+		getBasePath: function (s) {
+			return s.replace(/[^\/]\.js/, '');
+		}
+	};
+
 	//init
 	function init() {
 
@@ -121,20 +125,10 @@ module loader
 			mainMod = self.getAttribute('data-main');
 
 		self = null;
-		
-		var origin = l.origin,
-			path = selfUrl.replace(origin + '/', ''),
-			pathArr = path.split('/'),
-			jsRoot = pathArr.splice(0, 1)[0],
-			gName = pathArr.splice(pathArr.length-1, 1)[0],
-			gDir = pathArr.join('/');
 
-		config.origin = origin;
-		config.baseDir = '/' + jsRoot;
-		config.selfModDir = '/' + gDir;
+		config.basePath = Utils.getBasePath(selfUrl);
 
 		loadModule(mainMod, function(){});
-		
 	}
 
 	init();
