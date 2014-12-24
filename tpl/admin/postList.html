@@ -1,0 +1,14 @@
+{{define "postList"}}
+<table>
+<thead></thead>
+<tfoot></tfoot>
+<tbody>
+{{range .}}
+	<tr>
+		<td>{{.Title}}</td>
+		<td>{{.CreateTime}}</td>
+	</tr>
+{{end}}
+</tbody>
+</table>
+{{end}}

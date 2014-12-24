@@ -28,8 +28,11 @@ func (self *Admin) Router(req *REQ, res *RES) {
 }
 
 func (self *Admin) home(req *REQ, res *RES) {
+	d := &AdminHomeData{
+		PageTitle: "manager home",
+	}
 	res.State = 200
-	res.Response = "admin home page"
+	res.Response = self.TPL.Home(d)
 }
 
 func (self *Admin) NotFound(req *REQ, res *RES) {
