@@ -69,11 +69,11 @@ func main() {
 	serverAddress := serverIP + ":" + serverPort
 
 	tpl = &TPL{
-		Dir: tplDir,
+		Pattern: tplDir + "*.html",
 	}
 
 	adminTpl = &AdminTPL{
-		Dir: tplDir + "admin/",
+		Pattern: tplDir + "admin/*.html",
 	}
 
 	dbc = &MDBC{

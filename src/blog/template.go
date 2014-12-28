@@ -1,12 +1,7 @@
 package main
 
 import (
-	//"fmt"
 	"html/template"
-)
-
-const (
-	FILE_TAIL = ".html"
 )
 
 var TPLFuncMap = template.FuncMap{
@@ -27,6 +22,13 @@ func (self *TPLWriteContent) Write(p []byte) (n int, err error) {
 //
 type TplParse struct{}
 
+func (self *TplParse) parse(pattern string, name string, data interface{}) string {
+	content := new(TPLWriteContent)
+	tpl, _ := template.ParseGlob(pattern).Funcs(TPLFuncMap)
+	tpl.ExecuteTemplate(content, name, data)
+	return content.Str
+}
+
 func (self *TplParse) Stringify(data interface{}, p string, n string) string {
 	content := new(TPLWriteContent)
 	tplFile := p + n + FILE_TAIL
@@ -38,7 +40,7 @@ func (self *TplParse) Stringify(data interface{}, p string, n string) string {
 //blog page template
 type TPL struct {
 	TplParse
-	Dir string
+	Pattern string
 }
 
 func (self *TPL) PostList(data interface{}) string {
@@ -56,9 +58,18 @@ func (self *TPL) Login(data interface{}) string {
 //admin template page
 type AdminTPL struct {
 	TplParse
-	Dir string
+	Pattern string
 }
 
 func (self *AdminTPL) Home(data interface{}) string {
 	return self.Stringify(data, self.Dir, "home")
+}
+
+type TplContent struct {
+	TplPattern      string
+	AdminTplPattern string
+}
+
+func InitTPL() (*TPL, *AdminTPL) {
+
 }
