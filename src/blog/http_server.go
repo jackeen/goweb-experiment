@@ -96,6 +96,7 @@ func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	dataReq.Init(req)
 
 	dataRes := &RES{}
+	dataRes.State = 200
 	dataRes.Init(w)
 
 	//execute define blog router

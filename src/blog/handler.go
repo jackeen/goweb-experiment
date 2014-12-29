@@ -6,7 +6,7 @@ import (
 )
 
 type Handler struct {
-	TPL        *TPL
+	Tpl        *TPL
 	StaticHost string
 	dbc        *MDBC
 	post       *PostService
@@ -19,17 +19,19 @@ func (self *Handler) Init(dbc *MDBC) {
 	self.cate = &CateService{}
 }
 
-func (self *Handler) Home(req *REQ, res *RES) {
+func (self *Handler) Index(req *REQ, res *RES) {
 
-	var postList []Post
+	/*var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
 	res.SetHeader("Content-Type", "text/html; charset=utf-8")
 	res.State = 200
-	res.Response = self.TPL.PostList(postList)
+	res.Response = self.Tpl.PostList(postList)*/
+
+	res.Response = "index"
 }
 
-func (self *Handler) PostInfo(req *REQ, res *RES) {
+func (self *Handler) Post(req *REQ, res *RES) {
 
 	var p Post
 	sel := Selector{
@@ -38,26 +40,22 @@ func (self *Handler) PostInfo(req *REQ, res *RES) {
 
 	self.post.SelectOne(self.dbc, sel, &p)
 
-	res.State = 200
-	res.Response = self.TPL.Post(p)
+	res.Response = self.Tpl.Parse("post", p)
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {
 
-	res.State = 200
 	res.Response = "post list"
 }
 
 func (self *Handler) Tag(req *REQ, res *RES) {
 
-	res.State = 200
 	res.Response = "link"
 }
 
 func (self *Handler) Date(req *REQ, res *RES) {
 
-	res.State = 200
-	res.Response = "link"
+	res.Response = "Date"
 }
 
 func (self *Handler) Entry(req *REQ, res *RES) {
@@ -65,8 +63,8 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 	d := &EntryPageData{
 		StaticHost: self.StaticHost,
 	}
-	res.State = 200
-	res.Response = self.TPL.Login(d)
+
+	res.Response = self.Tpl.Parse("login", d)
 }
 
 func (self *Handler) NotFind(req *REQ, res *RES) {

@@ -7,7 +7,7 @@ import (
 
 type Admin struct {
 	DBC        *MDBC
-	TPL        *AdminTPL
+	Tpl        *TPL
 	StaticHost string
 	session    *Session
 }
@@ -32,7 +32,7 @@ func (self *Admin) home(req *REQ, res *RES) {
 		PageTitle: "manager home",
 	}
 	res.State = 200
-	res.Response = self.TPL.Home(d)
+	res.Response = self.Tpl.Parse("home", d)
 }
 
 func (self *Admin) NotFound(req *REQ, res *RES) {

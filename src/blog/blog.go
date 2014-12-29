@@ -17,7 +17,7 @@ var (
 	staticUrl   *StaticURL
 	moduleName  *ModuleName
 	tpl         *TPL
-	adminTpl    *AdminTPL
+	adminTpl    *TPL
 )
 
 func router(req *REQ, res *RES) {
@@ -29,9 +29,9 @@ func router(req *REQ, res *RES) {
 	switch parm.Module {
 
 	case moduleName.Home:
-		handler.Home(req, res)
+		handler.Index(req, res)
 	case moduleName.Post:
-		handler.PostInfo(req, res)
+		handler.Post(req, res)
 	case moduleName.Cate:
 		handler.Cate(req, res)
 	case moduleName.Tag:
@@ -68,13 +68,10 @@ func main() {
 	serverIP := ""
 	serverAddress := serverIP + ":" + serverPort
 
-	tpl = &TPL{
-		Pattern: tplDir + "*.html",
-	}
-
-	adminTpl = &AdminTPL{
-		Pattern: tplDir + "admin/*.html",
-	}
+	tpl = new(TPL)
+	tpl.Pattern = tplDir + "*.html"
+	adminTpl = new(TPL)
+	adminTpl.Pattern = tplDir + "admin/*.html"
 
 	dbc = &MDBC{
 		Host: "localhost",
@@ -89,7 +86,7 @@ func main() {
 	}
 
 	handler = &Handler{
-		TPL:        tpl,
+		Tpl:        tpl,
 		StaticHost: "",
 	}
 	handler.Init(dbc)
@@ -99,7 +96,7 @@ func main() {
 
 	admin = &Admin{
 		DBC:        dbc,
-		TPL:        adminTpl,
+		Tpl:        adminTpl,
 		StaticHost: "",
 	}
 	admin.Init(session)
