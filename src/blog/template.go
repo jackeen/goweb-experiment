@@ -26,8 +26,8 @@ type TPL struct {
 
 func (self *TPL) Parse(name string, data interface{}) string {
 	w := new(TPLWriteContent)
-	tpl, _ := template.ParseGlob(self.Pattern)
-	tpl = tpl.Funcs(TPLFuncMap)
-	tpl.ExecuteTemplate(w, name, data)
+	tpl := template.New(name).Funcs(TPLFuncMap)
+	tpl.ParseGlob(self.Pattern)
+	tpl.Execute(w, data)
 	return w.Str
 }

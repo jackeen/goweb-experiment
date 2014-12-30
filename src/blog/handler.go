@@ -21,14 +21,12 @@ func (self *Handler) Init(dbc *MDBC) {
 
 func (self *Handler) Index(req *REQ, res *RES) {
 
-	/*var postList []Post
+	var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
-	res.SetHeader("Content-Type", "text/html; charset=utf-8")
-	res.State = 200
-	res.Response = self.Tpl.PostList(postList)*/
+	//res.SetHeader("Content-Type", "text/html; charset=utf-8")
 
-	res.Response = "index"
+	res.Response = self.Tpl.Parse("index", postList)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {

@@ -2,16 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>index</title>
+	{{template "headContent"}}
 </head>
 <body>
 	<h1>this is home page </h1>
-	<ul>
-	{{range .}}
-		<li>.Title</li>
-	{{end}}
-	</ul>
+	{{template "postList" .}}
 </body>
 </html>
 {{end}}
