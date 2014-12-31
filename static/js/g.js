@@ -20,6 +20,7 @@ module loader
 
 	//storge loaded module object
 	var moduleMap = {};
+	window.moduleMap = moduleMap;
 
 	/*	this is a cache for loaded module executed.
 		the module of script run complete and dispatch load event to
@@ -77,7 +78,6 @@ module loader
 			exeContext(i, modMap[i]);
 		}
 	}
-
 	
 	/**/
 	function getSelfElem() {
@@ -85,7 +85,7 @@ module loader
 		return s[s.length-1];
 	}
 
-	function exeuteModule(deps, factory) {
+	function executeModule(deps, factory) {
 
 		if(typeof deps === 'function') {
 			factory = deps;
@@ -98,11 +98,11 @@ module loader
 	}
 
 	w.require = function(deps, factory) {
-		exeuteModule(deps, factory);
+		executeModule(deps, factory);
 	};
 
 	w.define = function(deps, factory) {
-		exeuteModule(deps, factory);
+		executeModule(deps, factory);
 	};
 
 	w.config = function(conf) {

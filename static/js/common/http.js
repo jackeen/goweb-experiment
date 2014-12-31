@@ -1,4 +1,4 @@
-define(function(){
+define(function(global, modules){
 
 	function getAjaxData(obj) {
 		var s = '';

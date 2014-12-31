@@ -28,9 +28,11 @@ func (self *Admin) Router(req *REQ, res *RES) {
 }
 
 func (self *Admin) home(req *REQ, res *RES) {
-	d := &AdminHomeData{
-		PageTitle: "manager home",
+
+	d := map[string]interface{}{
+		"PageTitle": "manager home",
 	}
+
 	res.State = 200
 	res.Response = self.Tpl.Parse("home", d)
 }

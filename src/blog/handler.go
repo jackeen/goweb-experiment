@@ -59,6 +59,9 @@ func (self *Handler) Date(req *REQ, res *RES) {
 func (self *Handler) Entry(req *REQ, res *RES) {
 
 	d := &EntryPageData{
+		HeadContent: HeadContent{
+			PageTitle: "~~login~~",
+		},
 		StaticHost: self.StaticHost,
 	}
 
