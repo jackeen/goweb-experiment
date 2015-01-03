@@ -115,7 +115,7 @@ func (self *CateService) Delete(dbc *MDBC, id int) {
 //post
 type PostService struct{}
 
-func (self *PostService) Insert(dbc *MDBC, title string, content string, author int, cate int, tags []string, isEdit bool, allowComment bool) {
+func (self *PostService) Insert(dbc *MDBC, p *Post) {
 
 	incId := IncNum.incId(dbc, "post", 1).Post
 	currentTime := time.Now()
@@ -123,15 +123,15 @@ func (self *PostService) Insert(dbc *MDBC, title string, content string, author 
 	data := &Post{
 		Id_:          bson.NewObjectId(),
 		Id:           incId,
-		Title:        title,
-		Content:      content,
-		Author:       author,
-		Cate:         cate,
-		Tags:         tags,
+		Title:        p.Title,
+		Content:      p.Content,
+		Author:       p.Author,
+		Cate:         p.Cate,
+		Tags:         p.Tags,
 		CreateTime:   currentTime,
 		LastEditTime: currentTime,
-		EditState:    isEdit,
-		AllowComment: allowComment,
+		EditState:    p.EditState,
+		AllowComment: p.AllowComment,
 		CommentNum:   0,
 		CommentIncId: 0,
 	}

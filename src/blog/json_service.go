@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	//"log"
+	"log"
 )
 
 const (
@@ -23,11 +23,13 @@ func (self *JsonService) Init(dbc *MDBC, s *Session) {
 	self.cateService = &CateService{}
 }
 
-func (self *JsonService) postInfo(t string) map[string]interface{} {
+func (self *JsonService) postInfo(req *REQ, res *RES) map[string]interface{} {
 	var (
 		p       Post
 		jsonMap map[string]interface{}
 	)
+
+	t := req.GetUrlOneValue("t")
 
 	if t != "" {
 
@@ -47,6 +49,21 @@ func (self *JsonService) postInfo(t string) map[string]interface{} {
 	}
 
 	return jsonMap
+}
+
+func (self *JsonService) addPost(req *REQ, res *RES) map[string]interface{} {
+
+	title := req.GetFormValue("title")
+	content := req.GetFormValue("content")
+	//cate := req.GetFormValue("cate")
+
+	log.Println(title, content)
+
+	m := make(map[string]interface{})
+	//p := new(Post)
+	//self.postService.Insert(self.dbc, p)
+
+	return m
 }
 
 func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
@@ -111,7 +128,9 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 
 	switch req.PathParm.FileName {
 	case "post":
-		queryJson = self.postInfo(req.GetUrlOneValue("t"))
+		queryJson = self.postInfo(req, res)
+	case "addpost":
+		queryJson = self.addPost(req, res)
 	case "login":
 		queryJson = self.login(req, res)
 	default:

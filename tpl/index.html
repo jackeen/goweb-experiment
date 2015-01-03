@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{{template "headContent"}}
+	{{template "headContent" .}}
 </head>
 <body>
 	<h1>this is home page </h1>
-	{{template "postList" .}}
+	{{template "postList" .PostList}}
 </body>
 </html>
 {{end}}

@@ -1,7 +1,11 @@
 {{define "postList"}}
 <ul>
 {{range .}}
-	<li>{{.Title}}---{{.CreateTime}}</li>
+	<li>
+		<h2>{{.Title}}</h2>
+		<p>{{.Content}}</p>
+		<p>{{.CreateTime}}</p>
+	</li>
 {{end}}
 </ul>
 {{end}}

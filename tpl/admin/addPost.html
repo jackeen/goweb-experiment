@@ -1,0 +1,16 @@
+{{define "addPost"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{{template "headContent" .}}
+</head>
+<body>
+	<form action="/json/addpost" method="post" name="addPost">
+		<input type="text" name="title">
+		<textarea name="content" cols="30" rows="10"></textarea>
+		<input type="checkbox" name="allowComment">
+		<input type="checkbox" name="isEdit">
+	</form>
+</body>
+</html>
+{{end}}

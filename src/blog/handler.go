@@ -24,9 +24,12 @@ func (self *Handler) Index(req *REQ, res *RES) {
 	var postList []Post
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
-	//res.SetHeader("Content-Type", "text/html; charset=utf-8")
+	d := map[string]interface{}{
+		"PageTitle": "home",
+		"PostList":  postList,
+	}
 
-	res.Response = self.Tpl.Parse("index", postList)
+	res.Response = self.Tpl.Parse("index", d)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {
