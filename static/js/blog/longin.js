@@ -1,4 +1,4 @@
-require({
+define({
 
 	http: 'common/http',
 	cookie: 'common/cookie',
