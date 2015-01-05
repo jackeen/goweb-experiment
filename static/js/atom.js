@@ -1,6 +1,6 @@
 /*
 
-module loader
+project: atomjs
 
 */
 
@@ -10,10 +10,11 @@ module loader
 		l = w.location;
 
 	var config = {
-		basePath : '',
+		basePath : "",
 		jsFileTail : ".js",
 		cssFileTail : ".css",
-		modAttrNameKey: "data-name"
+		modAttrNameKey: "data-name",
+		modAliasNameKey: "data-alias"
 	};
 
 	//
@@ -42,90 +43,115 @@ module loader
 		}
 	};
 
-	//get current run factory and clean it
-	function getModuleCache() {
-		var c = moduleCache;
-		moduleCache = null;
-		return c;
-	}
+	var Fn = {
+		getModuleCache: function () {
+			var c = moduleCache;
+			//moduleCache = null;
+			return c;
+		},
+		setModuleCache: function (v) {
+			moduleCache = v;
+		},
+		getReadyModule: function (k) {
+			return moduleMap[k];
+		},
+		setReadyModule: function (k, v) {
+			//console.log(k, v);
+			moduleMap[k] = v;
+		}
+	};
 
-	function loadModule(name, onload) {
+	function loadModule(name, alias, loader) {
 
-		var loadedMod = moduleMap[name];
+		var loadedMod = Fn.getReadyModule(name);
 		if(loadedMod) {
-			onload(name, loadedMod);
+			loader.loaded(name, alias, loadedMod);
 			return;
 		}
 
 		var loadingMod = loadingMap[name];
 		if(loadingMod) {
-			loadingMod.push(onload);
+			loadingMod.push(loader.loaded);
 		} else {
-			loadingMap[name] = [onload];
+			loadingMap[name] = [loader.loaded];
 		}
 
 		var s = d.createElement("script");
 		s.type = "text/javascript";
 		s.setAttribute(config.modAttrNameKey, name);
+		s.setAttribute(config.modAliasNameKey, alias);
 		s.onload = function () {
 			var mName = this.getAttribute(config.modAttrNameKey);
-			var cache = getModuleCache();
+			var alias = this.getAttribute(config.modAliasNameKey);
+			var cache = Fn.getModuleCache();
 			var queue = loadingMap[mName];
-			var cb = queue.shift();
-			for (;typeof cb === 'function'; cb = queue.shift()) {
-				moduleMap[mName] = cache;
-				cb(mName, cache);
+			
+			Fn.setReadyModule(mName, cache);
+
+			var cb;
+			while(cb = queue.shift()) {
+				cb(mName, alias, cache);
 			}
+
 			this.onload = null;
 		};
 		s.src = Utils.getJSIntactURL(name);
 		d.body.appendChild(s);
 	}
 
-	function DepsLoader(deps) {
+	function DepsLoader(deps, factory) {
 		
 		var self = this;
+
 		self.depsMap = {};
 		self.num = 0;
 		self.loadedNum = 0;
 
-		self.onload = function () {}
+		self.factory = factory;
+		self.deps = deps;
 
-		for(var alias in deps) {
-			self.num++;
-			loadModule(deps[alias], function (modName, mod) {
-				self.depsMap[alias] = mod;
-				self.loadedNum++;
-				if(self.num === self.loadedNum) self.onload(self.depsMap);
-				console.log(self.depsMap);
-			});
-		}
+		self.onload = function () {};
 	}
 
 	DepsLoader.prototype = {
 
-		loaded: function () {
-
+		load: function () {
+			var self = this;
+			var deps = self.deps;
+			for(var alias in deps) {
+				self.num++;
+				loadModule(deps[alias], alias, self);
+			}
+		},
+		loaded: function (modName, alias, mod) {
+			console.log(this)
+			var self = this;
+			self.depsMap[alias] = mod;
+			self.loadedNum++;
+			if(self.num === self.loadedNum) {
+				self.onload(self.depsMap);
+			}
 		}
 
 	};
 
 
-	function loadDeps(deps, onload) {
-
-		var loader = new DepsLoader(deps);
-		loader.onload = onload;
-	}
-
 	w.define = function(deps, factory) {
 		
+		var loader = null;
+
 		if(typeof deps === 'function') {
 			factory = deps;
-			moduleCache = factory(runTime, {});
+			Fn.setModuleCache(factory(runTime, {}));
 		} else {
-			loadDeps(deps, function(m) {
-				moduleCache = factory(runTime, m);
-			});
+
+			loader = new DepsLoader(deps, factory);
+			loader.onload = function(m) {
+
+				console.log(this.factory)
+				Fn.setModuleCache(this.factory(runTime, m));
+			};
+			loader.load();
 		}
 
 	};
@@ -141,7 +167,7 @@ module loader
 
 		config.basePath = Utils.getBasePath(selfUrl);
 
-		loadModule(mainModName);
+		loadModule(mainModName, 'main');
 	}
 
 	init();

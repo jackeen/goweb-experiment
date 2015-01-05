@@ -6,6 +6,8 @@ define({
 
 }, function(global, modules){
 
+	console.log('login: ', modules);
+
 	var http = modules.http;
 	
 	var f = document.forms['login'],

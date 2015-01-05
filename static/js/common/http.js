@@ -1,4 +1,8 @@
-define(function(global, modules){
+define({
+
+	XHR:'common/xhr'
+
+}, function(global, modules){
 
 	function getAjaxData(obj) {
 		var s = '';
@@ -10,7 +14,7 @@ define(function(global, modules){
 
 	function ajax(conf, onchange) {
 		
-		var xhr = new XMLHttpRequest(),
+		var xhr = new modules.XHR();//XMLHttpRequest(),
 			data = null;
 
 		if(conf.data) {
