@@ -12,7 +12,8 @@ module loader
 	var config = {
 		basePath : '',
 		jsFileTail : ".js",
-		cssFileTail : ".css"
+		cssFileTail : ".css",
+		modAttrNameKey: "data-name"
 	};
 
 	//
@@ -22,170 +23,131 @@ module loader
 	var moduleMap = {};
 
 	//
+	var loadingMap = {};
+
+	//
 	var moduleCache = null;
 
 	//
 	var Utils = {
 		getJSIntactURL: function (modName) {
-			return config.basePath + module + config.jsFileTail;
+			return config.basePath + modName + config.jsFileTail;
 		},
 		getSelfElem: function () {
 			var s = d.getElementsByTagName('script');
 			return s[s.length-1];
 		},
 		getBasePath: function (s) {
-			return s.replace(/[^\/]\.js/, '');
+			return s.replace(/[^\/]+\.js/, '');
 		}
 	};
 
+	//get current run factory and clean it
 	function getModuleCache() {
 		var c = moduleCache;
 		moduleCache = null;
 		return c;
 	}
 
-	function Module(modMap, getCacheFunc) {
+	function loadModule(name, onload) {
 
-		var self = this;
-		self.modMap = modMap;
-		self.getCacheFunc = getCacheFunc;
-		self.modAttrNameKey = "data-name";
-
-		self.onload = function () {};
-	}
-
-	Module.prototype = {
-
-		pack: function (e) {
-
-			var self = this;
-			var modName = self.getAttribute(self.modAttrNameKey);
-			self.onload(modName, self.getCacheFunc());
-		},
-
-		load: function (url, modName) {
-
-			var mod = self.modMap[modName];
-			if(mod) {
-				self.onload(modName, mod);
-				return;
-			}
-
-			var self = this;
-
-			var s = d.createElement("script");
-			s.type = "text/javascript";
-			s.setAttribute(self.modAttrNameKey, modName);
-			s.onload = self.pack;
-			s.url = url;
-		},
-
-		loadDeps: function () {
-
-		}
-
-
-
-	};
-
-	/*function loadModule(module, callback) {
-
-		if(moduleMap[module]) {
-			callback(module, moduleMap[module]);
+		var loadedMod = moduleMap[name];
+		if(loadedMod) {
+			onload(name, loadedMod);
 			return;
 		}
 
-		var url = Utils.getJSIntactURL(module),
-			s = d.createElement("script");
+		var loadingMod = loadingMap[name];
+		if(loadingMod) {
+			loadingMod.push(onload);
+		} else {
+			loadingMap[name] = [onload];
+		}
 
+		var s = d.createElement("script");
 		s.type = "text/javascript";
-		s.setAttribute("data-name", module);
-		s.src = url;
-
-		s.onload = function(e) {
-			
-			var t = e.target,
-				modName = t.getAttribute('data-name');
-			
-			moduleMap[modName] = moduleCache;
-			callback(modName, moduleCache);
-			moduleCache = null;
+		s.setAttribute(config.modAttrNameKey, name);
+		s.onload = function () {
+			var mName = this.getAttribute(config.modAttrNameKey);
+			var cache = getModuleCache();
+			var queue = loadingMap[mName];
+			var cb = queue.shift();
+			for (;typeof cb === 'function'; cb = queue.shift()) {
+				moduleMap[mName] = cache;
+				cb(mName, cache);
+			}
+			this.onload = null;
 		};
+		s.src = Utils.getJSIntactURL(name);
 		d.body.appendChild(s);
 	}
 
-	function loadModules(modMap, callback) {
+	function DepsLoader(deps) {
 		
-		var modNum = 0,
-			loadedNum = 0,
-			m = {};
+		var self = this;
+		self.depsMap = {};
+		self.num = 0;
+		self.loadedNum = 0;
 
-		function exeContext(alias, module) {
+		self.onload = function () {}
 
-			loadModule(module, function(k, v) {
-				loadedNum++;
-				m[alias] = v;
-				if(loadedNum === modNum) callback(m);
-			});
-		}
-
-		for(var i in modMap) {
-			modNum++;
-			exeContext(i, modMap[i]);
-		}
-	}
-	
-	function executeModule(deps, factory) {
-
-		if(typeof deps === 'function') {
-			factory = deps;
-			moduleCache = factory(runTime, {});
-		} else {
-			loadModules(deps, function(m) {
-				moduleCache = factory(runTime, m);
+		for(var alias in deps) {
+			self.num++;
+			loadModule(deps[alias], function (modName, mod) {
+				self.depsMap[alias] = mod;
+				self.loadedNum++;
+				if(self.num === self.loadedNum) self.onload(self.depsMap);
+				console.log(self.depsMap);
 			});
 		}
 	}
 
-	w.require = function(deps, factory) {
-		executeModule(deps, factory);
-	};*/
+	DepsLoader.prototype = {
+
+		loaded: function () {
+
+		}
+
+	};
+
+
+	function loadDeps(deps, onload) {
+
+		var loader = new DepsLoader(deps);
+		loader.onload = onload;
+	}
 
 	w.define = function(deps, factory) {
 		
-		var mod = new Module(moduleMap, getModuleCache);
-
 		if(typeof deps === 'function') {
 			factory = deps;
 			moduleCache = factory(runTime, {});
 		} else {
-			mod.loadDeps(deps, function(m) {
+			loadDeps(deps, function(m) {
 				moduleCache = factory(runTime, m);
 			});
 		}
 
 	};
-
-	/*w.config = function(conf) {
-		for (var i in conf) {
-			runTime[i] = conf[i];	
-		}
-	};*/
 
 	//init
 	function init() {
 
 		var self = Utils.getSelfElem(),
 			selfUrl = self.src,
-			mainMod = self.getAttribute('data-main');
+			mainModName = self.getAttribute('data-main');
 
 		self = null;
 
 		config.basePath = Utils.getBasePath(selfUrl);
 
-		loadModule(mainMod, function(){});
+		loadModule(mainModName);
 	}
 
 	init();
+
+	//debug
+	w.moduleMap = moduleMap;
+	w.loadingMap = loadingMap;
 
 })(window);
