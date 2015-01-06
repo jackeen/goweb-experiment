@@ -13,8 +13,8 @@ project: atomjs
 		basePath : "",
 		jsFileTail : ".js",
 		cssFileTail : ".css",
-		modAttrNameKey: "data-name",
-		modAliasNameKey: "data-alias"
+		modAttrNameKey : "data-name",
+		modAliasNameKey : "data-alias"
 	};
 
 	//
@@ -46,7 +46,7 @@ project: atomjs
 	var Fn = {
 		getModuleCache: function () {
 			var c = moduleCache;
-			//moduleCache = null;
+			moduleCache = null;
 			return c;
 		},
 		setModuleCache: function (v) {
@@ -61,6 +61,39 @@ project: atomjs
 		}
 	};
 
+	function addScript(url, attr, loaded) {
+
+		var s = d.createElement("script");
+		s.type = "text/javascript";
+
+		for(var k in attr) {
+			s.setAttribute(k, attr[k]);
+		}
+		
+		s.onload = function () {
+			if(loaded) loaded.call(this);
+		}
+		s.src = url;
+		d.body.appendChild(s);
+	}
+
+	function moduleLoaded() {
+
+		var name = this.getAttribute(config.modAttrNameKey);
+		var alias = this.getAttribute(config.modAliasNameKey);
+		var cache = Fn.getModuleCache();
+		var queue = loadingMap[name];
+		
+		Fn.setReadyModule(name, cache);
+
+		for(var loader = queue.shift(); loader; ) {
+			loader.loaded(name, alias, cache);
+			loader = queue.shift();
+		}
+
+		this.onload = null;
+	}
+
 	function loadModule(name, alias, loader) {
 
 		var loadedMod = Fn.getReadyModule(name);
@@ -71,32 +104,15 @@ project: atomjs
 
 		var loadingMod = loadingMap[name];
 		if(loadingMod) {
-			loadingMod.push(loader.loaded);
+			loadingMod.push(loader);
 		} else {
-			loadingMap[name] = [loader.loaded];
+			loadingMap[name] = [loader];
 		}
 
-		var s = d.createElement("script");
-		s.type = "text/javascript";
-		s.setAttribute(config.modAttrNameKey, name);
-		s.setAttribute(config.modAliasNameKey, alias);
-		s.onload = function () {
-			var mName = this.getAttribute(config.modAttrNameKey);
-			var alias = this.getAttribute(config.modAliasNameKey);
-			var cache = Fn.getModuleCache();
-			var queue = loadingMap[mName];
-			
-			Fn.setReadyModule(mName, cache);
-
-			var cb;
-			while(cb = queue.shift()) {
-				cb(mName, alias, cache);
-			}
-
-			this.onload = null;
-		};
-		s.src = Utils.getJSIntactURL(name);
-		d.body.appendChild(s);
+		var attr = {};
+		attr[config.modAttrNameKey] = name;
+		attr[config.modAliasNameKey] = alias;
+		addScript(Utils.getJSIntactURL(name), attr, moduleLoaded);
 	}
 
 	function DepsLoader(deps, factory) {
@@ -116,6 +132,7 @@ project: atomjs
 	DepsLoader.prototype = {
 
 		load: function () {
+
 			var self = this;
 			var deps = self.deps;
 			for(var alias in deps) {
@@ -123,8 +140,9 @@ project: atomjs
 				loadModule(deps[alias], alias, self);
 			}
 		},
+
 		loaded: function (modName, alias, mod) {
-			console.log(this)
+
 			var self = this;
 			self.depsMap[alias] = mod;
 			self.loadedNum++;
@@ -148,7 +166,7 @@ project: atomjs
 			loader = new DepsLoader(deps, factory);
 			loader.onload = function(m) {
 
-				console.log(this.factory)
+				console.log(m, new Date().getTime())
 				Fn.setModuleCache(this.factory(runTime, m));
 			};
 			loader.load();
@@ -167,7 +185,7 @@ project: atomjs
 
 		config.basePath = Utils.getBasePath(selfUrl);
 
-		loadModule(mainModName, 'main');
+		addScript(Utils.getJSIntactURL(mainModName), {});
 	}
 
 	init();
