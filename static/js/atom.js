@@ -70,9 +70,7 @@ project: atomjs
 			s.setAttribute(k, attr[k]);
 		}
 		
-		s.onload = function () {
-			if(loaded) loaded.call(this);
-		}
+		s.onload = loaded;
 		s.src = url;
 		d.body.appendChild(s);
 	}
@@ -83,27 +81,26 @@ project: atomjs
 		var alias = this.getAttribute(config.modAliasNameKey);
 		var cache = Fn.getModuleCache();
 		var queue = loadingMap[name];
-		
+
+		cache = cache.f.call(null, cache.g, cache.m);
 		Fn.setReadyModule(name, cache);
 
 		for(var loader = queue.shift(); loader; ) {
 			loader.loaded(name, alias, cache);
 			loader = queue.shift();
 		}
-
-		this.onload = null;
 	}
 
 	function loadModule(name, alias, loader) {
 
 		var loadedMod = Fn.getReadyModule(name);
-		if(loadedMod) {
+		if(loader && loadedMod) {
 			loader.loaded(name, alias, loadedMod);
 			return;
 		}
 
 		var loadingMod = loadingMap[name];
-		if(loadingMod) {
+		if(loader && loadingMod) {
 			loadingMod.push(loader);
 		} else {
 			loadingMap[name] = [loader];
@@ -159,18 +156,33 @@ project: atomjs
 		var loader = null;
 
 		if(typeof deps === 'function') {
+			
 			factory = deps;
-			Fn.setModuleCache(factory(runTime, {}));
+
 		} else {
 
 			loader = new DepsLoader(deps, factory);
 			loader.onload = function(m) {
 
-				console.log(m, new Date().getTime())
-				Fn.setModuleCache(this.factory(runTime, m));
+				//console.log(m, new Date().getTime())
+				//Fn.setModuleCache(this.factory(runTime, m));
+
 			};
 			loader.load();
+
 		}
+
+		Fn.setModuleCache({
+			f: factory,
+			g: runTime,
+			m: {}
+		});
+
+	};
+
+	w.require = function(deps, factory) {
+
+		
 
 	};
 
@@ -185,7 +197,8 @@ project: atomjs
 
 		config.basePath = Utils.getBasePath(selfUrl);
 
-		addScript(Utils.getJSIntactURL(mainModName), {});
+		//addScript(Utils.getJSIntactURL(mainModName), {});
+		loadModule(mainModName, 'main');
 	}
 
 	init();
