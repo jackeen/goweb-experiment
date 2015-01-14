@@ -30,6 +30,9 @@ project: atomjs
 	var moduleCache = null;
 
 	//
+	var cacheMap = {};
+
+	//
 	var Utils = {
 		getJSIntactURL: function (modName) {
 			return config.basePath + modName + config.jsFileTail;
@@ -52,12 +55,17 @@ project: atomjs
 		setModuleCache: function (v) {
 			moduleCache = v;
 		},
-		getReadyModule: function (k) {
+		getModuleMap: function (k) {
 			return moduleMap[k];
 		},
-		setReadyModule: function (k, v) {
-			//console.log(k, v);
+		setModuleMap: function (k, v) {
 			moduleMap[k] = v;
+		},
+		getCacheMap: function (k) {
+			return cacheMap[k];
+		},
+		setCacheMap: function (k, v) {
+			cacheMap[k] = v;
 		}
 	};
 
@@ -75,107 +83,85 @@ project: atomjs
 		d.body.appendChild(s);
 	}
 
-	function moduleLoaded() {
 
-		var name = this.getAttribute(config.modAttrNameKey);
-		var alias = this.getAttribute(config.modAliasNameKey);
-		var cache = Fn.getModuleCache();
-		var queue = loadingMap[name];
 
-		cache = cache.f.call(null, cache.g, cache.m);
-		Fn.setReadyModule(name, cache);
+	function ModuleLoader(modName) {
 
-		for(var loader = queue.shift(); loader; ) {
-			loader.loaded(name, alias, cache);
-			loader = queue.shift();
-		}
-	}
-
-	function loadModule(name, alias, loader) {
-
-		var loadedMod = Fn.getReadyModule(name);
-		if(loader && loadedMod) {
-			loader.loaded(name, alias, loadedMod);
-			return;
-		}
-
-		var loadingMod = loadingMap[name];
-		if(loader && loadingMod) {
-			loadingMod.push(loader);
-		} else {
-			loadingMap[name] = [loader];
-		}
-
-		var attr = {};
-		attr[config.modAttrNameKey] = name;
-		attr[config.modAliasNameKey] = alias;
-		addScript(Utils.getJSIntactURL(name), attr, moduleLoaded);
-	}
-
-	function DepsLoader(deps, factory) {
-		
 		var self = this;
 
-		self.depsMap = {};
-		self.num = 0;
-		self.loadedNum = 0;
-
-		self.factory = factory;
-		self.deps = deps;
+		self.name = modName;
+		self.alias = '';
+		self.factory = null;
 
 		self.onload = function () {};
+
 	}
 
-	DepsLoader.prototype = {
+	ModuleLoader.prototype = {
 
 		load: function () {
-
+			
 			var self = this;
-			var deps = self.deps;
-			for(var alias in deps) {
-				self.num++;
-				loadModule(deps[alias], alias, self);
-			}
+			var name = self.name;
+			var url = Utils.getJSIntactURL(name);
+			addScript(url, {}, function () {
+				self.loaded.call(self, this);
+			});
+
 		},
 
-		loaded: function (modName, alias, mod) {
+		loaded: function (target) {
 
 			var self = this;
-			self.depsMap[alias] = mod;
-			self.loadedNum++;
-			if(self.num === self.loadedNum) {
-				self.onload(self.depsMap);
+			var cache  = Fn.getModuleCache();
+			self.factory = cache.factory;
+			self.deps = cache.deps;
+
+			Fn.setCacheMap(self.name, self);
+
+			self.loadDeps(self.deps);
+
+		},
+
+		loadDeps: function (deps) {
+
+			var self = this;
+			var url = '';
+			var loader;
+			var num = 0;
+			var loadedNum = 0;
+			for(var alias in deps) {
+				loader = new ModuleLoader(deps[alias]);
+				loader.load();
+				loader.onload = function () {
+					loadedNum++;
+					if(num === loadedNum) {
+						self.onload()
+					}
+				}
+				num++;
 			}
+
+		},
+
+		depsLoaded: function () {
+
 		}
 
 	};
 
+	
 
 	w.define = function(deps, factory) {
 		
-		var loader = null;
-
 		if(typeof deps === 'function') {
-			
 			factory = deps;
-
-		} else {
-
-			loader = new DepsLoader(deps, factory);
-			loader.onload = function(m) {
-
-				//console.log(m, new Date().getTime())
-				//Fn.setModuleCache(this.factory(runTime, m));
-
-			};
-			loader.load();
-
+			deps = {};
 		}
 
 		Fn.setModuleCache({
-			f: factory,
-			g: runTime,
-			m: {}
+			deps: deps,
+			factory: factory
 		});
 
 	};
@@ -197,14 +183,19 @@ project: atomjs
 
 		config.basePath = Utils.getBasePath(selfUrl);
 
-		//addScript(Utils.getJSIntactURL(mainModName), {});
-		loadModule(mainModName, 'main');
+		var loader = new ModuleLoader(mainModName);
+		loader.onload = function () {
+			console.log(cacheMap);
+		};
+		loader.load();
+		
 	}
 
 	init();
 
 	//debug
 	w.moduleMap = moduleMap;
+	w.cacheMap = cacheMap;
 	w.loadingMap = loadingMap;
 
 })(window);
