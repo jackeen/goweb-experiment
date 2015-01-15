@@ -43,6 +43,13 @@ project: atomjs
 		},
 		getBasePath: function (s) {
 			return s.replace(/[^\/]+\.js/, '');
+		},
+		getObjectKeys: function (o) {
+			var a = [];
+			for(var k in o) {
+				a.push(k);
+			}
+			return a;
 		}
 	};
 
@@ -92,6 +99,8 @@ project: atomjs
 		self.name = modName;
 		self.alias = '';
 		self.factory = null;
+		self.depsNum = 0;
+		self.loadedDepsNum = 0;
 
 		self.onload = function () {};
 
@@ -119,34 +128,36 @@ project: atomjs
 
 			Fn.setCacheMap(self.name, self);
 
-			self.loadDeps(self.deps);
-
+			var allAlias = Utils.getObjectKeys(self.deps);
+			if(allAlias.length > 0) {
+				self.loadDeps(self.deps);
+			} else {
+				self.onload();
+			}
 		},
 
 		loadDeps: function (deps) {
 
 			var self = this;
-			var url = '';
 			var loader;
-			var num = 0;
-			var loadedNum = 0;
 			for(var alias in deps) {
 				loader = new ModuleLoader(deps[alias]);
 				loader.load();
 				loader.onload = function () {
-					loadedNum++;
-					if(num === loadedNum) {
-						self.onload()
+					self.loadedDepsNum++;
+					if(self.depsNum === self.loadedDepsNum) {
+						self.onload();
 					}
 				}
-				num++;
+				self.depsNum++;
 			}
-
 		},
 
 		depsLoaded: function () {
 
 		}
+
+
 
 	};
 
@@ -166,12 +177,6 @@ project: atomjs
 
 	};
 
-	w.require = function(deps, factory) {
-
-		
-
-	};
-
 	//init
 	function init() {
 
@@ -185,10 +190,9 @@ project: atomjs
 
 		var loader = new ModuleLoader(mainModName);
 		loader.onload = function () {
-			console.log(cacheMap);
+			console.log('atom-main: ', cacheMap);
 		};
 		loader.load();
-		
 	}
 
 	init();
