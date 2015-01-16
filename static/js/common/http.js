@@ -14,8 +14,9 @@ define({
 
 	function ajax(conf, onchange) {
 		
-		var xhr = new modules.XHR();//XMLHttpRequest(),
-			data = null;
+		//XMLHttpRequest()
+		var xhr = new modules.XHR();
+		var data = null;
 
 		if(conf.data) {
 			if(conf.dataType === 'json') {

@@ -20,11 +20,8 @@ project: atomjs
 	//
 	var runTime = {};
 
-	//storge loaded module object
+	//storage loaded module object
 	var moduleMap = {};
-
-	//
-	var loadingMap = {};
 
 	//
 	var moduleCache = null;
@@ -56,7 +53,7 @@ project: atomjs
 	var Fn = {
 		getModuleCache: function () {
 			var c = moduleCache;
-			moduleCache = null;
+			//moduleCache = null;
 			return c;
 		},
 		setModuleCache: function (v) {
@@ -73,6 +70,9 @@ project: atomjs
 		},
 		setCacheMap: function (k, v) {
 			cacheMap[k] = v;
+		},
+		delCacheMap: function (k) {
+			delete cacheMap[k];
 		}
 	};
 
@@ -89,8 +89,6 @@ project: atomjs
 		s.src = url;
 		d.body.appendChild(s);
 	}
-
-
 
 	function ModuleLoader(modName) {
 
@@ -113,6 +111,7 @@ project: atomjs
 			var self = this;
 			var name = self.name;
 			var url = Utils.getJSIntactURL(name);
+
 			addScript(url, {}, function () {
 				self.loaded.call(self, this);
 			});
@@ -132,7 +131,7 @@ project: atomjs
 			if(allAlias.length > 0) {
 				self.loadDeps(self.deps);
 			} else {
-				self.onload();
+				self.depsLoaded({});
 			}
 		},
 
@@ -140,28 +139,48 @@ project: atomjs
 
 			var self = this;
 			var loader;
+
 			for(var alias in deps) {
+
 				loader = new ModuleLoader(deps[alias]);
 				loader.load();
-				loader.onload = function () {
+
+				loader.onload = function (m) {
+					
 					self.loadedDepsNum++;
 					if(self.depsNum === self.loadedDepsNum) {
-						self.onload();
+						self.depsLoaded(m);
 					}
+
 				}
+
 				self.depsNum++;
+
 			}
 		},
 
-		depsLoaded: function () {
+		depsLoaded: function (m) {
+			
+			var self = this,
+				deps = this.deps,
+				modules = {},
+				moduleName,
+				module;
 
+			for(var alias in deps) {
+
+				moduleName = deps[alias];
+				module = Fn.getCacheMap(moduleName).factory(runTime, m);
+				Fn.setModuleMap(moduleName, module);
+				Fn.delCacheMap(moduleName);
+				modules[alias] = module;
+			
+			}
+			
+			self.onload(modules);
 		}
 
-
-
 	};
-
-	
 
 	w.define = function(deps, factory) {
 		
@@ -189,8 +208,10 @@ project: atomjs
 		config.basePath = Utils.getBasePath(selfUrl);
 
 		var loader = new ModuleLoader(mainModName);
-		loader.onload = function () {
-			console.log('atom-main: ', cacheMap);
+		loader.onload = function (modules) {
+			var moduleName = this.name;
+			Fn.getCacheMap(moduleName).factory(runTime, modules);
+			Fn.delCacheMap(moduleName);
 		};
 		loader.load();
 	}
@@ -200,6 +221,5 @@ project: atomjs
 	//debug
 	w.moduleMap = moduleMap;
 	w.cacheMap = cacheMap;
-	w.loadingMap = loadingMap;
 
 })(window);
