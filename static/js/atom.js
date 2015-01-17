@@ -69,23 +69,38 @@ project: atomjs
 		}
 	};
 
-	function addScript(url, attr, loaded) {
+
+	//
+	var isLoading = false;
+	var loadingLoop = [];
+
+	function addScript(url, loaded) {
+
+		if(isLoading) {
+			loadingLoop.push({
+				url: url,
+				loaded: loaded
+			});
+			return;
+		}
+
+		isLoading = true;
 
 		var s = d.createElement("script");
 		s.type = "text/javascript";
 
-		for(var k in attr) {
-			s.setAttribute(k, attr[k]);
-		}
-
 		console.log(url);
-		s.onload = loaded;
-		/*s.onreadystatechange = function () {
+		//s.onload = loaded;
+
+		s.onreadystatechange = function () {
 			var r = s.readyState;
 			if(r === 'loaded' || r === 'complete') {
+				isLoading = false;
 				loaded(s);
+				var loo = loadingLoop.shift();
+				if(loo) addScript(loo.url, loo.loaded);
 			}
-		}*/
+		}
 
 		s.src = url;
 		d.body.appendChild(s);
@@ -112,7 +127,7 @@ project: atomjs
 			var name = self.name;
 			var url = Utils.getJSIntactURL(name);
 
-			new addScript(url, {}, function () {
+			addScript(url, function () {
 				self.loaded.call(self, this);
 			});
 
@@ -177,7 +192,8 @@ project: atomjs
 				Fn.setModuleMap(moduleName, module);
 				Fn.delCacheMap(moduleName);
 				modules[alias[i]] = module;
-			
+				
+				//console.log(moduleName, module);
 			}
 			
 			self.onload(modules);

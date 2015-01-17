@@ -4,6 +4,8 @@ define({
 
 }, function(global, modules){
 
+	console.log('http: ', modules);
+
 	function getAjaxData(obj) {
 		var s = '';
 		for(var i in obj) {
