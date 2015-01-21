@@ -22,7 +22,7 @@ func (self *Handler) Init(dbc *MDBC) {
 func (self *Handler) Index(req *REQ, res *RES) {
 
 	var postList []Post
-	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
+	self.post.Select(self.dbc, Selector{}, "createtime", 0, 10, &postList)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",
