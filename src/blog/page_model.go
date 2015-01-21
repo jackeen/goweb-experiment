@@ -1,7 +1,8 @@
 package main
 
 type HeadContent struct {
-	PageTitle string
+	PageTitle  string
+	StaticHost string
 }
 
 type EntryPageData struct {

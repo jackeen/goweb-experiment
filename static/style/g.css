@@ -1,4 +1,12 @@
 /*global css*/
 body{
-	
+	padding: 0;
+	margin: 0;
+	font-size: 1em;
+}
+
+footer{
+	width: 100%;
+	line-height: 24px;
+	background-color: #efefef;
 }

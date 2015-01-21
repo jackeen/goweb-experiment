@@ -41,8 +41,8 @@ version: 0.1
 			var u = navigator.userAgent;
 			var b = {}, version, name, mb;
 			var ie = /(MSIE) ([\d.]+)/;
-			var h5 = /(Chrome|Safari|Opera|Firefox)\/([\d.]+)/;
-			mb = u.match(h5) || u.match(ie);
+			var other = /(Chrome|Safari|Opera|Firefox)\/([\d.]+)/;
+			mb = u.match(other) || u.match(ie);
 			name = mb[1];
 			version = parseInt(mb[2], 10);
 			b[name] = version;
@@ -81,9 +81,7 @@ version: 0.1
 			var s = d.createElement("script");
 			s.type = "text/javascript";
 
-			s.onload = function () {
-				loaded(s);
-			};
+			s.onload = loaded;
 
 			s.src = url;
 			d.body.appendChild(s);
@@ -110,7 +108,7 @@ version: 0.1
 				var r = s.readyState;
 				if(r === 'loaded' || r === 'complete') {
 					self.isLoading = false;
-					loaded(s);
+					loaded.call(this);
 					var loo = self.loadingLoop.shift();
 					if(loo) self.addScript(loo.url, loo.loaded);
 				}
@@ -149,13 +147,13 @@ version: 0.1
 			var name = self.name;
 			var url = Utils.getJSIntactURL(name);
 
-			ScriptLoader.addScript(url, function (target) {
-				self.selfReady(target);
+			ScriptLoader.addScript(url, function () {
+				self.selfReady();
 			});
 
 		},
 
-		selfReady: function (target) {
+		selfReady: function () {
 
 			var self = this;
 			var cache  = Fn.getModuleCache();

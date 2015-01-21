@@ -1,17 +1,13 @@
 define({
 
-	http: 'lib/http',
-	cookie: 'lib/cookie',
-	animation: 'lib/animation'
+	http: 'lib/http'
 
 }, function(global, modules){
 
-	console.log('login: ', modules);
-
 	var http = modules.http;
 	
-	var f = document.forms['login'],
-		btn = f['submit'],
+	var f = document.forms['addpost'],
+		btn = f['save'],
 		url = f.action;
 
 	btn.onclick = function(e) {
@@ -19,10 +15,16 @@ define({
 		var f = this.form;
 
 		http.post(url, {
-			user: f['user'].value,
-			pass: f['pass'].value
+
+			title: f['title'].value,
+			content: f['content'].value,
+			//allowcomment: 'allow',
+			draft: 'xx'
+
 		}, function(res) {
+
 			console.log(res);
+			
 		});
 	};
 

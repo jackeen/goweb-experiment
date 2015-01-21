@@ -130,7 +130,7 @@ func (self *PostService) Insert(dbc *MDBC, p *Post) {
 		Tags:         p.Tags,
 		CreateTime:   currentTime,
 		LastEditTime: currentTime,
-		EditState:    p.EditState,
+		Draft:        p.Draft,
 		AllowComment: p.AllowComment,
 		CommentNum:   0,
 		CommentIncId: 0,

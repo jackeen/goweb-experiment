@@ -1,10 +1,7 @@
 {{define "login"}}
-<!DOCTYPE html>
-<html>
-<head>
-	{{template "headContent" .HeadContent}}
-</head>
-<body>
+
+{{template "headContent" .}}
+
 <form action="/json/login" method="post" name="login">
 	<fieldset>
 		<span>username:</span>
@@ -17,6 +14,7 @@
 	</fieldset>
 </form>
 <script type="text/javascript" src="{{attr .StaticHost}}/js/atom.js" data-main="blog/longin"></script>
-</body>
-</html>
+
+{{template "footer"}}
+
 {{end}}

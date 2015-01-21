@@ -41,7 +41,8 @@ func (self *Admin) home(req *REQ, res *RES) {
 func (self *Admin) addPost(req *REQ, res *RES) {
 
 	d := map[string]interface{}{
-		"PageTitle": "add post",
+		"PageTitle":  "add post",
+		"StaticHost": self.StaticHost,
 	}
 
 	res.Response = self.Tpl.Parse("addPost", d)

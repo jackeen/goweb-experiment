@@ -25,8 +25,9 @@ func (self *Handler) Index(req *REQ, res *RES) {
 	self.post.Select(self.dbc, Selector{}, "id", 0, 10, &postList)
 
 	d := map[string]interface{}{
-		"PageTitle": "home",
-		"PostList":  postList,
+		"PageTitle":  "home",
+		"StaticHost": self.StaticHost,
+		"PostList":   postList,
 	}
 
 	res.Response = self.Tpl.Parse("index", d)
@@ -61,11 +62,9 @@ func (self *Handler) Date(req *REQ, res *RES) {
 
 func (self *Handler) Entry(req *REQ, res *RES) {
 
-	d := &EntryPageData{
-		HeadContent: HeadContent{
-			PageTitle: "~~login~~",
-		},
-		StaticHost: self.StaticHost,
+	d := map[string]interface{}{
+		"PageTitle":  "~~login~~",
+		"StaticHost": self.StaticHost,
 	}
 
 	res.Response = self.Tpl.Parse("login", d)

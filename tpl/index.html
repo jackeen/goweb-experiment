@@ -1,12 +1,13 @@
 {{define "index"}}
-<!DOCTYPE html>
-<html>
-<head>
-	{{template "headContent" .}}
-</head>
-<body>
-	<h1>this is home page </h1>
-	{{template "postList" .PostList}}
-</body>
-</html>
+
+{{template "headContent" .}}
+
+{{template "header"}}
+
+{{template "postList" .PostList}}
+
+{{template "sidebar"}}
+
+{{template "footer"}}
+
 {{end}}

@@ -22,7 +22,7 @@ type Post struct {
 	Tags         []string
 	CreateTime   time.Time
 	LastEditTime time.Time
-	EditState    bool
+	Draft        bool
 	AllowComment bool
 	CommentNum   int
 	CommentIncId int

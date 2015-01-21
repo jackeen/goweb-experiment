@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	//"log"
 )
 
 const (
@@ -55,13 +55,20 @@ func (self *JsonService) addPost(req *REQ, res *RES) map[string]interface{} {
 
 	title := req.GetFormValue("title")
 	content := req.GetFormValue("content")
-	//cate := req.GetFormValue("cate")
+	draft := req.GetFormValue("draft")
 
-	log.Println(title, content)
+	isDraft := false
+	if draft == "draft" {
+		isDraft = true
+	}
 
 	m := make(map[string]interface{})
-	//p := new(Post)
-	//self.postService.Insert(self.dbc, p)
+
+	p := new(Post)
+	p.Title = title
+	p.Content = content
+	p.Draft = isDraft
+	self.postService.Insert(self.dbc, p)
 
 	return m
 }
