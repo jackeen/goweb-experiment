@@ -12,6 +12,17 @@ func logErr(err error) {
 	}
 }
 
+type Selector bson.M
+
+type MDBCData struct {
+	TabName string
+	Data    interface{}
+	Sel     Selector
+	Sort    string
+	Offset  int
+	Limit   int
+}
+
 type MDBC struct {
 	Host string
 	User string
@@ -20,8 +31,6 @@ type MDBC struct {
 	S    *mgo.Session
 	DB   *mgo.Database
 }
-
-type Selector bson.M
 
 func (self *MDBC) GetDBRef(tab string, _id bson.ObjectId) mgo.DBRef {
 	ref := mgo.DBRef{
@@ -36,7 +45,7 @@ func (self *MDBC) Init() {
 	dbQuery := "mongodb://" + self.User + ":" + self.Pass + "@" + self.Host + "/" + self.Name
 	s, err := mgo.Dial(dbQuery)
 	if err != nil {
-		panic(err)
+		log.Println("mongodb: ", err)
 	}
 
 	self.S = s
