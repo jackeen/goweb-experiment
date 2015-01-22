@@ -14,15 +14,6 @@ func logErr(err error) {
 
 type Selector bson.M
 
-type MDBCData struct {
-	TabName string
-	Data    interface{}
-	Sel     Selector
-	Sort    string
-	Offset  int
-	Limit   int
-}
-
 type MDBC struct {
 	Host string
 	User string
