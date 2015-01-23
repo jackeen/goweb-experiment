@@ -19,8 +19,12 @@ type JsonService struct {
 func (self *JsonService) Init(dbc *MDBC, s *Session) {
 	self.session = s
 	self.dbc = dbc
-	self.postService = &PostService{}
-	self.cateService = &CateService{}
+	self.postService = &PostService{
+		DBC: dbc,
+	}
+	self.cateService = &CateService{
+		DBC: dbc,
+	}
 }
 
 func (self *JsonService) postInfo(req *REQ, res *RES) map[string]interface{} {
@@ -33,11 +37,11 @@ func (self *JsonService) postInfo(req *REQ, res *RES) map[string]interface{} {
 
 	if t != "" {
 
-		sel := Selector{
+		sel := BSONM{
 			"title": t,
 		}
 
-		self.postService.SelectOne(self.dbc, sel, &p)
+		self.postService.SelectOne(sel, &p)
 
 		jsonMap = map[string]interface{}{
 			"title":      p.Title,
@@ -68,7 +72,7 @@ func (self *JsonService) addPost(req *REQ, res *RES) map[string]interface{} {
 	p.Title = title
 	p.Content = content
 	p.Draft = isDraft
-	self.postService.Insert(self.dbc, p)
+	self.postService.Insert(p)
 
 	return m
 }
@@ -90,7 +94,7 @@ func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
 	}
 
 	uc := &UserService{}
-	uc.LoginSelect(self.dbc, u, p, user)
+	uc.LoginSelect(u, p, user)
 
 	if user.Name == "" {
 		m["success"] = false

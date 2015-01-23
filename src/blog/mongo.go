@@ -12,7 +12,16 @@ func logErr(err error) {
 	}
 }
 
-type Selector bson.M
+type BSONM bson.M
+
+type SelectData struct {
+	Tab   string
+	Sel   BSONM
+	Sort  string
+	Limit int
+	Res   interface{}
+	err   error
+}
 
 type MDBC struct {
 	Host string
@@ -50,7 +59,7 @@ func (self *MDBC) Insert(tab string, data interface{}) {
 	logErr(err)
 }
 
-func (self *MDBC) SelectOne(tab string, sel Selector, res interface{}) {
+func (self *MDBC) SelectOne(tab string, sel BSONM, res interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Find(sel).One(res)
@@ -61,50 +70,46 @@ func (self *MDBC) SelectArray() {
 
 }
 
-func (self *MDBC) Select(tab string, sel Selector, sort string, offset int, limit int, res interface{}) {
+func (self *MDBC) Select(sel *SelectData) {
 
-	c := self.DB.C(tab)
-	query := c.Find(sel)
-
-	if sort != "" {
-		query = query.Sort(sort)
-	}
-
-	query = query.Skip(offset).Limit(limit)
-
-	err := query.All(res)
+	c := self.DB.C(sel.Tab)
+	query := c.Find(sel.Sel)
+	query = query.Sort(sel.Sort)
+	query = query.Limit(sel.Limit)
+	err := query.All(sel.Res)
+	sel.err = err
 	logErr(err)
 }
 
-func (self *MDBC) UpdateSet(tab string, sel Selector, data interface{}) {
+func (self *MDBC) UpdateSet(tab string, sel BSONM, data interface{}) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$set": data})
 	logErr(err)
 }
 
-func (self *MDBC) UpdateInc(tab string, sel Selector, name string, inc int) {
+func (self *MDBC) UpdateInc(tab string, sel BSONM, name string, inc int) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$inc": bson.M{name: inc}})
 	logErr(err)
 }
 
-func (self *MDBC) UpdatePush(tab string, sel Selector, colName string, data interface{}) {
+func (self *MDBC) UpdatePush(tab string, sel BSONM, name string, data interface{}) {
 
 	c := self.DB.C(tab)
-	err := c.Update(sel, bson.M{"$push": bson.M{colName: data}})
+	err := c.Update(sel, bson.M{"$push": bson.M{name: data}})
 	logErr(err)
 }
 
-func (self *MDBC) UpdatePull(tab string, sel Selector, colName string, colSel Selector) {
+func (self *MDBC) UpdatePull(tab string, sel BSONM, colName string, colSel BSONM) {
 
 	c := self.DB.C(tab)
 	err := c.Update(sel, bson.M{"$pull": bson.M{colName: colSel}})
 	logErr(err)
 }
 
-func (self *MDBC) Delete(tab string, sel Selector) {
+func (self *MDBC) Delete(tab string, sel BSONM) {
 
 	c := self.DB.C(tab)
 	err := c.Remove(sel)
