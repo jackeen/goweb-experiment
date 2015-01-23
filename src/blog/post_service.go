@@ -12,7 +12,7 @@ type PostService struct {
 
 func (self *PostService) Insert(p *Post) {
 
-	incId := self.incId(dbc, "post", 1).Post
+	incId := self.incId(self.DBC, "post", 1).Post
 	currentTime := time.Now()
 
 	data := &Post{

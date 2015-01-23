@@ -1,10 +1,5 @@
 {{define "addPost"}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	{{template "headContent" .}}
-</head>
-<body>
+{{template "headContent" .}}
 	<form action="/json/addpost" method="post" name="addpost">
 		
 		<input type="text" name="title" autofocus placeholder="title">
@@ -22,7 +17,6 @@
 		<input type="button" name="save">
 		
 	</form>
-	<script src="{{attr .StaticHost}}/js/atom.js" data-main="admin/addpost"></script>
-</body>
-</html>
+	<script src="{{attr .StaticHost}}/js/atom.js" data-main="blog/admin/addpost"></script>
+{{template "footer"}}
 {{end}}

@@ -1,0 +1,44 @@
+html, body{
+	height: 100%;
+}
+
+body{
+	font-size: 1em;
+}
+
+header{
+	height: 60px;
+	border-bottom: #ccc solid 1px;
+}
+
+header h1{
+	float: left;
+	padding: 0 10px;
+	color: #ccc;
+}
+
+.warp{
+	overflow: hidden;
+}
+
+.side-bar{
+	width: 200px;
+	padding: 10px;
+	float: left;
+}
+
+.content{
+	width: 800px;
+	float: left;
+}
+
+footer{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	line-height: 1em;
+	text-align: center;
+	font-size: .5em;
+	background-color: #efefef;
+	color: #ccc;
+}
