@@ -1,7 +1,15 @@
 {{define "home"}}
+<!DOCTYPE html>
+<html>
 {{template "headContent"}}
-{{template "header"}}
-{{template "sidebar"}}
-{{template "content"}}
-{{template "footer"}}
+<body>
+	{{template "header"}}
+	<div class="warp">
+		{{template "sidebar"}}
+		{{template "content"}}
+	</div>
+	{{template "footer"}}
+	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/home"></script>
+</body>
+</html>
 {{end}}

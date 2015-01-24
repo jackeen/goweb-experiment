@@ -1,4 +1,6 @@
 //global config 
-define({
-	basePath: '/js/'
-});
+/*config({
+	blogBase: '/js/tinyblog/blog',
+	blogAdminBase: '/js/tinyblog/admin'
+
+});*/

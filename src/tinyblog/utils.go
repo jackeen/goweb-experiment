@@ -1,12 +1,12 @@
 package main
 
-/*
 import (
-	//"fmt"
-	"json"
+	"encoding/json"
+	"os"
 )
 
-func ReadConfig(path string, byteLen int) (map[string]interface{}, error) {
+func LoadJson(path string, byteLen int) (map[string]interface{}, error) {
+
 	f, _ := os.Open(path)
 	defer f.Close()
 
@@ -19,6 +19,6 @@ func ReadConfig(path string, byteLen int) (map[string]interface{}, error) {
 	}
 	filebyte := b[:length]
 	err := json.Unmarshal(filebyte, &m)
+
 	return m, err
 }
-*/

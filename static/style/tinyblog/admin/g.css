@@ -8,6 +8,7 @@ body{
 
 header{
 	height: 60px;
+	margin-bottom: 10px;
 	border-bottom: #ccc solid 1px;
 }
 
@@ -22,15 +23,23 @@ header h1{
 }
 
 .side-bar{
+	box-sizing: border-box;
 	width: 200px;
 	padding: 10px;
+	margin-right: 10px;
+	border: #ccc 1px solid;
 	float: left;
 }
 
 .content{
-	width: 800px;
+	box-sizing: border-box;
+	width: calc(100% - 210px);
+	padding: 10px;
 	float: left;
+	border: #ccc 1px solid;
 }
+
+
 
 footer{
 	position: fixed;

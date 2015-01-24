@@ -55,7 +55,7 @@ func main() {
 	//cid := flag.Int("cid", 0, "cate select id")
 	//flag.Parse()
 
-	apppath, _ := exec.LookPath("blog")
+	apppath, _ := exec.LookPath("tinyblog")
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
 	tplDir := baseDir + "/tpl/tinyblog/"
