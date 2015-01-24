@@ -27,7 +27,7 @@ func (self *JsonService) Init(dbc *MDBC, s *Session) {
 	}
 }
 
-func (self *JsonService) postInfo(req *REQ, res *RES) map[string]interface{} {
+func (self *JsonService) getPost(req *REQ, res *RES) map[string]interface{} {
 	var (
 		p       Post
 		jsonMap map[string]interface{}
@@ -55,7 +55,7 @@ func (self *JsonService) postInfo(req *REQ, res *RES) map[string]interface{} {
 	return jsonMap
 }
 
-func (self *JsonService) addPost(req *REQ, res *RES) map[string]interface{} {
+func (self *JsonService) savePost(req *REQ, res *RES) map[string]interface{} {
 
 	title := req.GetFormValue("title")
 	content := req.GetFormValue("content")
@@ -138,10 +138,10 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 	)
 
 	switch req.PathParm.FileName {
-	case "post":
-		queryJson = self.postInfo(req, res)
-	case "addpost":
-		queryJson = self.addPost(req, res)
+	case "getpost":
+		queryJson = self.getPost(req, res)
+	case "savepost":
+		queryJson = self.savePost(req, res)
 	case "login":
 		queryJson = self.login(req, res)
 	default:
@@ -149,6 +149,5 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 	}
 
 	v, _ := json.Marshal(queryJson)
-	res.State = 200
 	res.Response = string(v)
 }

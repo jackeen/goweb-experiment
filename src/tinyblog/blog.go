@@ -58,7 +58,7 @@ func main() {
 	apppath, _ := exec.LookPath("blog")
 	syspath, _ := path.Split(apppath)
 	baseDir := strings.TrimRight(syspath, "bin/")
-	tplDir := baseDir + "/tpl/"
+	tplDir := baseDir + "/tpl/tinyblog/"
 	staticDir := baseDir + "/static/"
 
 	serverPort := "9090"
@@ -69,7 +69,7 @@ func main() {
 	serverAddress := serverIP + ":" + serverPort
 
 	tpl = new(TPL)
-	tpl.Pattern = tplDir + "*.html"
+	tpl.Pattern = tplDir + "blog/*.html"
 	adminTpl = new(TPL)
 	adminTpl.Pattern = tplDir + "admin/*.html"
 

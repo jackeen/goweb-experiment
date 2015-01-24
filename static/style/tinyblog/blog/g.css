@@ -1,0 +1,47 @@
+/*global css*/
+body{
+	font-size: 16px;
+}
+
+a{
+	color: #333;
+}
+
+header{
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 10px;
+	background-color: #fff;
+	border-bottom: #ccc 1px solid;
+}
+
+header h1{
+	float: left;
+	padding: 0 .5em;
+	font-size: 2em;
+	color: #ccc;
+}
+header nav{
+	float: left;
+}
+
+footer{
+	line-height: 1em;
+	background-color: #efefef;
+}
+
+.warp{
+	width: 1020px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.content{
+	width: 700px;
+	float: left;
+}
+
+.side-bar{
+	width: 200px;
+	float: right;
+}
