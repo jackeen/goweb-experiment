@@ -30,6 +30,9 @@ header h1{
 	border: #ccc 1px solid;
 	float: left;
 }
+.side-bar h3{
+	font-size: 1em;
+}
 
 .content{
 	box-sizing: border-box;
