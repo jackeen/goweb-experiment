@@ -1,3 +1,29 @@
 {{define "content"}}
-<div class="content">a</div>
+<div class="content">
+
+	<div class="add-post">
+		
+		<p>
+			<input type="text" name="title" class="post-name" autofocus placeholder="title">
+		</p>
+		<textarea name="content" cols="30" rows="10"></textarea>
+		<br/>
+
+		<input id="allowcomment" type="checkbox" name="allowcomment" value="allow">
+		<label for="allowcomment">allow comment</label>
+
+		<input id="draft" type="checkbox" name="draft" value="draft">
+		<label for="draft">draft</label>
+
+		<br/>
+		<button>save</button>
+			
+		
+	</div>
+
+
+
+
+
+</div>
 {{end}}

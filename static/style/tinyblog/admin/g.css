@@ -42,6 +42,17 @@ header h1{
 	border: #ccc 1px solid;
 }
 
+.add-post{
+
+}
+
+.add-post .post-name{
+	width: 30em;
+	height: 2em;
+	line-height: 2em;
+	padding: 0 10px;
+	font-size: 1.5em;
+}
 
 
 footer{

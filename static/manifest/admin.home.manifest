@@ -1,13 +1,14 @@
 CACHE MANIFEST
-#VERSION 0.2
+#VERSION 0.5
 
 CACHE:
 /admin/home
-
 /style/tinyblog/reset.css
 /style/tinyblog/admin/g.css
-
 /js/atom.js
 
 NETWORK:
 /json/*
+
+FALLBACK:
+
