@@ -1,0 +1,22 @@
+{{define "tpl_postForm"}}
+<div id="tpl_postForm">
+	<div class="post-form">
+		<p>
+			<input type="text" name="title" class="post-name" autofocus placeholder="">
+		</p>
+
+		<p>
+			<textarea name="content" class="post-content"></textarea>
+		</p>
+		
+		<p>
+			<input id="allowcomment" type="checkbox" name="allowcomment" value="allow">
+			<label for="allowcomment">allow comment</label>
+			<input id="draft" type="checkbox" name="draft" value="draft">
+			<label for="draft">draft</label>
+		</p>
+
+		<button>save</button>
+	</div>
+</div>
+{{end}}
