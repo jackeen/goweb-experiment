@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#VERSION 0.71
+#VERSION 0.7111
 
 CACHE:
 #/admin/home
@@ -8,7 +8,7 @@ CACHE:
 #/js/atom.js
 
 NETWORK:
-/admin/home
+#/admin/home
 /style/tinyblog/reset.css
 /style/tinyblog/admin/g.css
 /js/atom.js
