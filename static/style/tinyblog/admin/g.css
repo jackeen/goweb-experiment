@@ -74,21 +74,30 @@ body{
 	background-color: #fff;
 }
 .post-list li{
+	padding: 0.5em 0;
 	border-bottom: #efefef 1px solid;
 }
 .post-list li:last{
 	border-bottom: none;
 }
+.post-list h2{
+	line-height: 1.5em;
+}
 .post-list .tags{
 	overflow: hidden;
 }
+.post-list .tags b,
+.post-list .tags span{
+	float: left;
+	margin-right: 10px;
+}
 .post-list .tags span{
 	display: block;
-	padding: 0 5px;
-	margin-right: 10px;
-	float: left;
+	height: 1.4em;
+	line-height: 1.4em;
+	padding: 0 0.7em;
 	background-color: #efefef;
-	border-radius: 5px;
+	border-radius: 0.7em;
 }
 
 footer{

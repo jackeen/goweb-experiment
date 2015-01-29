@@ -7,14 +7,15 @@
 	{{template "header"}}
 	<div class="warp">
 		{{template "sidebar"}}
-		<div class="content">
-
-			{{template "tpl_postForm"}}
-			{{template "tpl_postList"}}
+		<div id="" class="content">
+			<p>loading...</p>			
 		</div>
 	</div>
 	{{template "footer"}}
-	<template></template>
+	
+	{{template "tpl_postForm"}}
+	{{template "tpl_postList"}}
+	
 	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/home"></script>
 </body>
 </html>

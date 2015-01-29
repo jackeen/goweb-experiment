@@ -12,6 +12,8 @@ NETWORK:
 /style/tinyblog/reset.css
 /style/tinyblog/admin/g.css
 /js/atom.js
+/js/lib/http.js
+/js/tinyblog/admin/home.js
 
 FALLBACK:
 
