@@ -21,6 +21,8 @@ func (self *Admin) Router(req *REQ, res *RES) {
 	switch req.PathParm.FileName {
 	case "home":
 		self.home(req, res)
+	case "addpost":
+		self.addPost(req, res)
 	default:
 		self.NotFound(req, res)
 	}
@@ -34,6 +36,15 @@ func (self *Admin) home(req *REQ, res *RES) {
 	}
 
 	res.Response = self.Tpl.Parse("home", d)
+}
+
+func (self *Admin) addPost(req *REQ, res *RES) {
+
+	d := map[string]interface{}{
+		"PageTitle": "add post",
+	}
+
+	res.Response = self.Tpl.Parse("add_post", d)
 }
 
 func (self *Admin) NotFound(req *REQ, res *RES) {

@@ -1,12 +1,11 @@
-{{define "tpl_postForm"}}
-<template id="tpl_postForm">
-<div class="post-form">
+{{define "m_post_form"}}
+<div id="postForm" class="post-form">
 	<p>
-		<input type="text" name="title" class="post-name" autofocus placeholder="">
+		<input type="text" id="title" class="post-name" autofocus placeholder="" autocomplete="off">
 	</p>
 
 	<p>
-		<textarea name="content" class="post-content"></textarea>
+		<textarea id="content" class="post-content"></textarea>
 	</p>
 	
 	<p>
@@ -16,7 +15,6 @@
 		<label for="draft">draft</label>
 	</p>
 
-	<button>save</button>
+	<button id="savebtn">save</button>
 </div>
-</template>
 {{end}}

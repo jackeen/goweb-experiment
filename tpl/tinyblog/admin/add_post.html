@@ -1,4 +1,4 @@
-{{define "home"}}
+{{define "add_post"}}
 <!DOCTYPE html>
 <html>
 {{template "m_head_content"}}
@@ -8,12 +8,12 @@
 		{{template "m_side_bar"}}
 		<div id="" class="content">
 
-			<p class="l-add-post"><a href="/admin/addpost">add post</a></p>
+			{{template "m_post_form"}}
 			
 		</div>
 	</div>
 	{{template "m_footer"}}
-	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/home"></script>
+	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/add_post"></script>
 </body>
 </html>
 {{end}}
