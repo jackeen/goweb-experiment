@@ -12,6 +12,23 @@ const (
 	CONFIG_TAB = "config"
 )
 
+const (
+	SaveSuccess  = "save success"
+	SaveFail     = "save fail"
+	SaveDataFail = "save data fail"
+)
+
+type ResMessage struct {
+	State   bool
+	Message string
+}
+
+type ResData struct {
+	State bool
+	Count int
+	Data  interface{}
+}
+
 //inc id num data I/O
 type NumService struct{}
 

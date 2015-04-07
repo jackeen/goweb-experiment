@@ -55,7 +55,7 @@ func (self *JsonService) getPost(req *REQ, res *RES) map[string]interface{} {
 	return jsonMap
 }
 
-func (self *JsonService) savePost(req *REQ, res *RES) map[string]interface{} {
+func (self *JsonService) savePost(req *REQ, res *RES) ResMessage {
 
 	title := req.GetFormValue("title")
 	content := req.GetFormValue("content")
@@ -66,20 +66,13 @@ func (self *JsonService) savePost(req *REQ, res *RES) map[string]interface{} {
 		isDraft = true
 	}
 
-	m := make(map[string]interface{})
+	p := new(Post)
+	p.Title = title
+	p.Content = content
+	p.Draft = isDraft
+	rs := self.postService.Insert(p)
 
-	if title == "" || content == "" {
-		m["success"] = false
-		m["message"] = "title or content is empty!"
-	} else {
-		p := new(Post)
-		p.Title = title
-		p.Content = content
-		p.Draft = isDraft
-		self.postService.Insert(p)
-	}
-
-	return m
+	return rs
 }
 
 func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {

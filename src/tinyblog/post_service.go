@@ -10,10 +10,18 @@ type PostService struct {
 	DBC *MDBC
 }
 
-func (self *PostService) Insert(p *Post) {
+func (self *PostService) Insert(p *Post) ResMessage {
 
 	incId := self.incId(self.DBC, "post", 1).Post
 	currentTime := time.Now()
+
+	rs := new(ResMessage)
+
+	if p.Title == "" || p.Content == "" {
+		rs.State = false
+		rs.Message = SaveDataFail
+		return rs
+	}
 
 	data := &Post{
 		Id_:          bson.NewObjectId(),
@@ -31,7 +39,18 @@ func (self *PostService) Insert(p *Post) {
 		CommentIncId: 0,
 	}
 
-	self.DBC.Insert(POST_TAB, data)
+	err := self.DBC.Insert(POST_TAB, data)
+
+	if err == nil {
+		rs.State = true
+		rs.Message = SaveSuccess
+	} else {
+		rs.State = false
+		rs.Message = err.Error()
+	}
+
+	return rs
+
 }
 
 func (self *PostService) Select(sel *SelectData) {
