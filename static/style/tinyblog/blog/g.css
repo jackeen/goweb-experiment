@@ -1,6 +1,6 @@
 /*global css*/
 body{
-	font-size: 16px;
+	
 }
 
 a{
@@ -16,7 +16,7 @@ header{
 
 header h1{
 	float: left;
-	padding: 0 .5em;
+	padding: 0 0.5em;
 	font-size: 1em;
 	color: #ccc;
 }
@@ -31,15 +31,20 @@ footer{
 
 .warp{
 	display: flex;
-	width: 1200px;
+	max-width: 50em;
 	margin: 0 auto;
 }
 
 .content{
 	flex: 4;
+	word-wrap: break-word;
 }
 
 .side-bar{
 	flex: 1;
 	background-color: #eee;
+}
+
+@media screen and (max-width: ) {
+
 }
