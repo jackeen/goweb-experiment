@@ -50,6 +50,15 @@ func (self *PostService) Insert(p *Post) ResMessage {
 
 }
 
+func (self *PostService) getList(sel *SelectData) {
+	q := self.C.Find().Sort(bson.M{"editTime": -1}).Limit(10)
+	err := q.All(sel.Res)
+}
+
+func (self *PostService) getListByUser(sel *SelectData) {
+	userName := sel.Condition["userName"]
+}
+
 func (self *PostService) Select(sel *SelectData) {
 
 	query := self.C.Find(sel.Sel)

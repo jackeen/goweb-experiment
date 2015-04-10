@@ -36,7 +36,7 @@ type SelectData struct {
 	Sort      string
 	Limit     int
 	Res       interface{}
-	err       error
+	Err       error
 }
 
 type MDBC struct {
