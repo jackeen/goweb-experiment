@@ -1,10 +1,11 @@
 package main
 
 import (
-	//"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
+//"labix.org/v2/mgo"
+//"labix.org/v2/mgo/bson"
 )
 
+/*
 type CateService struct {
 	NumService
 	DBC *MDBC
@@ -35,3 +36,4 @@ func (self *CateService) Update(id int, data interface{}) {
 func (self *CateService) Delete(id int) {
 	self.DBC.Delete(CATE_TAB, BSONM{"id": id})
 }
+*/

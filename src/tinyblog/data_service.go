@@ -1,14 +1,16 @@
 package main
 
-import ()
+import (
+	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
+	"time"
+)
 
 const (
-	NUM_TAB    = "num"
 	POST_TAB   = "post"
 	CATE_TAB   = "cate"
 	USER_TAB   = "user"
 	TAG_TAB    = "tag"
-	NAV_TAB    = "nav"
 	CONFIG_TAB = "config"
 )
 
@@ -29,16 +31,20 @@ type ResData struct {
 	Data  interface{}
 }
 
-//inc id num data I/O
-type NumService struct{}
-
-func (self *NumService) Init(dbc *MDBC) {
-	dbc.Insert(NUM_TAB, &Num{-1, -1, -1, -1})
+type DataService struct {
+	DBC  *MDBC
+	Post *PostService
+	User *UserService
 }
 
-func (self *NumService) incId(dbc *MDBC, colName string, i int) *Num {
-	res := &Num{}
-	dbc.UpdateInc(NUM_TAB, nil, colName, i)
-	dbc.SelectOne(NUM_TAB, nil, res)
-	return res
+func (self *DataService) Init(dbc *MDBC) {
+	self.DBC = dbc
+	self.Post = &PostService{
+		DBC: dbc,
+		C:   dbc.DB(POST_TAB),
+	}
+	self.User = &UserService{
+		DBC: dbc,
+		C:   dbc.DB(USER_TAB),
+	}
 }

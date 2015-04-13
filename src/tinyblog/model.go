@@ -5,76 +5,55 @@ import (
 	"time"
 )
 
-type Num struct {
-	Post int
-	Cate int
-	Tag  int
-	User int
-}
-
 type Post struct {
 	Id_          bson.ObjectId `bson:"_id"`
-	Id           int
 	Title        string
 	Content      string
-	Author       int
-	Cate         int
+	Author       string
+	Cate         string
 	Tags         []string
 	CreateTime   time.Time
-	LastEditTime time.Time
-	Draft        bool
+	EditTime     time.Time
+	IsDraft      bool
 	AllowComment bool
-	CommentNum   int
-	CommentIncId int
 	Comment      []Comment
 }
 
 type Comment struct {
 	Id_        bson.ObjectId `bson:"_id"`
-	Id         int
 	Content    string
 	Auth       string
-	Email      string
-	host       string
 	Ip         string
-	Display    bool
-	ReplyId    int
+	IsDisplay  bool
 	CreateTime time.Time
 }
 
 type Cate struct {
-	Id_      bson.ObjectId `bson:"_id"`
-	Id       int
-	Name     string
-	Explain  string
-	ParentId int
+	Name    string
+	Level   int
+	Parent  string
+	Explain string
 }
 
 type Tag struct {
 	Name string
 }
 
+type Config struct {
+	HostName   string
+	Copyright  string
+	Explain    string
+	CreateTime time.Time
+	EditTime   time.Time
+}
+
 type User struct {
 	Id_        bson.ObjectId `bson:"_id"`
-	Id         int
 	Name       string
 	Pass       string
 	Nick       string
 	Email      string
-	Power      int
+	Face       string
+	PowerCode  int
 	CreateTime time.Time
-}
-
-type Nav struct {
-	Id         int
-	Name       string
-	CreateTime time.Time
-	EditTime   time.Time
-}
-
-type Config struct {
-	Host       string
-	Copyright  string
-	CreateTime time.Time
-	EditTime   time.Time
 }

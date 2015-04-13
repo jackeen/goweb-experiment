@@ -1,6 +1,7 @@
 package main
 
 import (
+	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"time"
 )
@@ -8,6 +9,7 @@ import (
 type PostService struct {
 	NumService
 	DBC *MDBC
+	C   *mgo.Collection
 }
 
 func (self *PostService) Insert(p *Post) ResMessage {
@@ -66,28 +68,23 @@ func (self *PostService) Update(postId int, data interface{}) {
 	self.DBC.UpdateSet(POST_TAB, BSONM{"id": postId}, data)
 }
 
-func (self *PostService) InsertComment(postId int, replyId int, content string) {
+func (self *PostService) InsertComment(postId int, content string) {
 
 	post := &Post{}
 	self.DBC.SelectOne(POST_TAB, BSONM{"id": postId}, post)
-	commentId := post.CommentIncId + 1
 
 	comment := &Comment{
-		Id_:        bson.NewObjectId(),
-		Id:         commentId,
 		Content:    content,
 		Auth:       "haha",
 		Email:      "e@qq.com",
 		host:       "",
 		Ip:         "",
 		Display:    true,
-		ReplyId:    replyId,
 		CreateTime: time.Now(),
 	}
 
 	self.DBC.UpdatePush(POST_TAB, BSONM{"id": postId}, "comment", comment)
-	self.DBC.UpdateInc(POST_TAB, BSONM{"id": postId}, "commentnum", 1)
-	self.DBC.UpdateInc(POST_TAB, BSONM{"id": postId}, "commentincid", 1)
+
 }
 
 func (self *PostService) deleteComment(postId int, commentId int) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"time"
 )
@@ -8,6 +9,7 @@ import (
 type UserService struct {
 	NumService
 	DBC *MDBC
+	C   *mgo.Collection
 }
 
 func (self *UserService) Insert(name string, pass string, nick string, email string, power int) {
