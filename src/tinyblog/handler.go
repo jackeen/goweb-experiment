@@ -8,19 +8,8 @@ import (
 type Handler struct {
 	Tpl        *TPL
 	StaticHost string
-	dbc        *MDBC
-	post       *PostService
-	cate       *CateService
-}
-
-func (self *Handler) Init(dbc *MDBC) {
-	self.dbc = dbc
-	self.post = &PostService{
-		DBC: dbc,
-	}
-	self.cate = &CateService{
-		DBC: dbc,
-	}
+	DS         *DataService
+	Session    *Session
 }
 
 func (self *Handler) Index(req *REQ, res *RES) {
@@ -32,7 +21,8 @@ func (self *Handler) Index(req *REQ, res *RES) {
 		Limit: 10,
 		Res:   &postList,
 	}
-	self.post.Select(selData)
+
+	self.DS.Post.Select(selData)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",

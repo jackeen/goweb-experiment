@@ -85,6 +85,9 @@ func main() {
 	}
 	dbc.Init()
 
+	ds := &DataService{}
+	ds.Init(dbc)
+
 	session = &Session{
 		Data: make(map[string]*SessionData),
 	}
@@ -92,18 +95,21 @@ func main() {
 	handler = &Handler{
 		Tpl:        tpl,
 		StaticHost: "",
+		DS:         ds,
+		Session:    session,
 	}
-	handler.Init(dbc)
 
-	jsonService = &JsonService{}
-	jsonService.Init(dbc, session)
+	jsonService = &JsonService{
+		Session: session,
+		DS:      ds,
+	}
 
 	admin = &Admin{
-		DBC:        dbc,
 		Tpl:        adminTpl,
 		StaticHost: "",
+		data:       ds,
+		Session:    session,
 	}
-	admin.Init(session)
 
 	moduleName = &ModuleName{
 		Home:  "",

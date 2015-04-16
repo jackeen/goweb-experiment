@@ -7,7 +7,6 @@ import (
 )
 
 type UserService struct {
-	NumService
 	DBC *MDBC
 	C   *mgo.Collection
 }
@@ -16,7 +15,6 @@ func (self *UserService) Insert(name string, pass string, nick string, email str
 
 	user := &User{
 		Id_:        bson.NewObjectId(),
-		Id:         self.incId(self.DBC, "user", 1).User,
 		Name:       name,
 		Pass:       pass,
 		Nick:       nick,

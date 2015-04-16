@@ -7,14 +7,12 @@ import (
 )
 
 type PostService struct {
-	NumService
 	DBC *MDBC
 	C   *mgo.Collection
 }
 
 func (self *PostService) Insert(p *Post) ResMessage {
 
-	incId := self.incId(self.DBC, "post", 1).Post
 	currentTime := time.Now()
 
 	rs := new(ResMessage)
@@ -27,18 +25,15 @@ func (self *PostService) Insert(p *Post) ResMessage {
 
 	data := &Post{
 		Id_:          bson.NewObjectId(),
-		Id:           incId,
 		Title:        p.Title,
 		Content:      p.Content,
 		Author:       p.Author,
 		Cate:         p.Cate,
 		Tags:         p.Tags,
 		CreateTime:   currentTime,
-		LastEditTime: currentTime,
-		Draft:        p.Draft,
+		EditTime:     currentTime,
+		IsDraft:      p.Draft,
 		AllowComment: p.AllowComment,
-		CommentNum:   0,
-		CommentIncId: 0,
 	}
 
 	err := self.DBC.Insert(POST_TAB, data)

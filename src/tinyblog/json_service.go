@@ -6,21 +6,8 @@ import (
 )
 
 type JsonService struct {
-	session     *Session
-	dbc         *MDBC
-	postService *PostService
-	cateService *CateService
-}
-
-func (self *JsonService) Init(dbc *MDBC, s *Session) {
-	self.session = s
-	self.dbc = dbc
-	self.postService = &PostService{
-		DBC: dbc,
-	}
-	self.cateService = &CateService{
-		DBC: dbc,
-	}
+	Session *Session
+	DS      *DataService
 }
 
 func (self *JsonService) getPost(req *REQ, res *RES) map[string]interface{} {

@@ -9,11 +9,7 @@ type Admin struct {
 	DBC        *MDBC
 	Tpl        *TPL
 	StaticHost string
-	session    *Session
-}
-
-func (self *Admin) Init(s *Session) {
-	self.session = s
+	Session    *Session
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {
