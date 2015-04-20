@@ -10,6 +10,7 @@ type Admin struct {
 	Tpl        *TPL
 	StaticHost string
 	Session    *Session
+	DS         *DataService
 }
 
 func (self *Admin) Router(req *REQ, res *RES) {

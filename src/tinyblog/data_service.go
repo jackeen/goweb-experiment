@@ -1,9 +1,9 @@
 package main
 
 import (
-//"labix.org/v2/mgo"
-//"labix.org/v2/mgo/bson"
-//"time"
+	//"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
+	//"time"
 )
 
 const (
@@ -29,6 +29,36 @@ type ResData struct {
 	State bool
 	Count int
 	Data  interface{}
+}
+
+type SelectData struct {
+	Condition map[string]interface{}
+	Sort      string
+	Limit     int
+	Res       interface{}
+	err       error
+}
+
+type MDBC struct {
+	Host string
+	User string
+	Pass string
+	Name string
+	S    *mgo.Session
+	DB   *mgo.Database
+}
+
+func (self *MDBC) Init() {
+
+	dbQuery := "mongodb://" + self.User + ":" + self.Pass + "@" + self.Host + "/" + self.Name
+
+	s, err := mgo.Dial(dbQuery)
+	if err != nil {
+		panic(err)
+	}
+
+	self.S = s
+	self.DB = s.DB(self.Name)
 }
 
 type DataService struct {

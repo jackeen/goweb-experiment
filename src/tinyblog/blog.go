@@ -13,6 +13,7 @@ const (
 )
 
 var (
+	ds          *DataService
 	session     *Session
 	handler     *Handler
 	jsonService *JsonService
@@ -85,7 +86,7 @@ func main() {
 	}
 	dbc.Init()
 
-	ds := &DataService{}
+	ds = &DataService{}
 	ds.Init(dbc)
 
 	session = &Session{
@@ -107,8 +108,8 @@ func main() {
 	admin = &Admin{
 		Tpl:        adminTpl,
 		StaticHost: "",
-		data:       ds,
 		Session:    session,
+		DS:         ds,
 	}
 
 	moduleName = &ModuleName{

@@ -36,7 +36,7 @@ func (self *PostService) Insert(p *Post) ResMessage {
 		AllowComment: p.AllowComment,
 	}
 
-	err := self.DBC.Insert(POST_TAB, data)
+	err := self.C.Insert(data)
 
 	if err == nil {
 		rs.State = true
@@ -51,8 +51,14 @@ func (self *PostService) Insert(p *Post) ResMessage {
 }
 
 func (self *PostService) Select(sel *SelectData) {
-	sel.Tab = POST_TAB
-	self.DBC.Select(sel)
+
+	query := self.C.Find(sel.Sel)
+	query = query.Sort(sel.Sort)
+	query = query.Limit(sel.Limit)
+	err := query.All(sel.Res)
+	sel.err = err
+	logErr(err)
+	return err
 }
 
 func (self *PostService) SelectOne(sel BSONM, res *Post) {

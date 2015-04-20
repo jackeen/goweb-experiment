@@ -53,7 +53,7 @@ func (self *JsonService) savePost(req *REQ, res *RES) ResMessage {
 	p.Title = title
 	p.Content = content
 	p.Draft = isDraft
-	rs := self.postService.Insert(p)
+	rs := self.DS.Post.Insert(p)
 
 	return rs
 }
