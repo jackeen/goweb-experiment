@@ -22,7 +22,7 @@ func (self *Handler) Index(req *REQ, res *RES) {
 		Res:   &postList,
 	}
 
-	self.DS.Post.Select(selData)
+	self.DS.Post.getList(selData)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",
@@ -35,14 +35,16 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 func (self *Handler) Post(req *REQ, res *RES) {
 
-	var p Post
+	/*var p Post
 	sel := BSONM{
 		"title": req.PathParm.FileName,
 	}
 
 	self.post.SelectOne(sel, &p)
 
-	res.Response = self.Tpl.Parse("post", p)
+	res.Response = self.Tpl.Parse("post", p)*/
+
+	res.Response = "post info"
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {

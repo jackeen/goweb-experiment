@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	//"log"
+//"encoding/json"
+//"log"
 )
 
 type JsonService struct {
@@ -10,6 +10,7 @@ type JsonService struct {
 	DS      *DataService
 }
 
+/*
 func (self *JsonService) getPost(req *REQ, res *RES) map[string]interface{} {
 	var (
 		p       Post
@@ -111,10 +112,10 @@ func (self *JsonService) errorQuery() map[string]interface{} {
 	}
 	return err
 }
-
+*/
 func (self *JsonService) GetJson(req *REQ, res *RES) {
 
-	var (
+	/*var (
 		queryJson map[string]interface{}
 	)
 
@@ -130,5 +131,7 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 	}
 
 	v, _ := json.Marshal(queryJson)
-	res.Response = string(v)
+	res.Response = string(v)*/
+
+	res.Response = "json"
 }

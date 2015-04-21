@@ -1,8 +1,8 @@
 package main
 
 import (
-	//"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
+	"labix.org/v2/mgo"
+	//"labix.org/v2/mgo/bson"
 	//"time"
 )
 
@@ -71,10 +71,10 @@ func (self *DataService) Init(dbc *MDBC) {
 	self.DBC = dbc
 	self.Post = &PostService{
 		DBC: dbc,
-		C:   dbc.DB(POST_TAB),
+		C:   dbc.DB.C(POST_TAB),
 	}
 	self.User = &UserService{
 		DBC: dbc,
-		C:   dbc.DB(USER_TAB),
+		C:   dbc.DB.C(USER_TAB),
 	}
 }

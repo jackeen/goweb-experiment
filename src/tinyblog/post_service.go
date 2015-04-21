@@ -11,7 +11,7 @@ type PostService struct {
 	C   *mgo.Collection
 }
 
-func (self *PostService) Insert(p *Post) ResMessage {
+func (self *PostService) Insert(p *Post) *ResMessage {
 
 	currentTime := time.Now()
 
@@ -32,7 +32,7 @@ func (self *PostService) Insert(p *Post) ResMessage {
 		Tags:         p.Tags,
 		CreateTime:   currentTime,
 		EditTime:     currentTime,
-		IsDraft:      p.Draft,
+		IsDraft:      p.IsDraft,
 		AllowComment: p.AllowComment,
 	}
 
@@ -51,14 +51,17 @@ func (self *PostService) Insert(p *Post) ResMessage {
 }
 
 func (self *PostService) getList(sel *SelectData) {
-	q := self.C.Find().Sort(bson.M{"editTime": -1}).Limit(10)
+	q := self.C.Find(nil)
+	q = q.Sort(sel.Sort).Limit(sel.Limit)
 	err := q.All(sel.Res)
+	sel.Err = err
 }
 
 func (self *PostService) getListByUser(sel *SelectData) {
-	userName := sel.Condition["userName"]
+	//userName := sel.Condition["userName"]
 }
 
+/*
 func (self *PostService) Select(sel *SelectData) {
 
 	query := self.C.Find(sel.Sel)
@@ -68,8 +71,8 @@ func (self *PostService) Select(sel *SelectData) {
 	sel.err = err
 	logErr(err)
 	return err
-}
-
+}*/
+/*
 func (self *PostService) SelectOne(sel BSONM, res *Post) {
 	self.DBC.SelectOne(POST_TAB, sel, res)
 }
@@ -104,7 +107,7 @@ func (self *PostService) deleteComment(postId int, commentId int) {
 	self.DBC.UpdatePull(POST_TAB, postSel, "comment", commentSel)
 	self.DBC.UpdateInc(POST_TAB, BSONM{"id": postId}, "commentnum", -1)
 }
-
+*/
 //func (self *PostService) updateComment( postId int, commentId int, BSONM sel) {
 
 //db.shcool.update({ "_id" : 2, "students.name" : "ajax"},{"$inc" : {"students.0.age" : 1} });

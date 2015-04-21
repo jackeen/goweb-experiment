@@ -2,8 +2,8 @@ package main
 
 import (
 	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
-	"time"
+	//"labix.org/v2/mgo/bson"
+	//"time"
 )
 
 type UserService struct {
@@ -13,18 +13,19 @@ type UserService struct {
 
 func (self *UserService) Insert(name string, pass string, nick string, email string, power int) {
 
-	user := &User{
+	/*user := &User{
 		Id_:        bson.NewObjectId(),
 		Name:       name,
 		Pass:       pass,
 		Nick:       nick,
 		Email:      email,
-		Power:      power,
+		PowerCode:  power,
 		CreateTime: time.Now(),
 	}
-	self.DBC.Insert(USER_TAB, user)
+	err := self.C.Insert(user)*/
 }
 
+/*
 func (self *UserService) Update(sel BSONM, data interface{}) {
 	self.DBC.UpdateSet(USER_TAB, sel, data)
 }
@@ -54,3 +55,4 @@ func (self *UserService) HasUser(name string) bool {
 		return true
 	}
 }
+*/
