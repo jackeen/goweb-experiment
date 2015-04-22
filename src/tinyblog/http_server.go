@@ -122,9 +122,9 @@ func MuxServe(conf *HttpConfig, h RouterFunc) {
 	styleh := http.StripPrefix("/style/", http.FileServer(styleDir))
 	http.Handle("/style/", styleh)
 
-	manifestDir := http.Dir(conf.StaticRootDir + "manifest/")
+	/*manifestDir := http.Dir(conf.StaticRootDir + "manifest/")
 	manifesth := http.StripPrefix("/manifest/", http.FileServer(manifestDir))
-	http.Handle("/manifest/", manifesth)
+	http.Handle("/manifest/", manifesth)*/
 
 	http.ListenAndServe(conf.Address, nil)
 }

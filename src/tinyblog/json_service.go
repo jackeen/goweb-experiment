@@ -1,45 +1,44 @@
 package main
 
 import (
-//"encoding/json"
-//"log"
+	"encoding/json"
+
+	//"log"
 )
+
+type jsonMap map[string]interface{}
 
 type JsonService struct {
 	Session *Session
 	DS      *DataService
 }
 
-/*
-func (self *JsonService) getPost(req *REQ, res *RES) map[string]interface{} {
+func (self *JsonService) getPost(req *REQ, res *RES) jsonMap {
 	var (
-		p       Post
-		jsonMap map[string]interface{}
+		p *Post
+		m jsonMap
 	)
 
 	t := req.GetUrlOneValue("t")
 
 	if t != "" {
 
-		sel := BSONM{
-			"title": t,
-		}
+		p = &Post{}
+		self.DS.Post.GetOneByTitle(t, p)
 
-		self.postService.SelectOne(sel, &p)
-
-		jsonMap = map[string]interface{}{
+		m = jsonMap{
 			"title":      p.Title,
 			"content":    p.Content,
 			"createtime": p.CreateTime.Format(DateFormatStr),
 		}
 	} else {
-		jsonMap = self.errorQuery()
+		m = self.errorQuery()
 	}
 
-	return jsonMap
+	return m
 }
 
-func (self *JsonService) savePost(req *REQ, res *RES) ResMessage {
+func (self *JsonService) savePost(req *REQ, res *RES) jsonMap {
 
 	title := req.GetFormValue("title")
 	content := req.GetFormValue("content")
@@ -50,73 +49,77 @@ func (self *JsonService) savePost(req *REQ, res *RES) ResMessage {
 		isDraft = true
 	}
 
-	p := new(Post)
-	p.Title = title
-	p.Content = content
-	p.Draft = isDraft
-	rs := self.DS.Post.Insert(p)
+	rs := self.DS.Post.Insert(&Post{
+		Title:   title,
+		Content: content,
+		IsDraft: isDraft,
+	})
 
-	return rs
+	return jsonMap{
+		"state":   rs.State,
+		"message": rs.Message,
+	}
 }
 
+/*
 func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
 
-	u := req.GetFormValue("user")
-	p := req.GetFormValue("pass")
+		u := req.GetFormValue("user")
+		p := req.GetFormValue("pass")
 
-	user := &User{}
-	uuid := req.GetCookies()["uuid"]
+		user := &User{}
+		uuid := req.GetCookies()["uuid"]
 
-	m := make(map[string]interface{})
+		m := make(map[string]interface{})
 
-	if self.session.IsLogin(uuid) {
-		m["success"] = true
-		m["message"] = "ready!"
-		return m
-	}
-
-	uc := &UserService{}
-	uc.LoginSelect(u, p, user)
-
-	if user.Name == "" {
-		m["success"] = false
-		m["message"] = "user or pass error"
-	} else {
-		m["success"] = true
-		m["message"] = "welcome"
-
-		sd := &SessionData{
-			User:  user.Name,
-			Power: user.Power,
+		if self.session.IsLogin(uuid) {
+			m["success"] = true
+			m["message"] = "ready!"
+			return m
 		}
-		uuid = self.session.New(sd)
 
-		c := res.CreateCookie()
-		c.Name = "uuid"
-		c.Value = uuid
-		c.HttpOnly = true
-		c.Path = "/"
-		res.SetCookie(c)
-	}
-	return m
-}
+		uc := &UserService{}
+		uc.LoginSelect(u, p, user)
+
+		if user.Name == "" {
+			m["success"] = false
+			m["message"] = "user or pass error"
+		} else {
+			m["success"] = true
+			m["message"] = "welcome"
+
+			sd := &SessionData{
+				User:  user.Name,
+				Power: user.Power,
+			}
+			uuid = self.session.New(sd)
+
+			c := res.CreateCookie()
+			c.Name = "uuid"
+			c.Value = uuid
+			c.HttpOnly = true
+			c.Path = "/"
+			res.SetCookie(c)
+		}
+		return m
+}*/
 
 func (self *JsonService) logout() {
 
 }
 
-func (self *JsonService) errorQuery() map[string]interface{} {
-	err := map[string]interface{}{
+func (self *JsonService) errorQuery() jsonMap {
+	err := jsonMap{
 		"success": false,
 		"message": "not found",
 	}
 	return err
 }
-*/
+
 func (self *JsonService) GetJson(req *REQ, res *RES) {
 
-	/*var (
-		queryJson map[string]interface{}
+	var (
+		queryJson jsonMap
 	)
 
 	switch req.PathParm.FileName {
@@ -124,14 +127,13 @@ func (self *JsonService) GetJson(req *REQ, res *RES) {
 		queryJson = self.getPost(req, res)
 	case "savepost":
 		queryJson = self.savePost(req, res)
-	case "login":
-		queryJson = self.login(req, res)
+	//case "login":
+	//	queryJson = self.login(req, res)
 	default:
 		queryJson = self.errorQuery()
 	}
 
 	v, _ := json.Marshal(queryJson)
-	res.Response = string(v)*/
+	res.Response = string(v)
 
-	res.Response = "json"
 }

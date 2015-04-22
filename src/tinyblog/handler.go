@@ -22,7 +22,7 @@ func (self *Handler) Index(req *REQ, res *RES) {
 		Res:   &postList,
 	}
 
-	self.DS.Post.getList(selData)
+	self.DS.Post.GetList(selData)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",

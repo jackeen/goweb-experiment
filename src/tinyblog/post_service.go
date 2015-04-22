@@ -50,32 +50,29 @@ func (self *PostService) Insert(p *Post) *ResMessage {
 
 }
 
-func (self *PostService) getList(sel *SelectData) {
-	q := self.C.Find(nil)
+func (self *PostService) GetOneByTitle(t string, p *Post) {
+	self.C.Find(bson.M{"title": t}).One(p)
+}
+
+func (self *PostService) Get(sel *SelectData, findSel bson.M) {
+	q := self.C.Find(findSel)
 	q = q.Sort(sel.Sort).Limit(sel.Limit)
 	err := q.All(sel.Res)
 	sel.Err = err
 }
 
-func (self *PostService) getListByUser(sel *SelectData) {
-	//userName := sel.Condition["userName"]
+func (self *PostService) GetList(sel *SelectData) {
+	self.Get(sel, nil)
+}
+
+func (self *PostService) GetListByAuthor(sel *SelectData) {
+	key := "author"
+	userName := sel.Condition[key]
+	self.Get(sel, bson.M{key: userName})
 }
 
 /*
-func (self *PostService) Select(sel *SelectData) {
 
-	query := self.C.Find(sel.Sel)
-	query = query.Sort(sel.Sort)
-	query = query.Limit(sel.Limit)
-	err := query.All(sel.Res)
-	sel.err = err
-	logErr(err)
-	return err
-}*/
-/*
-func (self *PostService) SelectOne(sel BSONM, res *Post) {
-	self.DBC.SelectOne(POST_TAB, sel, res)
-}
 
 func (self *PostService) Update(postId int, data interface{}) {
 	self.DBC.UpdateSet(POST_TAB, BSONM{"id": postId}, data)
