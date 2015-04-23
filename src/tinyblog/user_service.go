@@ -2,8 +2,8 @@ package main
 
 import (
 	"labix.org/v2/mgo"
-	//"labix.org/v2/mgo/bson"
-	//"time"
+	"labix.org/v2/mgo/bson"
+	"time"
 )
 
 type UserService struct {
@@ -11,18 +11,16 @@ type UserService struct {
 	C   *mgo.Collection
 }
 
-func (self *UserService) Insert(name string, pass string, nick string, email string, power int) {
+func (self *UserService) Save(user *User) *ResMessage {
 
-	/*user := &User{
-		Id_:        bson.NewObjectId(),
-		Name:       name,
-		Pass:       pass,
-		Nick:       nick,
-		Email:      email,
-		PowerCode:  power,
-		CreateTime: time.Now(),
-	}
-	err := self.C.Insert(user)*/
+	user.Id_ = bson.NewObjectId()
+	user.CreateTime = time.Now()
+	err := self.C.Insert(user)
+	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
+}
+
+func (self *UserService) GetList(sel *SelectData) {
+
 }
 
 /*

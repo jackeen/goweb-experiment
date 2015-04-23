@@ -11,43 +11,21 @@ type PostService struct {
 	C   *mgo.Collection
 }
 
-func (self *PostService) Insert(p *Post) *ResMessage {
+func (self *PostService) Save(p *Post) *ResMessage {
 
 	currentTime := time.Now()
 
-	rs := new(ResMessage)
-
 	if p.Title == "" || p.Content == "" {
-		rs.State = false
-		rs.Message = SaveDataFail
-		return rs
+		return getUserResMessage(false, REQUIRED_DEFAULT, POST_MODE_CODE)
 	}
 
-	data := &Post{
-		Id_:          bson.NewObjectId(),
-		Title:        p.Title,
-		Content:      p.Content,
-		Author:       p.Author,
-		Cate:         p.Cate,
-		Tags:         p.Tags,
-		CreateTime:   currentTime,
-		EditTime:     currentTime,
-		IsDraft:      p.IsDraft,
-		AllowComment: p.AllowComment,
-	}
+	p.Id_ = bson.NewObjectId()
+	p.CreateTime = currentTime
+	p.EditTime = currentTime
 
-	err := self.C.Insert(data)
+	err := self.C.Insert(p)
 
-	if err == nil {
-		rs.State = true
-		rs.Message = SaveSuccess
-	} else {
-		rs.State = false
-		rs.Message = err.Error()
-	}
-
-	return rs
-
+	return getResMessage(err, SAVE_SUCCESS, POST_MODE_CODE)
 }
 
 func (self *PostService) GetOneByTitle(t string, p *Post) {

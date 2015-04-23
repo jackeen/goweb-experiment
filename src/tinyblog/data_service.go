@@ -15,19 +15,26 @@ const (
 )
 
 const (
-	SaveSuccess  = "save success"
-	SaveFail     = "save fail"
-	SaveDataFail = "save data fail"
+	SAVE_SUCCESS     = "save success"
+	SAVE_FAIL        = "save fail"
+	REQUIRED_DEFAULT = "required default"
+)
+
+const (
+	POST_MODE_CODE = 101
+	USER_MODE_CODE = 102
 )
 
 type ResMessage struct {
 	State   bool
+	Addr    int
 	Message string
 }
 
 type ResData struct {
 	State bool
 	Count int
+	Addr  int
 	Data  interface{}
 }
 
@@ -39,6 +46,29 @@ type SelectData struct {
 	Err       error
 }
 
+func getResMessage(err error, msg string, n int) *ResMessage {
+
+	rs := new(ResMessage)
+	if err == nil {
+		rs.State = true
+		rs.Message = msg
+	} else {
+		rs.State = false
+		rs.Message = err.Error()
+	}
+	rs.Addr = n
+	return rs
+}
+
+func getUserResMessage(s bool, msg string, n int) *ResMessage {
+	return &ResMessage{
+		State:   s,
+		Message: msg,
+		Addr:    n,
+	}
+}
+
+//mdb connection
 type MDBC struct {
 	Host string
 	User string

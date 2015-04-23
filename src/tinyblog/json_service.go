@@ -8,6 +8,13 @@ import (
 
 type jsonMap map[string]interface{}
 
+func getMsgMap(s bool, msg string) jsonMap {
+	return jsonMap{
+		"state":   s,
+		"message": msg,
+	}
+}
+
 type JsonService struct {
 	Session *Session
 	DS      *DataService
@@ -49,16 +56,13 @@ func (self *JsonService) savePost(req *REQ, res *RES) jsonMap {
 		isDraft = true
 	}
 
-	rs := self.DS.Post.Insert(&Post{
+	rs := self.DS.Post.Save(&Post{
 		Title:   title,
 		Content: content,
 		IsDraft: isDraft,
 	})
 
-	return jsonMap{
-		"state":   rs.State,
-		"message": rs.Message,
-	}
+	return getMsgMap(rs.State, rs.Message)
 }
 
 /*
