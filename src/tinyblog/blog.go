@@ -43,12 +43,12 @@ func router(req *REQ, res *RES) {
 		handler.Tag(req, res)
 	case moduleName.Date:
 		handler.Date(req, res)
-	case moduleName.Entry:
-		handler.Entry(req, res)
 	case moduleName.Json:
 		jsonService.GetJson(req, res)
 	case moduleName.Admin:
 		admin.Router(req, res)
+	case moduleName.Entry:
+		handler.Entry(req, res)
 	default:
 		handler.NotFind(req, res)
 	}
@@ -86,12 +86,12 @@ func main() {
 	}
 	dbc.Init()
 
-	ds = &DataService{}
-	ds.Init(dbc)
-
 	session = &Session{
 		Data: make(map[string]*SessionData),
 	}
+
+	ds = &DataService{}
+	ds.Init(dbc, session)
 
 	handler = &Handler{
 		Tpl:        tpl,

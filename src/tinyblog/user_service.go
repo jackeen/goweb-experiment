@@ -9,6 +9,7 @@ import (
 type UserService struct {
 	DBC *MDBC
 	C   *mgo.Collection
+	S   *Session
 }
 
 func (self *UserService) Save(user *User) *ResMessage {
@@ -16,11 +17,21 @@ func (self *UserService) Save(user *User) *ResMessage {
 	user.Id_ = bson.NewObjectId()
 	user.CreateTime = time.Now()
 	err := self.C.Insert(user)
+
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
 }
 
 func (self *UserService) GetList(sel *SelectData) {
 
+}
+
+func (self *UserService) Login(sel *SelectData) {
+
+	n := sel.Condition["name"]
+	p := sel.Condition["pass"]
+
+	q := self.C.Find(bson.M{"name": n, "pass": p})
+	err := q.One(sel.Err)
 }
 
 /*

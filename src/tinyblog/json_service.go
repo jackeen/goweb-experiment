@@ -108,10 +108,6 @@ func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
 		return m
 }*/
 
-func (self *JsonService) logout() {
-
-}
-
 func (self *JsonService) errorQuery() jsonMap {
 	err := jsonMap{
 		"success": false,

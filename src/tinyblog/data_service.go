@@ -97,14 +97,16 @@ type DataService struct {
 	User *UserService
 }
 
-func (self *DataService) Init(dbc *MDBC) {
+func (self *DataService) Init(dbc *MDBC, s *Session) {
 	self.DBC = dbc
 	self.Post = &PostService{
 		DBC: dbc,
+		S:   s,
 		C:   dbc.DB.C(POST_TAB),
 	}
 	self.User = &UserService{
 		DBC: dbc,
+		S:   s,
 		C:   dbc.DB.C(USER_TAB),
 	}
 }
