@@ -21,17 +21,19 @@ func (self *UserService) Save(user *User) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
 }
 
-func (self *UserService) GetList(sel *SelectData) {
-
+func (self *UserService) GetList(sel *SelectData) ([]User, error) {
+	var ul = make([]User, sel.Limit)
+	q := self.C.Find(sel.Condition)
+	err := q.All(ul)
+	return ul, err
 }
 
-func (self *UserService) Login(sel *SelectData) {
+func (self *UserService) GetOne(sel *SelectData) (*User, error) {
 
-	n := sel.Condition["name"]
-	p := sel.Condition["pass"]
-
-	q := self.C.Find(bson.M{"name": n, "pass": p})
-	err := q.One(sel.Err)
+	q := self.C.Find(sel.Condition)
+	user := &User{}
+	err := q.One(user)
+	return user, err
 }
 
 /*
@@ -55,13 +57,5 @@ func (self *UserService) LoginSelect(u string, p string, res *User) {
 	self.DBC.SelectOne(USER_TAB, sel, res)
 }
 
-func (self *UserService) HasUser(name string) bool {
-	res := &User{}
-	self.DBC.SelectOne(USER_TAB, BSONM{"name": name}, res)
-	if res.Name == "" {
-		return false
-	} else {
-		return true
-	}
-}
+
 */

@@ -9,6 +9,7 @@ import (
 type PostService struct {
 	DBC *MDBC
 	C   *mgo.Collection
+	S   *Session
 }
 
 func (self *PostService) Save(p *Post) *ResMessage {
@@ -28,25 +29,18 @@ func (self *PostService) Save(p *Post) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, POST_MODE_CODE)
 }
 
-func (self *PostService) GetOneByTitle(t string, p *Post) {
-	self.C.Find(bson.M{"title": t}).One(p)
+func (self *PostService) GetOne(sel *SelectData) (*Post, error) {
+	p := new(Post)
+	err := self.C.Find(sel.Condition).One(p)
+	return p, err
 }
 
-func (self *PostService) Get(sel *SelectData, findSel bson.M) {
-	q := self.C.Find(findSel)
+func (self *PostService) GetList(sel *SelectData) ([]Post, error) {
+	var pl = make([]Post, sel.Limit)
+	q := self.C.Find(sel.Condition)
 	q = q.Sort(sel.Sort).Limit(sel.Limit)
-	err := q.All(sel.Res)
-	sel.Err = err
-}
-
-func (self *PostService) GetList(sel *SelectData) {
-	self.Get(sel, nil)
-}
-
-func (self *PostService) GetListByAuthor(sel *SelectData) {
-	key := "author"
-	userName := sel.Condition[key]
-	self.Get(sel, bson.M{key: userName})
+	err := q.All(pl)
+	return pl, err
 }
 
 /*

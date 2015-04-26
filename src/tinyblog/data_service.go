@@ -2,7 +2,7 @@ package main
 
 import (
 	"labix.org/v2/mgo"
-	//"labix.org/v2/mgo/bson"
+	"labix.org/v2/mgo/bson"
 	//"time"
 )
 
@@ -31,19 +31,19 @@ type ResMessage struct {
 	Message string
 }
 
-type ResData struct {
-	State bool
-	Count int
-	Addr  int
-	Data  interface{}
-}
+type BsonM bson.M
 
 type SelectData struct {
-	Condition map[string]interface{}
+	Condition BsonM
 	Sort      string
 	Limit     int
-	Res       interface{}
-	Err       error
+	GT        string
+}
+
+func findPanic(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
 func getResMessage(err error, msg string, n int) *ResMessage {

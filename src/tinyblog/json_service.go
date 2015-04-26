@@ -21,17 +21,20 @@ type JsonService struct {
 }
 
 func (self *JsonService) getPost(req *REQ, res *RES) jsonMap {
-	var (
-		p *Post
-		m jsonMap
-	)
+
+	var m jsonMap
 
 	t := req.GetUrlOneValue("t")
 
 	if t != "" {
 
-		p = &Post{}
-		self.DS.Post.GetOneByTitle(t, p)
+		p, err := self.DS.Post.GetOne(&SelectData{
+			Condition: BsonM{
+				"title": t,
+			},
+		})
+
+		findPanic(err)
 
 		m = jsonMap{
 			"title":      p.Title,

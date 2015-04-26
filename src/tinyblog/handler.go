@@ -17,12 +17,12 @@ func (self *Handler) Index(req *REQ, res *RES) {
 	var postList []Post
 
 	selData := &SelectData{
-		Sort:  "-createtime",
-		Limit: 10,
-		Res:   &postList,
+		Condition: nil,
+		Sort:      "-createtime",
+		Limit:     10,
 	}
 
-	self.DS.Post.GetList(selData)
+	postList, err := self.DS.Post.GetList(selData)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",
@@ -30,21 +30,25 @@ func (self *Handler) Index(req *REQ, res *RES) {
 		"PostList":   postList,
 	}
 
+	findPanic(err)
+
 	res.Response = self.Tpl.Parse("index", d)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {
 
-	/*var p Post
-	sel := BSONM{
-		"title": req.PathParm.FileName,
+	var p *Post
+	sel := &SelectData{
+		Condition: BsonM{
+			"title": req.PathParm.FileName,
+		},
 	}
 
-	self.post.SelectOne(sel, &p)
+	p, err := self.DS.Post.GetOne(sel)
 
-	res.Response = self.Tpl.Parse("post", p)*/
+	findPanic(err)
 
-	res.Response = "post info"
+	res.Response = self.Tpl.Parse("post", p)
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {
@@ -86,29 +90,25 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 func (self *Handler) Login(req *REQ, res *RES) {
 
 	sel := &SelectData{
-		Condition{
+		Condition: BsonM{
 			"user": req.GetFormValue("user"),
 			"pass": req.GetFormValue("pass"),
 		},
-		Res: &User{},
 	}
 
-	self.DS.User.Login(sel)
-	//if sel.Err != nil {
-	//res.Response = self.Tpl.Parse("loginErr", map[string]string{})
-	//}
+	user, err := self.DS.User.GetOne(sel)
 
-	user := sel.Res
+	findPanic(err)
 
-	if sel.Res.Name == "" {
+	if user.Name == "" {
 
 	} else {
 
 		sd := &SessionData{
-			User:  User.Name,
-			Power: user.Power,
+			User:  user.Name,
+			Power: user.PowerCode,
 		}
-		uuid = self.session.New(sd)
+		uuid := self.Session.New(sd)
 
 		c := res.CreateCookie()
 		c.Name = "uuid"
