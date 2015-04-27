@@ -14,39 +14,32 @@ type Handler struct {
 
 func (self *Handler) Index(req *REQ, res *RES) {
 
-	var postList []Post
-
 	selData := &SelectData{
 		Condition: nil,
 		Sort:      "-createtime",
 		Limit:     10,
 	}
 
-	postList, err := self.DS.Post.GetList(selData)
+	pl := self.DS.Post.GetList(selData)
 
 	d := map[string]interface{}{
 		"PageTitle":  "home",
 		"StaticHost": self.StaticHost,
-		"PostList":   postList,
+		"PostList":   pl,
 	}
-
-	findPanic(err)
 
 	res.Response = self.Tpl.Parse("index", d)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {
 
-	var p *Post
 	sel := &SelectData{
 		Condition: BsonM{
 			"title": req.PathParm.FileName,
 		},
 	}
 
-	p, err := self.DS.Post.GetOne(sel)
-
-	findPanic(err)
+	p := self.DS.Post.GetOne(sel)
 
 	res.Response = self.Tpl.Parse("post", p)
 }
@@ -96,9 +89,7 @@ func (self *Handler) Login(req *REQ, res *RES) {
 		},
 	}
 
-	user, err := self.DS.User.GetOne(sel)
-
-	findPanic(err)
+	user := self.DS.User.GetOne(sel)
 
 	if user.Name == "" {
 

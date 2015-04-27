@@ -29,18 +29,22 @@ func (self *PostService) Save(p *Post) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, POST_MODE_CODE)
 }
 
-func (self *PostService) GetOne(sel *SelectData) (*Post, error) {
+func (self *PostService) GetOne(sel *SelectData) *Post {
+
 	p := new(Post)
 	err := self.C.Find(sel.Condition).One(p)
-	return p, err
+	findPanic(err)
+	return p
 }
 
-func (self *PostService) GetList(sel *SelectData) ([]Post, error) {
-	var pl = make([]Post, sel.Limit)
+func (self *PostService) GetList(sel *SelectData) *PostList {
+
+	pl := &PostList{}
 	q := self.C.Find(sel.Condition)
 	q = q.Sort(sel.Sort).Limit(sel.Limit)
 	err := q.All(pl)
-	return pl, err
+	findPanic(err)
+	return pl
 }
 
 /*

@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-
+	//"reflect"
 	//"log"
 )
 
@@ -28,18 +28,19 @@ func (self *JsonService) getPost(req *REQ, res *RES) jsonMap {
 
 	if t != "" {
 
-		p, err := self.DS.Post.GetOne(&SelectData{
+		p := self.DS.Post.GetOne(&SelectData{
 			Condition: BsonM{
 				"title": t,
 			},
 		})
 
-		findPanic(err)
+		m = jsonMap{}
 
 		m = jsonMap{
 			"title":      p.Title,
 			"content":    p.Content,
 			"createtime": p.CreateTime.Format(DateFormatStr),
+			"isdraft":    p.IsDraft,
 		}
 	} else {
 		m = self.errorQuery()

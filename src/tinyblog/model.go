@@ -7,53 +7,56 @@ import (
 
 type Post struct {
 	Id_          bson.ObjectId `bson:"_id"`
-	Title        string
-	Content      string
-	Author       string
-	Cate         string
-	Tags         []string
-	CreateTime   time.Time
-	EditTime     time.Time
-	IsDraft      bool
-	AllowComment bool
-	Comment      []Comment
+	Title        string        `bson:"title"`
+	Content      string        `bson:"content"`
+	Author       string        `bson:"author"`
+	Cate         string        `bson:"cate"`
+	Tags         []string      `bson:"tags"`
+	CreateTime   time.Time     `bson:"createtime"`
+	EditTime     time.Time     `bson:"edittime"`
+	IsDraft      bool          `bson:"isdraft"`
+	AllowComment bool          `bson:"allowcomment"`
+	Comment      []Comment     `bson:"comment"`
 }
 
 type Comment struct {
 	Id_        bson.ObjectId `bson:"_id"`
-	Content    string
-	Auth       string
-	Ip         string
-	IsDisplay  bool
-	CreateTime time.Time
+	Content    string        `bson:"content"`
+	Auth       string        `bson:"auth"`
+	Ip         string        `bson:"ip"`
+	IsDisplay  bool          `bson:"isdisplay"`
+	CreateTime time.Time     `bson:"createtime"`
 }
 
 type Cate struct {
-	Name    string
-	Level   int
-	Parent  string
-	Explain string
+	Name    string `bson:"name"`
+	Level   int    `bson:"level"`
+	Parent  string `bson:"parent"`
+	Explain string `bson:"explain"`
 }
 
 type Tag struct {
-	Name string
+	Name string `bson:"name"`
 }
 
 type Config struct {
-	HostName   string
-	Copyright  string
-	Explain    string
-	CreateTime time.Time
-	EditTime   time.Time
+	HostName   string    `bson:"hostname"`
+	Copyright  string    `bson:"copyright"`
+	Explain    string    `bson:"explain"`
+	CreateTime time.Time `bson:"createtime"`
+	EditTime   time.Time `bson:"edittime"`
 }
 
 type User struct {
 	Id_        bson.ObjectId `bson:"_id"`
-	Name       string
-	Pass       string
-	Nick       string
-	Email      string
-	Face       string
-	PowerCode  int
-	CreateTime time.Time
+	Name       string        `bson:"name"`
+	Pass       string        `bson:"pass"`
+	Nick       string        `bson:"nick"`
+	Email      string        `bson:"email"`
+	Face       string        `bson:"face"`
+	PowerCode  int           `bson:"powercode"`
+	CreateTime time.Time     `bson:"createtime"`
 }
+
+type PostList []Post
+type UserList []User

@@ -21,19 +21,21 @@ func (self *UserService) Save(user *User) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
 }
 
-func (self *UserService) GetList(sel *SelectData) ([]User, error) {
-	var ul = make([]User, sel.Limit)
+func (self *UserService) GetList(sel *SelectData) *UserList {
+	ul := &UserList{}
 	q := self.C.Find(sel.Condition)
 	err := q.All(ul)
-	return ul, err
+	findPanic(err)
+	return ul
 }
 
-func (self *UserService) GetOne(sel *SelectData) (*User, error) {
+func (self *UserService) GetOne(sel *SelectData) *User {
 
 	q := self.C.Find(sel.Condition)
 	user := &User{}
 	err := q.One(user)
-	return user, err
+	findPanic(err)
+	return user
 }
 
 /*
