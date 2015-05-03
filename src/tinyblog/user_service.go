@@ -33,8 +33,8 @@ func (self *UserService) GetOne(sel *SelectData) *User {
 
 	q := self.C.Find(sel.Condition)
 	user := &User{}
-	err := q.One(user)
-	findPanic(err)
+	q.One(user)
+	//findPanic(err)
 	return user
 }
 

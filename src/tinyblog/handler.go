@@ -84,7 +84,7 @@ func (self *Handler) Login(req *REQ, res *RES) {
 
 	sel := &SelectData{
 		Condition: BsonM{
-			"user": req.GetFormValue("user"),
+			"name": req.GetFormValue("user"),
 			"pass": req.GetFormValue("pass"),
 		},
 	}
@@ -92,6 +92,8 @@ func (self *Handler) Login(req *REQ, res *RES) {
 	user := self.DS.User.GetOne(sel)
 
 	if user.Name == "" {
+
+		GotoLoginErr(req, res)
 
 	} else {
 
@@ -107,6 +109,8 @@ func (self *Handler) Login(req *REQ, res *RES) {
 		c.HttpOnly = true
 		c.Path = "/"
 		res.SetCookie(c)
+
+		GotoAdminHome(req, res)
 	}
 
 }
