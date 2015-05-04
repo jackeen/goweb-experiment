@@ -40,12 +40,6 @@ type SelectData struct {
 	GT        string
 }
 
-func findPanic(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func getResMessage(err error, msg string, n int) *ResMessage {
 
 	rs := new(ResMessage)

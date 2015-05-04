@@ -32,8 +32,7 @@ func (self *PostService) Save(p *Post) *ResMessage {
 func (self *PostService) GetOne(sel *SelectData) *Post {
 
 	p := new(Post)
-	err := self.C.Find(sel.Condition).One(p)
-	findPanic(err)
+	self.C.Find(sel.Condition).One(p)
 	return p
 }
 
@@ -42,8 +41,7 @@ func (self *PostService) GetList(sel *SelectData) *PostList {
 	pl := &PostList{}
 	q := self.C.Find(sel.Condition)
 	q = q.Sort(sel.Sort).Limit(sel.Limit)
-	err := q.All(pl)
-	findPanic(err)
+	q.All(pl)
 	return pl
 }
 

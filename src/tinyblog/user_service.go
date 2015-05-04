@@ -24,8 +24,7 @@ func (self *UserService) Save(user *User) *ResMessage {
 func (self *UserService) GetList(sel *SelectData) *UserList {
 	ul := &UserList{}
 	q := self.C.Find(sel.Condition)
-	err := q.All(ul)
-	findPanic(err)
+	q.All(ul)
 	return ul
 }
 
@@ -34,7 +33,6 @@ func (self *UserService) GetOne(sel *SelectData) *User {
 	q := self.C.Find(sel.Condition)
 	user := &User{}
 	q.One(user)
-	//findPanic(err)
 	return user
 }
 
