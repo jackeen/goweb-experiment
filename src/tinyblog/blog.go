@@ -43,8 +43,8 @@ func router(req *REQ, res *RES) {
 		handler.Tag(req, res)
 	case moduleName.Date:
 		handler.Date(req, res)
-	case moduleName.Json:
-		jsonService.GetJson(req, res)
+	case moduleName.API:
+		jsonService.Rout(req, res)
 	case moduleName.Admin:
 		admin.Router(req, res)
 	case moduleName.Entry:
@@ -118,7 +118,7 @@ func main() {
 		Cate:  "cate",
 		Date:  "date",
 		Tag:   "tag",
-		Json:  "json",
+		API:   "api",
 		Entry: "entry",
 		Admin: "admin",
 	}

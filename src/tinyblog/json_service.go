@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	//"reflect"
-	//"log"
+	"log"
 )
 
 type jsonMap map[string]interface{}
@@ -13,6 +13,11 @@ func getMsgMap(s bool, msg string) jsonMap {
 		"state":   s,
 		"message": msg,
 	}
+}
+
+type IJson interface {
+	Get() jsonMap
+	Put(REQ, RES) jsonMap
 }
 
 type JsonService struct {
@@ -120,11 +125,15 @@ func (self *JsonService) errorQuery() jsonMap {
 	return err
 }
 
-func (self *JsonService) GetJson(req *REQ, res *RES) {
+func (self *JsonService) Rout(req *REQ, res *RES) {
 
 	var (
 		queryJson jsonMap
 	)
+
+	item := req.PathParm.PathItems
+
+	log.Println(len(item), item)
 
 	switch req.PathParm.FileName {
 	case "getpost":

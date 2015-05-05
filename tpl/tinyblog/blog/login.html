@@ -3,15 +3,15 @@
 {{template "headContent" .}}
 {{template "header"}}
 
-<form action="/json/login" method="post" name="login">
+<form action="/entry/login" method="post" name="login">
 	<fieldset>
 		<span>username:</span>
-		<input type="text" name="user" />
+		<input type="text" name="user" autocomplete="off" />
 		<br/>
 		<span>password:</span>
 		<input type="text" name="pass" />
 		<br/>
-		<input type="button" name="submit" />
+		<input type="submit" name="submit" value="login" />
 	</fieldset>
 </form>
 <script type="text/javascript" src="{{attr .StaticHost}}/js/atom.js" data-main="blog/longin"></script>

@@ -32,7 +32,7 @@ type ModuleName struct {
 	Date  string
 	Tag   string
 	Entry string
-	Json  string
+	API   string
 	Admin string
 }
 
