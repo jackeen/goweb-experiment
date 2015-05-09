@@ -6,25 +6,148 @@ import (
 	"log"
 )
 
-type jsonMap map[string]interface{}
+type ResJsonMap map[string]interface{}
 
-func getMsgMap(s bool, msg string) jsonMap {
-	return jsonMap{
-		"state":   s,
-		"message": msg,
+type ResJson struct {
+	State bool
+	Msg   string
+	Data  interface{}
+}
+
+func (self *ResJson) TraceMsg() ResJsonMap {
+	return ResJsonMap{
+		"state": self.State,
+		"msg":   self.Msg,
+	}
+}
+
+func (self *ResJson) TraceNotFound() ResJsonMap {
+	self.State = false
+	self.Msg = NOT_FOUND
+	return self.TraceMsg()
+}
+
+func (self *ResJson) TraceData() ResJsonMap {
+	return ResJsonMap{
+		"state": self.State,
+		"data":  self.Data,
 	}
 }
 
 type IJson interface {
-	Get() jsonMap
-	Put(REQ, RES) jsonMap
+	Get(*REQ, *RES) ResJsonMap
+	Set(*REQ, *RES) ResJsonMap
+	Put(*REQ, *RES) ResJsonMap
+	Del(*REQ, *RES) ResJsonMap
+}
+
+type PostJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *PostJson) Set(req *REQ, res *RES) ResJsonMap {
+	//var rm ResJsonMap
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
+	//var rm ResJsonMap
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
+	//var rm ResJsonMap
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
+
+	var rm ResJsonMap
+	r := new(ResJson)
+	t := req.GetUrlOneValue("t")
+
+	if t != "" {
+
+		p := self.DS.Post.GetOne(&SelectData{
+			Condition: BsonM{
+				"title": t,
+			},
+		})
+
+		if p.Title != "" {
+			d := ResJsonMap{
+				"title":      p.Title,
+				"content":    p.Content,
+				"createtime": p.CreateTime.Format(DateFormatStr),
+				"isdraft":    p.IsDraft,
+			}
+			r.Data = d
+			r.State = true
+			rm = r.TraceData()
+		} else {
+			r.State = false
+			r.Msg = NOT_FOUND
+			rm = r.TraceMsg()
+		}
+
+	} else {
+		r.State = false
+		r.Msg = REQUIRED_DEFAULT
+		rm = r.TraceMsg()
+	}
+	return rm
 }
 
 type JsonService struct {
-	Session *Session
-	DS      *DataService
+	S  *Session
+	DS *DataService
 }
 
+func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
+	var resJson ResJsonMap
+	switch req.PathParm.FileName {
+	case "get":
+		resJson = obj.Get(req, res)
+	default:
+		resJson = new(ResJson).TraceNotFound()
+	}
+	return resJson
+}
+
+func (self *JsonService) Post(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&PostJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
+}
+
+func (self *JsonService) Rout(req *REQ, res *RES) {
+
+	var resJson ResJsonMap
+
+	p := req.PathParm.PathItems
+
+	if len(p) == 2 {
+		switch p[1] {
+		case "post":
+			resJson = self.Post(req, res)
+		default:
+			resJson = new(ResJson).TraceNotFound()
+		}
+	} else {
+		resJson = new(ResJson).TraceNotFound()
+	}
+
+	log.Println(p)
+
+	v, _ := json.Marshal(resJson)
+	res.Response = string(v)
+
+}
+
+/*
 func (self *JsonService) getPost(req *REQ, res *RES) jsonMap {
 
 	var m jsonMap
@@ -72,81 +195,4 @@ func (self *JsonService) savePost(req *REQ, res *RES) jsonMap {
 	})
 
 	return getMsgMap(rs.State, rs.Message)
-}
-
-/*
-func (self *JsonService) login(req *REQ, res *RES) map[string]interface{} {
-
-		u := req.GetFormValue("user")
-		p := req.GetFormValue("pass")
-
-		user := &User{}
-		uuid := req.GetCookies()["uuid"]
-
-		m := make(map[string]interface{})
-
-		if self.session.IsLogin(uuid) {
-			m["success"] = true
-			m["message"] = "ready!"
-			return m
-		}
-
-		uc := &UserService{}
-		uc.LoginSelect(u, p, user)
-
-		if user.Name == "" {
-			m["success"] = false
-			m["message"] = "user or pass error"
-		} else {
-			m["success"] = true
-			m["message"] = "welcome"
-
-			sd := &SessionData{
-				User:  user.Name,
-				Power: user.Power,
-			}
-			uuid = self.session.New(sd)
-
-			c := res.CreateCookie()
-			c.Name = "uuid"
-			c.Value = uuid
-			c.HttpOnly = true
-			c.Path = "/"
-			res.SetCookie(c)
-		}
-		return m
 }*/
-
-func (self *JsonService) errorQuery() jsonMap {
-	err := jsonMap{
-		"success": false,
-		"message": "not found",
-	}
-	return err
-}
-
-func (self *JsonService) Rout(req *REQ, res *RES) {
-
-	var (
-		queryJson jsonMap
-	)
-
-	item := req.PathParm.PathItems
-
-	log.Println(len(item), item)
-
-	switch req.PathParm.FileName {
-	case "getpost":
-		queryJson = self.getPost(req, res)
-	case "savepost":
-		queryJson = self.savePost(req, res)
-	//case "login":
-	//	queryJson = self.login(req, res)
-	default:
-		queryJson = self.errorQuery()
-	}
-
-	v, _ := json.Marshal(queryJson)
-	res.Response = string(v)
-
-}

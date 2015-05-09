@@ -101,8 +101,8 @@ func main() {
 	}
 
 	jsonService = &JsonService{
-		Session: session,
-		DS:      ds,
+		S:  session,
+		DS: ds,
 	}
 
 	admin = &Admin{

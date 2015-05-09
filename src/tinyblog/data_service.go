@@ -18,6 +18,7 @@ const (
 	SAVE_SUCCESS     = "save success"
 	SAVE_FAIL        = "save fail"
 	REQUIRED_DEFAULT = "required default"
+	NOT_FOUND        = "not found"
 )
 
 const (
