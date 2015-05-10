@@ -9,13 +9,8 @@ import (
 	"time"
 )
 
-const (
-	SessionExpire = 60
-)
-
 type SessionData struct {
-	User  string
-	Power int
+	U *User
 }
 
 func CreateUUID() string {
@@ -31,11 +26,12 @@ func CreateUUID() string {
 }
 
 type Session struct {
-	Data map[string]*SessionData
+	ExpireHour time.Duration
+	Data       map[string]*SessionData
 }
 
 func (self *Session) del(id string) {
-	time.Sleep(SessionExpire * time.Second)
+	time.Sleep(self.ExpireHour * time.Hour)
 	delete(self.Data, id)
 }
 
@@ -68,7 +64,7 @@ func (self *Session) GetPowerCode(uuid string) int {
 	if usrData == nil {
 		return -1
 	} else {
-		return usrData.Power
+		return usrData.U.PowerCode
 	}
 }
 

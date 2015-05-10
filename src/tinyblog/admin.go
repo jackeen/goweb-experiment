@@ -15,6 +15,9 @@ type Admin struct {
 
 func (self *Admin) Router(req *REQ, res *RES) {
 
+	//uuid := req.GetCookies("uuid")
+	//self.Session.Auth(uuid)
+
 	switch req.PathParm.FileName {
 	case "home":
 		self.home(req, res)

@@ -22,14 +22,18 @@ const (
 )
 
 const (
-	POST_MODE_CODE = 101
-	USER_MODE_CODE = 102
+	POST_MODE_CODE = "101"
+	USER_MODE_CODE = "102"
 )
 
 type ResMessage struct {
 	State   bool
-	Addr    int
+	Addr    string
 	Message string
+}
+
+func (self *ResMessage) TraceMixMsg() string {
+	return self.Addr + ":" + self.Message
 }
 
 type BsonM bson.M
@@ -41,7 +45,7 @@ type SelectData struct {
 	GT        string
 }
 
-func getResMessage(err error, msg string, n int) *ResMessage {
+func getResMessage(err error, msg string, code string) *ResMessage {
 
 	rs := new(ResMessage)
 	if err == nil {
@@ -51,15 +55,15 @@ func getResMessage(err error, msg string, n int) *ResMessage {
 		rs.State = false
 		rs.Message = err.Error()
 	}
-	rs.Addr = n
+	rs.Addr = code
 	return rs
 }
 
-func getUserResMessage(s bool, msg string, n int) *ResMessage {
+func getUserResMessage(s bool, msg string, code string) *ResMessage {
 	return &ResMessage{
 		State:   s,
 		Message: msg,
-		Addr:    n,
+		Addr:    code,
 	}
 }
 

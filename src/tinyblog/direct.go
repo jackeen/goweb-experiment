@@ -10,6 +10,11 @@ func GotoAdminHome(req *REQ, res *RES) {
 	res.SetHeader("Location", URL_ADMIN_HOME)
 }
 
+func GotoLogin(req *REQ, res *RES) {
+	res.State = 301
+	res.SetHeader("Location", URL_LOGIN)
+}
+
 func GotoLoginErr(req *REQ, res *RES) {
 	res.Response = "error"
 }

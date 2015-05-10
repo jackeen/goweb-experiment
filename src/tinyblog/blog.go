@@ -87,7 +87,8 @@ func main() {
 	dbc.Init()
 
 	session = &Session{
-		Data: make(map[string]*SessionData),
+		Data:       make(map[string]*SessionData),
+		ExpireHour: 1,
 	}
 
 	ds = &DataService{}

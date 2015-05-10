@@ -98,8 +98,7 @@ func (self *Handler) Login(req *REQ, res *RES) {
 	} else {
 
 		sd := &SessionData{
-			User:  user.Name,
-			Power: user.PowerCode,
+			U: user,
 		}
 		uuid := self.Session.New(sd)
 

@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	//"reflect"
-	"log"
+	//"log"
 )
 
 type ResJsonMap map[string]interface{}
@@ -51,11 +51,32 @@ func (self *PostJson) Set(req *REQ, res *RES) ResJsonMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
+
 func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
-	//var rm ResJsonMap
+
 	r := new(ResJson)
+
+	title := req.GetFormValue("title")
+	content := req.GetFormValue("content")
+	draft := req.GetFormValue("draft")
+
+	isDraft := false
+	if draft == "draft" {
+		isDraft = true
+	}
+
+	rs := self.DS.Post.Save(&Post{
+		Title:   title,
+		Content: content,
+		IsDraft: isDraft,
+	})
+
+	r.State = rs.State
+	r.Msg = rs.TraceMixMsg()
+
 	return r.TraceMsg()
 }
+
 func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 	//var rm ResJsonMap
 	r := new(ResJson)
@@ -110,6 +131,8 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	switch req.PathParm.FileName {
 	case "get":
 		resJson = obj.Get(req, res)
+	case "put":
+		resJson = obj.Put(req, res)
 	default:
 		resJson = new(ResJson).TraceNotFound()
 	}
@@ -140,59 +163,7 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 		resJson = new(ResJson).TraceNotFound()
 	}
 
-	log.Println(p)
-
 	v, _ := json.Marshal(resJson)
 	res.Response = string(v)
 
 }
-
-/*
-func (self *JsonService) getPost(req *REQ, res *RES) jsonMap {
-
-	var m jsonMap
-
-	t := req.GetUrlOneValue("t")
-
-	if t != "" {
-
-		p := self.DS.Post.GetOne(&SelectData{
-			Condition: BsonM{
-				"title": t,
-			},
-		})
-
-		m = jsonMap{}
-
-		m = jsonMap{
-			"title":      p.Title,
-			"content":    p.Content,
-			"createtime": p.CreateTime.Format(DateFormatStr),
-			"isdraft":    p.IsDraft,
-		}
-	} else {
-		m = self.errorQuery()
-	}
-
-	return m
-}
-
-func (self *JsonService) savePost(req *REQ, res *RES) jsonMap {
-
-	title := req.GetFormValue("title")
-	content := req.GetFormValue("content")
-	draft := req.GetFormValue("draft")
-
-	isDraft := false
-	if draft == "draft" {
-		isDraft = true
-	}
-
-	rs := self.DS.Post.Save(&Post{
-		Title:   title,
-		Content: content,
-		IsDraft: isDraft,
-	})
-
-	return getMsgMap(rs.State, rs.Message)
-}*/
