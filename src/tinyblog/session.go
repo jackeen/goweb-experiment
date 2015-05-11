@@ -10,7 +10,8 @@ import (
 )
 
 type SessionData struct {
-	U *User
+	U  *User
+	ch chan bool
 }
 
 func CreateUUID() string {
@@ -40,6 +41,10 @@ func (self *Session) New(sd *SessionData) string {
 	self.Data[id] = sd
 	go self.del(id)
 	return id
+}
+
+func (self *Session) Destroy(k string) {
+
 }
 
 func (self *Session) Set(k string, v *SessionData) {

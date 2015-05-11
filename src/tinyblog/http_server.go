@@ -55,6 +55,18 @@ func (self *REQ) GetCookies() map[string]string {
 	return m
 }
 
+func (self *REQ) GetOneCookie(k string) string {
+	cookies := self.r.Cookies()
+	cookieValue := ""
+	for _, v := range cookies {
+		if v.Name == k {
+			cookieValue = v.Value
+			break
+		}
+	}
+	return cookieValue
+}
+
 func (self *REQ) GetHeaders(k string) []string {
 	return self.r.Header[k]
 }

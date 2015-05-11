@@ -63,6 +63,10 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 
 	f := req.PathParm.FileName
 
+	if self.Session.IsLogin(req.GetOneCookie("uuid")) {
+		GotoAdminHome(req, res)
+	}
+
 	switch f {
 	case "login":
 		self.Login(req, res)
