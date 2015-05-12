@@ -10,8 +10,8 @@ import (
 )
 
 type SessionData struct {
-	U  *User
-	ch chan bool
+	U     *User
+	Timer *time.Timer
 }
 
 func CreateUUID() string {
@@ -31,20 +31,41 @@ type Session struct {
 	Data       map[string]*SessionData
 }
 
-func (self *Session) del(id string) {
-	time.Sleep(self.ExpireHour * time.Hour)
+func (self *Session) del(id string, c <-chan time.Time) {
+	<-c
 	delete(self.Data, id)
+}
+
+func (self *Session) getExpire() time.Duration {
+	return self.ExpireHour * time.Minute
 }
 
 func (self *Session) New(sd *SessionData) string {
 	id := CreateUUID()
+	sd.Timer = time.NewTimer(self.getExpire())
 	self.Data[id] = sd
-	go self.del(id)
+	go self.del(id, sd.Timer.C)
 	return id
 }
 
-func (self *Session) Destroy(k string) {
+func (self *Session) Destroy(k string) bool {
+	sd := self.Data[k]
+	if sd == nil {
+		return false
+	} else {
+		sd.Timer.Reset(0)
+		return true
+	}
+}
 
+func (self *Session) ReFresh(k string) bool {
+	sd := self.Data[k]
+	if sd == nil {
+		return false
+	} else {
+		sd.Timer.Reset(self.getExpire())
+		return true
+	}
 }
 
 func (self *Session) Set(k string, v *SessionData) {

@@ -1,8 +1,8 @@
 package main
 
 import (
-//"encoding/json"
-//"log"
+	//"encoding/json"
+	"log"
 )
 
 type Admin struct {
@@ -15,8 +15,11 @@ type Admin struct {
 
 func (self *Admin) Router(req *REQ, res *RES) {
 
-	//uuid := req.GetCookies("uuid")
-	//self.Session.Auth(uuid)
+	c, err := req.R.Cookie("uuid")
+	log.Println(self.Session.IsLogin(c.Name))
+	if err == nil || self.Session.IsLogin(c.Name) == false {
+		GotoLogin(req, res)
+	}
 
 	switch req.PathParm.FileName {
 	case "home":

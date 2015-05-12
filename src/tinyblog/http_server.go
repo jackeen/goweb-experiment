@@ -5,6 +5,7 @@ import (
 	//"log"
 	"net/http"
 	//"strings"
+	"time"
 )
 
 type HttpConfig struct {
@@ -14,20 +15,20 @@ type HttpConfig struct {
 
 //request struct
 type REQ struct {
-	r        *http.Request
+	R        *http.Request
 	PathParm *UrlParmData
 }
 
 func (self *REQ) Init(r *http.Request) {
-	self.r = r
+	self.R = r
 }
 
 func (self *REQ) GetPath() string {
-	return self.r.URL.Path
+	return self.R.URL.Path
 }
 
 func (self *REQ) GetUrlParm() map[string][]string {
-	return self.r.URL.Query()
+	return self.R.URL.Query()
 }
 
 func (self *REQ) GetUrlOneValue(k string) string {
@@ -43,20 +44,20 @@ func (self *REQ) GetUrlOneValue(k string) string {
 }
 
 func (self *REQ) GetFormValue(k string) string {
-	return self.r.FormValue(k)
+	return self.R.FormValue(k)
 }
 
-func (self *REQ) GetCookies() map[string]string {
+func (self *REQ) GetCookieValues() map[string]string {
 	m := make(map[string]string)
-	cookies := self.r.Cookies()
+	cookies := self.R.Cookies()
 	for _, v := range cookies {
 		m[v.Name] = v.Value
 	}
 	return m
 }
 
-func (self *REQ) GetOneCookie(k string) string {
-	cookies := self.r.Cookies()
+func (self *REQ) GetOneCookieValue(k string) string {
+	cookies := self.R.Cookies()
 	cookieValue := ""
 	for _, v := range cookies {
 		if v.Name == k {
@@ -68,18 +69,18 @@ func (self *REQ) GetOneCookie(k string) string {
 }
 
 func (self *REQ) GetHeaders(k string) []string {
-	return self.r.Header[k]
+	return self.R.Header[k]
 }
 
 //response struct
 type RES struct {
-	w        http.ResponseWriter
+	W        http.ResponseWriter
 	State    int
 	Response string
 }
 
 func (self *RES) Init(w http.ResponseWriter) {
-	self.w = w
+	self.W = w
 }
 
 func (self *RES) CreateCookie() *http.Cookie {
@@ -87,11 +88,16 @@ func (self *RES) CreateCookie() *http.Cookie {
 }
 
 func (self *RES) SetCookie(c *http.Cookie) {
-	http.SetCookie(self.w, c)
+	http.SetCookie(self.W, c)
+}
+
+func (self *RES) DelCookie(c *http.Cookie) {
+	c.Expires = time.Now().AddDate(-1, 0, 0)
+	http.SetCookie(self.W, c)
 }
 
 func (self *RES) SetHeader(k string, v string) {
-	self.w.Header().Set(k, v)
+	self.W.Header().Set(k, v)
 }
 
 //handler function type

@@ -1,8 +1,10 @@
 package main
 
 import (
-//"log"
-//"strconv"
+	//"log"
+	//"strconv"
+	"net/http"
+	//"time"
 )
 
 type Handler struct {
@@ -63,10 +65,6 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 
 	f := req.PathParm.FileName
 
-	if self.Session.IsLogin(req.GetOneCookie("uuid")) {
-		GotoAdminHome(req, res)
-	}
-
 	switch f {
 	case "login":
 		self.Login(req, res)
@@ -106,12 +104,13 @@ func (self *Handler) Login(req *REQ, res *RES) {
 		}
 		uuid := self.Session.New(sd)
 
-		c := res.CreateCookie()
-		c.Name = "uuid"
-		c.Value = uuid
-		c.HttpOnly = true
-		c.Path = "/"
-		res.SetCookie(c)
+		c := &http.Cookie{
+			Name:     "uuid",
+			Value:    uuid,
+			HttpOnly: true,
+			Path:     "/",
+		}
+		http.SetCookie(res.W, c)
 
 		GotoAdminHome(req, res)
 	}
@@ -119,7 +118,12 @@ func (self *Handler) Login(req *REQ, res *RES) {
 }
 
 func (self *Handler) Logout(req *REQ, res *RES) {
+	c, err := req.R.Cookie("uuid")
+	if err == nil {
+		self.Session.Destroy(c.Name)
+	}
 
+	GotoHome(req, res)
 }
 
 func (self *Handler) NotFind(req *REQ, res *RES) {
