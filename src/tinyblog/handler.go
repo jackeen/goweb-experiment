@@ -105,13 +105,12 @@ func (self *Handler) Login(req *REQ, res *RES) {
 		uuid := self.Session.New(sd)
 
 		c := &http.Cookie{
-			Name:     "uuid",
-			Value:    uuid,
-			HttpOnly: true,
-			Path:     "/",
+			Name:  "uuid",
+			Value: uuid,
+			//HttpOnly: false,
+			Path: "/",
 		}
 		http.SetCookie(res.W, c)
-
 		GotoAdminHome(req, res)
 	}
 
@@ -120,7 +119,7 @@ func (self *Handler) Login(req *REQ, res *RES) {
 func (self *Handler) Logout(req *REQ, res *RES) {
 	c, err := req.R.Cookie("uuid")
 	if err == nil {
-		self.Session.Destroy(c.Name)
+		self.Session.Destroy(c.Value)
 	}
 
 	GotoHome(req, res)

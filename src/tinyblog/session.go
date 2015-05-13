@@ -37,7 +37,7 @@ func (self *Session) del(id string, c <-chan time.Time) {
 }
 
 func (self *Session) getExpire() time.Duration {
-	return self.ExpireHour * time.Minute
+	return self.ExpireHour * time.Hour
 }
 
 func (self *Session) New(sd *SessionData) string {
@@ -92,8 +92,4 @@ func (self *Session) GetPowerCode(uuid string) int {
 	} else {
 		return usrData.U.PowerCode
 	}
-}
-
-func (self *Session) Auth(uuid string) {
-
 }

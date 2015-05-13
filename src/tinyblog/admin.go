@@ -1,8 +1,8 @@
 package main
 
 import (
-	//"encoding/json"
-	"log"
+//"encoding/json"
+//"log"
 )
 
 type Admin struct {
@@ -13,12 +13,28 @@ type Admin struct {
 	DS         *DataService
 }
 
-func (self *Admin) Router(req *REQ, res *RES) {
+func (self *Admin) Auth(req *REQ, res *RES) bool {
 
 	c, err := req.R.Cookie("uuid")
-	log.Println(self.Session.IsLogin(c.Name))
-	if err == nil || self.Session.IsLogin(c.Name) == false {
+
+	if err == nil {
+		if self.Session.IsLogin(c.Value) {
+			return true
+		} else {
+			GotoLogin(req, res)
+			return false
+		}
+	} else {
 		GotoLogin(req, res)
+		return false
+	}
+}
+
+func (self *Admin) Router(req *REQ, res *RES) {
+
+	s := self.Auth(req, res)
+	if !s {
+		return
 	}
 
 	switch req.PathParm.FileName {
