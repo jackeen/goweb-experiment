@@ -48,8 +48,8 @@ func (self *Session) New(sd *SessionData) string {
 	return id
 }
 
-func (self *Session) Destroy(k string) bool {
-	sd := self.Data[k]
+func (self *Session) Destroy(uuid string) bool {
+	sd := self.Data[uuid]
 	if sd == nil {
 		return false
 	} else {
@@ -58,27 +58,22 @@ func (self *Session) Destroy(k string) bool {
 	}
 }
 
-func (self *Session) ReFresh(k string) bool {
-	sd := self.Data[k]
-	if sd == nil {
-		return false
-	} else {
-		sd.Timer.Reset(self.getExpire())
-		return true
-	}
+func (self *Session) reFresh(sd *SessionData) {
+	sd.Timer.Reset(self.getExpire())
 }
 
-func (self *Session) Set(k string, v *SessionData) {
-	self.Data[k] = v
+func (self *Session) Set(uuid string, sd *SessionData) {
+	self.Data[uuid] = sd
 }
 
-func (self *Session) Get(k string) *SessionData {
-	return self.Data[k]
+func (self *Session) Get(uuid string) *SessionData {
+	return self.Data[uuid]
 }
 
 func (self *Session) IsLogin(uuid string) bool {
 	u := self.Get(uuid)
 	if u != nil {
+		self.reFresh(u)
 		return true
 	} else {
 		return false

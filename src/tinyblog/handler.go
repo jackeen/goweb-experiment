@@ -105,10 +105,10 @@ func (self *Handler) Login(req *REQ, res *RES) {
 		uuid := self.Session.New(sd)
 
 		c := &http.Cookie{
-			Name:  "uuid",
-			Value: uuid,
-			//HttpOnly: false,
-			Path: "/",
+			Name:     "uuid",
+			Value:    uuid,
+			HttpOnly: true,
+			Path:     "/",
 		}
 		http.SetCookie(res.W, c)
 		GotoAdminHome(req, res)

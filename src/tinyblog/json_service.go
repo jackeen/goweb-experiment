@@ -41,6 +41,40 @@ type IJson interface {
 	Del(*REQ, *RES) ResJsonMap
 }
 
+type PostListJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+	selData := &SelectData{
+		Condition: nil,
+		Sort:      "-createtime",
+		Limit:     10,
+	}
+	pl := self.DS.Post.GetList(selData)
+	r.Data = pl
+	r.State = true
+	return r.TraceData()
+}
+
+func (self *PostListJson) Set(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *PostListJson) Put(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *PostListJson) Del(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
 type PostJson struct {
 	S  *Session
 	DS *DataService
@@ -139,6 +173,13 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	return resJson
 }
 
+func (self *JsonService) PostList(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&PostListJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
+}
+
 func (self *JsonService) Post(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&PostJson{
 		S:  self.S,
@@ -156,6 +197,8 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 		switch p[1] {
 		case "post":
 			resJson = self.Post(req, res)
+		case "postlist":
+			resJson = self.PostList(req, res)
 		default:
 			resJson = new(ResJson).TraceNotFound()
 		}
