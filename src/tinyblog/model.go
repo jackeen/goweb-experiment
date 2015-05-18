@@ -57,6 +57,3 @@ type User struct {
 	PowerCode  int           `bson:"powercode"`
 	CreateTime time.Time     `bson:"createtime"`
 }
-
-type PostList []Post
-type UserList []User

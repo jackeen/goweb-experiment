@@ -36,12 +36,23 @@ func (self *PostService) GetOne(sel *SelectData) *Post {
 	return p
 }
 
-func (self *PostService) GetList(sel *SelectData) *PostList {
+func (self *PostService) Count(sel *SelectData) int {
 
-	pl := &PostList{}
+	if sel.Condition == nil {
+		n, _ := self.C.Count()
+		return n
+	} else {
+		n, _ := self.C.Find(sel.Condition).Count()
+		return n
+	}
+}
+
+func (self *PostService) GetList(sel *SelectData) []Post {
+
+	pl := make([]Post, sel.Limit)
 	q := self.C.Find(sel.Condition)
 	q = q.Sort(sel.Sort).Limit(sel.Limit)
-	q.All(pl)
+	q.All(&pl)
 	return pl
 }
 

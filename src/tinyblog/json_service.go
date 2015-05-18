@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	//"reflect"
 	//"log"
 )
 
@@ -52,10 +51,18 @@ func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 	selData := &SelectData{
 		Condition: nil,
 		Sort:      "-createtime",
-		Limit:     10,
+		Limit:     5,
 	}
 	pl := self.DS.Post.GetList(selData)
-	r.Data = pl
+
+	f := new(Format)
+	pLen := len(pl)
+	plm := make([]map[string]interface{}, 0)
+	for i := 0; i < pLen; i++ {
+		plm = append(plm, f.O2M(pl[i]))
+	}
+
+	r.Data = plm
 	r.State = true
 	return r.TraceData()
 }
@@ -132,13 +139,8 @@ func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
 		})
 
 		if p.Title != "" {
-			d := ResJsonMap{
-				"title":      p.Title,
-				"content":    p.Content,
-				"createtime": p.CreateTime.Format(DateFormatStr),
-				"isdraft":    p.IsDraft,
-			}
-			r.Data = d
+			f := new(Format)
+			r.Data = f.O2M(*p)
 			r.State = true
 			rm = r.TraceData()
 		} else {

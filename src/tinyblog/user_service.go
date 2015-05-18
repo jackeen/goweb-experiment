@@ -21,10 +21,11 @@ func (self *UserService) Save(user *User) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
 }
 
-func (self *UserService) GetList(sel *SelectData) *UserList {
-	ul := &UserList{}
+func (self *UserService) GetList(sel *SelectData) []User {
+
+	ul := make([]User, sel.Limit)
 	q := self.C.Find(sel.Condition)
-	q.All(ul)
+	q.All(&ul)
 	return ul
 }
 

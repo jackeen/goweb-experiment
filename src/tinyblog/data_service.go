@@ -3,7 +3,13 @@ package main
 import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	//"time"
+	"reflect"
+	"time"
+)
+
+const (
+	TIME_FORMAT_STR = "2006-01-02 15:04:05"
+	DATE_FORMAT_STR = "2006-01-02"
 )
 
 const (
@@ -108,4 +114,31 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(USER_TAB),
 	}
+}
+
+//
+type Format struct{}
+
+func (self *Format) DateString(t time.Time) string {
+	return t.Format(DATE_FORMAT_STR)
+}
+
+func (self *Format) O2M(o interface{}) map[string]interface{} {
+
+	m := map[string]interface{}{}
+
+	t := reflect.TypeOf(o)
+	v := reflect.ValueOf(o)
+
+	fieldNum := t.NumField()
+	for i := 0; i < fieldNum; i++ {
+		key := t.Field(i).Tag.Get("bson")
+		val := v.Field(i)
+		if val.Type().String() == "time.Time" {
+			m[key] = self.DateString(val.Interface().(time.Time))
+		} else {
+			m[key] = val.Interface()
+		}
+	}
+	return m
 }
