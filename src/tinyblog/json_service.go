@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"strconv"
 	//"log"
 )
 
@@ -10,6 +11,7 @@ type ResJsonMap map[string]interface{}
 type ResJson struct {
 	State bool
 	Msg   string
+	Count int
 	Data  interface{}
 }
 
@@ -33,6 +35,14 @@ func (self *ResJson) TraceData() ResJsonMap {
 	}
 }
 
+func (self *ResJson) TraceListData() ResJsonMap {
+	return ResJsonMap{
+		"state": self.State,
+		"count": self.Count,
+		"data":  self.Data,
+	}
+}
+
 type IJson interface {
 	Get(*REQ, *RES) ResJsonMap
 	Set(*REQ, *RES) ResJsonMap
@@ -48,12 +58,34 @@ type PostListJson struct {
 func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
+	start := 0
+	limit := 5
+
+	reqStart := req.GetFormValue("start")
+	reqLimit := req.GetFormValue("limit")
+
+	if reqStart != "" {
+		s, err := strconv.ParseInt(reqStart, 10, 16)
+		if err == nil {
+			start = int(s)
+		}
+	}
+
+	if reqLimit != "" {
+		l, err := strconv.ParseInt(reqLimit, 10, 16)
+		if err == nil && l < 5 {
+			limit = int(l)
+		}
+	}
+
 	selData := &SelectData{
 		Condition: nil,
 		Sort:      "-createtime",
-		Limit:     5,
+		Start:     start,
+		Limit:     limit,
 	}
 	pl := self.DS.Post.GetList(selData)
+	n := self.DS.Post.Count(selData)
 
 	f := new(Format)
 	pLen := len(pl)
@@ -62,9 +94,11 @@ func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 		plm = append(plm, f.O2M(pl[i]))
 	}
 
-	r.Data = plm
 	r.State = true
-	return r.TraceData()
+	r.Data = plm
+	r.Count = n
+
+	return r.TraceListData()
 }
 
 func (self *PostListJson) Set(req *REQ, res *RES) ResJsonMap {

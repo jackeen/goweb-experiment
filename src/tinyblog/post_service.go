@@ -51,7 +51,7 @@ func (self *PostService) GetList(sel *SelectData) []Post {
 
 	pl := make([]Post, sel.Limit)
 	q := self.C.Find(sel.Condition)
-	q = q.Sort(sel.Sort).Limit(sel.Limit)
+	q = q.Sort(sel.Sort).Skip(sel.Start).Limit(sel.Limit)
 	q.All(&pl)
 	return pl
 }
