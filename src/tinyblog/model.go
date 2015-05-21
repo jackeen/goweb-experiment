@@ -6,26 +6,28 @@ import (
 )
 
 type Post struct {
-	Id_          bson.ObjectId `bson:"_id"`
-	Title        string        `bson:"title"`
-	Content      string        `bson:"content"`
-	Author       string        `bson:"author"`
-	Cate         string        `bson:"cate"`
-	Tags         []string      `bson:"tags"`
-	CreateTime   time.Time     `bson:"createtime"`
-	EditTime     time.Time     `bson:"edittime"`
-	IsDraft      bool          `bson:"isdraft"`
-	AllowComment bool          `bson:"allowcomment"`
-	Comment      []Comment     `bson:"comment"`
+	Id_          bson.ObjectId `bson:"_id" json:"id"`
+	Title        string        `bson:"title" json:"title"`
+	Content      string        `bson:"content" json:"content"`
+	Author       string        `bson:"author" json:"author"`
+	Cate         string        `bson:"cate" json:"cate"`
+	Tags         []string      `bson:"tags" json:"tags"`
+	CreateTime   time.Time     `bson:"createtime" json:"createTime"`
+	EditTime     time.Time     `bson:"edittime" json:"editTime"`
+	IsDraft      bool          `bson:"isdraft" json:"isDraft"`
+	AllowComment bool          `bson:"allowcomment" json:"allowComment"`
+	Comment      []Comment     `bson:"comment" json:"comment"`
 }
 
 type Comment struct {
-	Id_        bson.ObjectId `bson:"_id"`
-	Content    string        `bson:"content"`
-	Auth       string        `bson:"auth"`
-	Ip         string        `bson:"ip"`
-	IsDisplay  bool          `bson:"isdisplay"`
-	CreateTime time.Time     `bson:"createtime"`
+	Id_        bson.ObjectId `bson:"_id" json:"id"`
+	Content    string        `bson:"content" json:"content"`
+	Auth       string        `bson:"auth" json:"auth"`
+	Ip         string        `bson:"ip" json:"ip"`
+	IsDisplay  bool          `bson:"isdisplay" json:"isDisplay"`
+	CreateTime time.Time     `bson:"createtime" json:"createTime"`
+	EditTIme   time.Time     `bson:"edittime" json:"editTime"`
+	Reply      string        `bson:"reply" json:"reply"`
 }
 
 type Cate struct {
@@ -36,24 +38,24 @@ type Cate struct {
 }
 
 type Tag struct {
-	Name string `bson:"name"`
+	Name string `bson:"name" json:"name"`
 }
 
 type Config struct {
-	HostName   string    `bson:"hostname"`
-	Copyright  string    `bson:"copyright"`
-	Explain    string    `bson:"explain"`
-	CreateTime time.Time `bson:"createtime"`
-	EditTime   time.Time `bson:"edittime"`
+	HostName   string    `bson:"hostname" json:"hostName"`
+	Copyright  string    `bson:"copyright" json:"copyRight"`
+	Explain    string    `bson:"explain" json:"explain"`
+	CreateTime time.Time `bson:"createtime" json:"createTime"`
+	EditTime   time.Time `bson:"edittime" json:"editTime"`
 }
 
 type User struct {
-	Id_        bson.ObjectId `bson:"_id"`
-	Name       string        `bson:"name"`
-	Pass       string        `bson:"pass"`
-	Nick       string        `bson:"nick"`
-	Email      string        `bson:"email"`
-	Face       string        `bson:"face"`
-	PowerCode  int           `bson:"powercode"`
-	CreateTime time.Time     `bson:"createtime"`
+	Id_        bson.ObjectId `bson:"_id" json:"id"`
+	Name       string        `bson:"name" json:"name"`
+	Pass       string        `bson:"pass" json:"pass"`
+	Nick       string        `bson:"nick" json:"nick"`
+	Email      string        `bson:"email" json:"email"`
+	Face       string        `bson:"face" json:"face"`
+	PowerCode  int           `bson:"powercode" json:"powerCode"`
+	CreateTime time.Time     `bson:"createtime" json:"createTime"`
 }

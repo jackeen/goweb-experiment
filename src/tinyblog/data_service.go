@@ -133,7 +133,7 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 
 	fieldNum := t.NumField()
 	for i := 0; i < fieldNum; i++ {
-		key := t.Field(i).Tag.Get("bson")
+		key := t.Field(i).Tag.Get("json")
 		val := v.Field(i)
 		if val.Type().String() == "time.Time" {
 			m[key] = self.DateString(val.Interface().(time.Time))
@@ -142,4 +142,35 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 		}
 	}
 	return m
+}
+
+//split page module
+type SplitPageCache struct {
+	pageIndexMap map[int]time.Time
+	timer        *time.Ticker
+}
+
+func (self *SplitPageCache) reset(c <-chan time.Time) {
+	<-c
+	self.pageIndexMap = make(map[int]time.Time)
+}
+
+func (self *SplitPageCache) Init() {
+	self.timer = time.NewTicker(3 * time.Minute)
+	go self.reset(self.timer.C)
+}
+
+func (self *SplitPageCache) Stop() {
+	self.timer.Stop()
+}
+
+func (self *SplitPageCache) Add(i int, lastTime time.Time) {
+	self.pageIndexMap[i] = lastTime
+}
+
+func (self *SplitPageCache) Get(i int) (time.Time, bool) {
+	t := self.pageIndexMap[i]
+	s := true
+	//time zero
+	return t, s
 }
