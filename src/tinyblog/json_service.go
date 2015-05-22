@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"strconv"
+	"labix.org/v2/mgo/bson"
 	//"log"
+	"strconv"
+	//"strings"
 )
 
 type ResJsonMap map[string]interface{}
@@ -58,21 +60,23 @@ type PostListJson struct {
 func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
-	start := 0
+	page := 0
 	limit := 5
 
-	reqStart := req.GetFormValue("start")
-	reqLimit := req.GetFormValue("limit")
+	reqTitle := req.GetFormValue("t")
 
-	if reqStart != "" {
-		s, err := strconv.ParseInt(reqStart, 10, 16)
+	reqPage := req.GetFormValue("p")
+	reqLimit := req.GetFormValue("l")
+
+	if reqPage != "" {
+		p, err := strconv.ParseInt(reqPage, 10, 32)
 		if err == nil {
-			start = int(s)
+			page = int(p)
 		}
 	}
 
 	if reqLimit != "" {
-		l, err := strconv.ParseInt(reqLimit, 10, 16)
+		l, err := strconv.ParseInt(reqLimit, 10, 32)
 		if err == nil && l < 5 {
 			limit = int(l)
 		}
@@ -81,9 +85,14 @@ func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 	selData := &SelectData{
 		Condition: nil,
 		Sort:      "-createtime",
-		Start:     start,
+		Start:     page * limit,
 		Limit:     limit,
 	}
+
+	if reqTitle != "" {
+		selData.Condition = bson.M{"title": bson.M{"$regex": bson.RegEx{reqTitle, "i"}}}
+	}
+
 	pl := self.DS.Post.GetList(selData)
 	n := self.DS.Post.Count(selData)
 
@@ -167,7 +176,7 @@ func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
 	if t != "" {
 
 		p := self.DS.Post.GetOne(&SelectData{
-			Condition: BsonM{
+			Condition: bson.M{
 				"title": t,
 			},
 		})
@@ -243,6 +252,6 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 	}
 
 	v, _ := json.Marshal(resJson)
+	res.SetHeader("Content-Type", "application/json")
 	res.Response = string(v)
-
 }

@@ -5,6 +5,7 @@ import (
 	//"strconv"
 	"net/http"
 	//"time"
+	"labix.org/v2/mgo/bson"
 )
 
 type Handler struct {
@@ -36,7 +37,7 @@ func (self *Handler) Index(req *REQ, res *RES) {
 func (self *Handler) Post(req *REQ, res *RES) {
 
 	sel := &SelectData{
-		Condition: BsonM{
+		Condition: bson.M{
 			"title": req.PathParm.FileName,
 		},
 	}
@@ -85,7 +86,7 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 func (self *Handler) Login(req *REQ, res *RES) {
 
 	sel := &SelectData{
-		Condition: BsonM{
+		Condition: bson.M{
 			"name": req.GetFormValue("user"),
 			"pass": req.GetFormValue("pass"),
 		},

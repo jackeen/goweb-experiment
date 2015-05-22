@@ -2,7 +2,7 @@ package main
 
 import (
 	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
+	//"labix.org/v2/mgo/bson"
 	"reflect"
 	"time"
 )
@@ -42,10 +42,8 @@ func (self *ResMessage) TraceMixMsg() string {
 	return self.Addr + ":" + self.Message
 }
 
-type BsonM bson.M
-
 type SelectData struct {
-	Condition BsonM
+	Condition interface{}
 	Sort      string
 	Limit     int
 	Start     int
