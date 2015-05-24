@@ -84,7 +84,9 @@ type MDBC struct {
 
 func (self *MDBC) Init() {
 
-	dbQuery := "mongodb://" + self.User + ":" + self.Pass + "@" + self.Host + "/" + self.Name
+	dbQuery := "mongodb://" +
+		self.User + ":" + self.Pass + "@" +
+		self.Host + "/" + self.Name
 
 	s, err := mgo.Dial(dbQuery)
 	if err != nil {
@@ -143,6 +145,7 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 }
 
 //split page module
+/*
 type SplitPageCache struct {
 	pageIndexMap map[int]time.Time
 	timer        *time.Ticker
@@ -172,3 +175,4 @@ func (self *SplitPageCache) Get(i int) (time.Time, bool) {
 	//time zero
 	return t, s
 }
+*/

@@ -1,6 +1,6 @@
 /*global css*/
 body{
-	
+	background-color: #f6f6f6;
 }
 
 a{
@@ -8,25 +8,57 @@ a{
 }
 
 header{
-	height: 40px;
-	line-height: 40px;
-	background-color: #fff;
-	border-bottom: #ccc 1px solid;
+	display: flex;
+	height: 2em;
+	line-height: 2em;
+	background-color: #333;
+	font-size: 1em;
 }
 
-header h1{
-	float: left;
-	padding: 0 0.5em;
+h1.logo{
+	padding: 0 1em;
 	font-size: 1em;
-	color: #ccc;
+	color: #EABA11;
 }
-header nav{
-	float: left;
+h1.logo a{
+	display: block;
+	color: #EABA11;
+}
+
+.nav{
+	flex: auto;
+	display: flex;
+	height: 2em;
+	line-height: 2em;
+}
+.nav a{
+	display: block;
+	flex: 1;
+	text-align: center;
+	background: #009A7F;
+	color: #fff;
+}
+.nav a:hover{
+	background: #004D40;
+}
+
+.search{
+	padding: 0 1em;
+}
+.search input{
+	width: 10em;
+}
+.search input::placeholder{
+	color: #333;
+}
+.search input:focus{
+	width: 20em;
 }
 
 footer{
-	line-height: 1em;
-	background-color: #efefef;
+	color: #ccc;
+	line-height: 2em;
+	text-align: center;
 }
 
 .warp{
@@ -36,13 +68,18 @@ footer{
 }
 
 .content{
-	flex: 4;
+	flex: 3;
 	word-wrap: break-word;
 }
 
 .side-bar{
 	flex: 1;
 	background-color: #eee;
+}
+
+.login{
+	width: 30em;
+	margin: 0 auto;
 }
 
 @media screen and (max-width: ) {

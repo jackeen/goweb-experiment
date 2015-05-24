@@ -3,19 +3,13 @@
 {{template "headContent" .}}
 {{template "header"}}
 
+<div class="login">
 <form action="/entry/login" method="post" name="login">
-	<fieldset>
-		<span>username:</span>
-		<input type="text" name="user" autocomplete="off" />
-		<br/>
-		<span>password:</span>
-		<input type="text" name="pass" />
-		<br/>
-		<input type="submit" name="submit" value="login" />
-	</fieldset>
+	<input name="user" autocomplete="off" placeholder="username" />
+	<input type="password" name="pass" placeholder="password" />	
+	<input type="submit" name="submit" value="login" />
 </form>
-<script type="text/javascript" src="{{attr .StaticHost}}/js/atom.js" data-main="blog/longin"></script>
+</div>
 
 {{template "footer"}}
-
 {{end}}
