@@ -4,23 +4,37 @@ body{
 }
 
 a{
+	color: #009A7F;
+}
+a:hover{
 	color: #333;
+	transition-property: all;
+ 	transition-duration: 0.4s;
+ 	transition-timing-function: ease-in;
 }
 
-header{
+/**/
+.g-m-con{
 	display: flex;
-	height: 2em;
-	line-height: 2em;
-	background-color: #333;
-	font-size: 1em;
+	max-width: 50em;
+	padding: 0 1em;
+	margin: 0 auto;
 }
 
-h1.logo{
-	padding: 0 1em;
+.m-main-header{
+	height: 3em;
+	line-height: 3em;
+	margin-bottom: 1em;
+	background-color: #333;
+}
+
+.logo{
+	padding-right: 1em;
+	font-family: sans-serif;
 	font-size: 1em;
 	color: #EABA11;
 }
-h1.logo a{
+.logo a{
 	display: block;
 	color: #EABA11;
 }
@@ -28,8 +42,6 @@ h1.logo a{
 .nav{
 	flex: auto;
 	display: flex;
-	height: 2em;
-	line-height: 2em;
 }
 .nav a{
 	display: block;
@@ -43,43 +55,82 @@ h1.logo a{
 }
 
 .search{
-	padding: 0 1em;
+	padding-left: 1em;
 }
 .search input{
-	width: 10em;
-}
-.search input::placeholder{
-	color: #333;
+	display: block;
+	width: 3em;
+	height: 3em;
+	line-height: 3em;
+	border: none;
+	opacity: 0.6;
 }
 .search input:focus{
 	width: 20em;
+	padding: 0 1em;
+	opacity: 1;
 }
 
-footer{
-	color: #ccc;
-	line-height: 2em;
-	text-align: center;
-}
-
-.warp{
-	display: flex;
-	max-width: 50em;
-	margin: 0 auto;
-}
-
-.content{
-	flex: 3;
+.m-content{
+	flex: 2;
+	padding-right: 1em;
 	word-wrap: break-word;
 }
 
-.side-bar{
+ul.m-post-list{
+
+}
+ul.m-post-list li{
+	margin-bottom: 1.5em;
+}
+ul.m-post-list .title{
+	font-size: 1.5em;
+}
+ul.m-post-list .meta{
+	
+}
+ul.m-post-list .title,
+ul.m-post-list .content{
+	margin-bottom: 0.5em;
+}
+
+.m-side-bar{
 	flex: 1;
-	background-color: #eee;
+	padding-left: 1em;
 }
 
 .login{
-	width: 30em;
-	margin: 0 auto;
+	width: 20em;
+	min-height: 10em;
+	padding: 2em;
+	margin: 0 auto 1em auto;
+}
+.login .usr,
+.login .pass{
+	width: 18em;
+	height: 2em;
+	line-height: 2em;
+	padding: 0 1em 0 2em;
+	margin-bottom: 1em;
+}
+.login .btn{
+	height: 2em;
+	line-height: 2em;
+	padding: 0 1em;
+}
+
+.m-main-footer{
+	line-height: 2em;
+	padding: 1em 0;
+	color: #666;
+	background-color: #ddd;
+}
+
+/*animation*/
+.u-trs{
+	transition-property: all;
+ 	transition-duration: 0.2s;
+ 	transition-timing-function: ease-in;
 }
 
 @media screen and (max-width: ) {

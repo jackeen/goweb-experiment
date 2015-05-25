@@ -1,10 +1,15 @@
 {{define "postList"}}
-<ul>
+<ul class="m-post-list">
 {{range .}}
 	<li>
-		<h2>{{.Title}}</h2>
-		<p>{{.Content}}</p>
-		<p>{{.CreateTime}}</p>
+		<h2 class="title">
+			<a href="###">{{.Title}}</a>
+		</h2>
+		<div class="content">{{.Content}}</div>
+		<p class="meta">
+			<span>{{.CreateTime}}</span>
+			<span>{{.Author}}</span>
+		</p>
 	</li>
 {{end}}
 </ul>
