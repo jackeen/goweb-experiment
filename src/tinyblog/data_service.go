@@ -22,6 +22,8 @@ const (
 
 const (
 	SAVE_SUCCESS     = "save success"
+	DEL_SUCCESS      = "delete success"
+	UPDATE_SUCCESS   = "update success"
 	SAVE_FAIL        = "save fail"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
