@@ -1,39 +1,39 @@
 package main
 
 import (
-//"labix.org/v2/mgo"
-//"labix.org/v2/mgo/bson"
+	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 )
 
-/*
 type CateService struct {
-	NumService
 	DBC *MDBC
+	C   *mgo.Collection
+	S   *Session
 }
 
-func (self *CateService) Inert(name string, exp string, pid int) {
+func (self *CateService) Save(c *Cate) *ResMessage {
 
-	cate := &Cate{
-		Id_:      bson.NewObjectId(),
-		Id:       self.incId(self.DBC, "cate", 1).Cate,
-		Name:     name,
-		Explain:  exp,
-		ParentId: pid,
+	if c.Name == "" || c.Parent == "" {
+		return getUserResMessage(false, REQUIRED_DEFAULT, CATE_MODE_CODE)
 	}
-	self.DBC.Insert(CATE_TAB, cate)
+	err := self.C.Insert(c)
+	return getResMessage(err, SAVE_SUCCESS, CATE_MODE_CODE)
 }
 
-func (self *CateService) Select(id int, cate *Cate) {
+func (self *CateService) GetRoot() []Cate {
 
-	self.DBC.SelectOne(CATE_TAB, BSONM{"id": id}, cate)
+	cateList := make([]Cate, 10)
+	self.C.Find(bson.M{"parent": ""}).All(cateList)
+	return cateList
 }
 
-func (self *CateService) Update(id int, data interface{}) {
-
-	self.DBC.UpdateSet(CATE_TAB, BSONM{"id": id}, data)
+func (self *CateService) FindOne(name string) *Cate {
+	c := new(Cate)
+	self.C.Find(bson.M{"name": name}).One(c)
+	return c
 }
 
-func (self *CateService) Delete(id int) {
-	self.DBC.Delete(CATE_TAB, BSONM{"id": id})
-}
-*/
+//func (self *CateService) Delete(name string) *ResMessage {
+
+//err := self.C.Remove(bson.M{"name": name})
+//}

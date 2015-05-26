@@ -30,6 +30,7 @@ const (
 const (
 	POST_MODE_CODE = "101"
 	USER_MODE_CODE = "102"
+	CATE_MODE_CODE = "103"
 )
 
 type ResMessage struct {
@@ -101,6 +102,7 @@ type DataService struct {
 	DBC  *MDBC
 	Post *PostService
 	User *UserService
+	Cate *CateService
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
@@ -114,6 +116,11 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		DBC: dbc,
 		S:   s,
 		C:   dbc.DB.C(USER_TAB),
+	}
+	self.Cate = &CateService{
+		DBC: dbc,
+		S:   s,
+		C:   dbc.DB.C(CATE_TAB),
 	}
 }
 

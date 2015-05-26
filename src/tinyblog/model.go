@@ -31,10 +31,9 @@ type Comment struct {
 }
 
 type Cate struct {
-	Name    string `bson:"name"`
-	Level   int    `bson:"level"`
-	Parent  string `bson:"parent"`
-	Explain string `bson:"explain"`
+	Name     string   `bson:"name" json:"name"`
+	Children []string `bson:"children" json:"children"`
+	Parent   string   `bson:"parent" json:"parent"`
 }
 
 type Tag struct {
