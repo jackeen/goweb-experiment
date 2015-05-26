@@ -14,11 +14,23 @@ a:hover{
 }
 
 /**/
-.g-m-con{
+.g-max-flex{
 	display: flex;
-	max-width: 50em;
+	max-width: 60em;
 	padding: 0 1em;
 	margin: 0 auto;
+}
+.g-warp{
+
+}
+.g-side-bar{
+	flex: 1;
+	padding-left: 1em;
+}
+.g-container{
+	flex: 2;
+	padding-right: 1em;
+	word-wrap: break-word;
 }
 
 .m-main-header{
@@ -29,8 +41,6 @@ a:hover{
 }
 
 .logo{
-	padding-right: 1em;
-	font-family: sans-serif;
 	font-size: 1em;
 	color: #EABA11;
 }
@@ -42,6 +52,7 @@ a:hover{
 .nav{
 	flex: auto;
 	display: flex;
+	margin: 0 1em;
 }
 .nav a{
 	display: block;
@@ -55,7 +66,6 @@ a:hover{
 }
 
 .search{
-	padding-left: 1em;
 }
 .search input{
 	display: block;
@@ -69,12 +79,6 @@ a:hover{
 	width: 20em;
 	padding: 0 1em;
 	opacity: 1;
-}
-
-.m-content{
-	flex: 2;
-	padding-right: 1em;
-	word-wrap: break-word;
 }
 
 ul.m-post-list{
@@ -94,11 +98,6 @@ ul.m-post-list .content{
 	margin-bottom: 0.5em;
 }
 
-.m-side-bar{
-	flex: 1;
-	padding-left: 1em;
-}
-
 .login{
 	width: 20em;
 	min-height: 10em;
@@ -108,14 +107,10 @@ ul.m-post-list .content{
 .login .usr,
 .login .pass{
 	width: 18em;
-	height: 2em;
-	line-height: 2em;
 	padding: 0 1em 0 2em;
 	margin-bottom: 1em;
 }
 .login .btn{
-	height: 2em;
-	line-height: 2em;
 	padding: 0 1em;
 }
 
@@ -126,13 +121,28 @@ ul.m-post-list .content{
 	background-color: #ddd;
 }
 
+/*unit*/
+.u-ipt-h{
+	height: 2em;
+	line-height: 2em;
+}
+
 /*animation*/
-.u-trs{
+.a-trs{
 	transition-property: all;
  	transition-duration: 0.2s;
  	transition-timing-function: ease-in;
 }
 
-@media screen and (max-width: ) {
-
+/*media*/
+@media screen and (max-width: 30em) {
+	.g-max-flex.g-warp{
+		display: block;
+	}
+	.g-container{
+		padding-right: 0;
+	}
+	.g-side-bar{
+		padding-left: 0;
+	}
 }
