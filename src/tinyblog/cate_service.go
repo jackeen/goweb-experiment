@@ -20,28 +20,6 @@ func (self *CateService) Save(c *Cate) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, CATE_MODE_CODE)
 }
 
-func (self *CateService) GetRootList() []Cate {
-
-	var cateList []Cate
-	q := self.C.Find(bson.M{"parent": ""})
-	n, err := q.Count()
-	if err != nil {
-		n = 0
-	}
-	cateList = make([]Cate, n)
-	q.All(cateList)
-	return cateList
-}
-
-func (self *CateService) GetChildList(childrenName []string) []Cate {
-	length := len(childrenName)
-	cateList := make([]Cate, length)
-	for i := 0; i < length; i++ {
-		cateList[i] = *self.GetOne(childrenName[i])
-	}
-	return cateList
-}
-
 func (self *CateService) GetOne(name string) *Cate {
 	c := new(Cate)
 	self.C.Find(bson.M{"name": name}).One(c)
@@ -55,6 +33,26 @@ func (self *CateService) IsExist(name string) bool {
 	} else {
 		return true
 	}
+}
+
+func (self *CateService) GetList(pName string) []Cate {
+	q := self.C.Find(bson.M{"parent": pName})
+	n, err := q.Count()
+	if err != nil {
+		n = 0
+	}
+	cateList := make([]Cate, n)
+	q.All(&cateList)
+	return cateList
+}
+
+func (self *CateService) GetNames(cList []Cate) []string {
+	l := len(cList)
+	nameList := make([]string, l)
+	for i := 0; i < l; i++ {
+		nameList[i] = cList[i].Name
+	}
+	return nameList
 }
 
 func (self *CateService) Update(name string, c *Cate) *ResMessage {

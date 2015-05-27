@@ -63,17 +63,11 @@ func (self *CateJson) Get(req *REQ, res *RES) ResJsonMap {
 	r := new(ResJson)
 	qParent := req.GetFormValue("p")
 
-	if qParent == "" {
-		cs := self.DS.Cate.GetRootList()
-		r.State = true
-		r.Data = cs
-		r.Count = len(cs)
-		return r.TraceListData()
-	} else {
-		cs := self.DS.Cate.GetOne(name)
-	}
-
-	return r.TraceMsg()
+	cs := self.DS.Cate.GetList(qParent)
+	r.State = true
+	r.Data = self.DS.Cate.GetNames(cs)
+	r.Count = len(cs)
+	return r.TraceListData()
 }
 
 func (self *CateJson) Set(req *REQ, res *RES) ResJsonMap {
