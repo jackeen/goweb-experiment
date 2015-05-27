@@ -52,6 +52,89 @@ type IJson interface {
 	Del(*REQ, *RES) ResJsonMap
 }
 
+//cate api
+type CateJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *CateJson) Get(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+	qParent := req.GetFormValue("p")
+
+	if qParent == "" {
+		cs := self.DS.Cate.GetRootList()
+		r.State = true
+		r.Data = cs
+		r.Count = len(cs)
+		return r.TraceListData()
+	} else {
+		cs := self.DS.Cate.GetOne(name)
+	}
+
+	return r.TraceMsg()
+}
+
+func (self *CateJson) Set(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *CateJson) Put(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+	qName := req.GetFormValue("n")
+	qParent := req.GetFormValue("p")
+
+	if qName == "" {
+		r.State = false
+		r.Msg = REQUIRED_DEFAULT
+		return r.TraceMsg()
+	}
+
+	c := &Cate{
+		Name:   qName,
+		Parent: qParent,
+	}
+	rs := self.DS.Cate.Save(c)
+
+	r.State = rs.State
+	r.Msg = rs.TraceMixMsg()
+	return r.TraceMsg()
+}
+
+func (self *CateJson) Del(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+//user api
+type UserJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *UserJson) Get(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *UserJson) Set(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *UserJson) Put(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *UserJson) Del(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
 type PostListJson struct {
 	S  *Session
 	DS *DataService
@@ -157,7 +240,6 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 
 	r.State = rs.State
 	r.Msg = rs.TraceMixMsg()
-
 	return r.TraceMsg()
 }
 
@@ -218,6 +300,20 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	return resJson
 }
 
+func (self *JsonService) Cate(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&CateJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
+}
+
+func (self *JsonService) User(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&UserJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
+}
+
 func (self *JsonService) PostList(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&PostListJson{
 		S:  self.S,
@@ -244,6 +340,10 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 			resJson = self.Post(req, res)
 		case "postlist":
 			resJson = self.PostList(req, res)
+		case "user":
+			resJson = self.User(req, res)
+		case "cate":
+			resJson = self.Cate(req, res)
 		default:
 			resJson = new(ResJson).TraceNotFound()
 		}

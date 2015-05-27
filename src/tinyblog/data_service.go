@@ -3,6 +3,7 @@ package main
 import (
 	"labix.org/v2/mgo"
 	//"labix.org/v2/mgo/bson"
+	"errors"
 	"reflect"
 	"time"
 )
@@ -25,6 +26,8 @@ const (
 	DEL_SUCCESS      = "delete success"
 	UPDATE_SUCCESS   = "update success"
 	SAVE_FAIL        = "save fail"
+	DEL_FAIL         = "delete fail"
+	UPDATE_FAIL      = "update fail"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
 )
@@ -51,6 +54,10 @@ type SelectData struct {
 	Limit     int
 	Start     int
 	GT        string
+}
+
+func createErr(msg string) error {
+	return errors.New(msg)
 }
 
 func getResMessage(err error, msg string, code string) *ResMessage {
