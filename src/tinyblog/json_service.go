@@ -63,9 +63,9 @@ func (self *CateJson) Get(req *REQ, res *RES) ResJsonMap {
 	r := new(ResJson)
 	qParent := req.GetFormValue("p")
 
-	cs := self.DS.Cate.GetList(qParent)
+	cs := self.DS.Cate.GetNames(qParent)
 	r.State = true
-	r.Data = self.DS.Cate.GetNames(cs)
+	r.Data = cs
 	r.Count = len(cs)
 	return r.TraceListData()
 }
@@ -346,6 +346,6 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 	}
 
 	v, _ := json.Marshal(resJson)
-	res.SetHeader("Content-Type", "application/json")
+	res.SetHeader("Content-Type", "application/json;charset=UTF-8")
 	res.Response = string(v)
 }

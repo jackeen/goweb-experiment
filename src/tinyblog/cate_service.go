@@ -46,7 +46,8 @@ func (self *CateService) GetList(pName string) []Cate {
 	return cateList
 }
 
-func (self *CateService) GetNames(cList []Cate) []string {
+func (self *CateService) GetNames(pName string) []string {
+	cList := self.GetList(pName)
 	l := len(cList)
 	nameList := make([]string, l)
 	for i := 0; i < l; i++ {
