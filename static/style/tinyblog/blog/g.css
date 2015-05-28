@@ -16,8 +16,8 @@ a:hover{
 /**/
 .g-max-flex{
 	display: flex;
-	max-width: 60em;
-	padding: 0 1em;
+	max-width: 60rem;
+	padding: 0 1rem;
 	margin: 0 auto;
 }
 .g-warp{
@@ -25,30 +25,32 @@ a:hover{
 }
 .g-side-bar{
 	flex: 1;
-	padding-left: 1em;
+	padding-left: 1rem;
 }
 .g-container{
 	flex: 2;
-	padding-right: 1em;
+	padding-right: 1rem;
 	word-wrap: break-word;
 }
 
 /*common module*/
 .m-main-header{
-	height: 3em;
-	line-height: 3em;
-	margin-bottom: 1em;
+	height: 3rem;
+	line-height: 3rem;
+	margin-bottom: 1rem;
 	background-color: #333;
 }
 .m-main-footer{
-	padding: 1em 0;
+	padding: 1rem 0;
 	color: #666;
 	background-color: #ddd;
 }
 
 /**/
 .logo{
-	font-size: 1em;
+	line-height: 3rem;
+	margin-bottom: 0;
+	font-size: 1rem;
 	color: #EABA11;
 }
 .logo a{
@@ -59,7 +61,7 @@ a:hover{
 .nav{
 	flex: auto;
 	display: flex;
-	margin: 0 1em;
+	margin: 0 1rem;
 }
 .nav a{
 	display: block;
@@ -76,36 +78,33 @@ a:hover{
 }
 .search input{
 	display: block;
-	width: 3em;
-	height: 3em;
-	line-height: 3em;
+	width: 3rem;
+	height: 3rem;
+	line-height: 3rem;
 	border: none;
 	opacity: 0.6;
 }
 .search input:focus{
-	width: 20em;
-	padding: 0 1em;
+	width: 20rem;
+	padding: 0 1rem;
 	opacity: 1;
 }
 
-ul.m-post-list{
+/*post style module*/
+.m-post-list{
 
 }
-ul.m-post-list li{
-	margin-bottom: 1.5em;
+.m-post-list li{
+	margin-bottom: 1rem;
 }
-ul.m-post-list .title{
-	font-size: 1.5em;
-}
-ul.m-post-list .meta{
+.m-post-list .title{
 	
 }
-ul.m-post-list .title,
-ul.m-post-list .content{
-	margin-bottom: 0.5em;
+.m-post-list .meta{
+	
 }
 .m-post-info{
-	margin-bottom: 1em;
+	margin-bottom: 1rem;
 }
 .m-post-info .title{
 
@@ -115,24 +114,24 @@ ul.m-post-list .content{
 }
 
 .login{
-	width: 20em;
-	min-height: 10em;
-	padding: 2em;
-	margin: 0 auto 1em auto;
+	width: 20rem;
+	min-height: 10rem;
+	padding: 2rem;
+	margin: 0 auto 1rem auto;
 }
 .login .usr,
 .login .pass{
-	width: 18em;
-	padding: 0 1em 0 2em;
-	margin-bottom: 1em;
+	width: 18rem;
+	padding: 0 1rem 0 2rem;
+	margin-bottom: 1rem;
 }
 .login .btn{
-	padding: 0 1em;
+	padding: 0 1rem;
 }
 
 /*unit*/
 .u-ipt-h{
-	height: 2em;
+	height: 2rem;
 }
 
 /*animation*/
@@ -143,7 +142,7 @@ ul.m-post-list .content{
 }
 
 /*media*/
-@media screen and (max-width: 30em) {
+@media screen and (max-width: 30rem) {
 	.g-max-flex.g-warp{
 		display: block;
 	}
