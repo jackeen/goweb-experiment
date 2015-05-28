@@ -8,11 +8,25 @@ import (
 	"labix.org/v2/mgo/bson"
 )
 
+type PageData struct {
+	Title      string
+	StaticHost string
+	Data       interface{}
+}
+
 type Handler struct {
 	Tpl        *TPL
 	StaticHost string
 	DS         *DataService
 	Session    *Session
+}
+
+func (self *Handler) GetPD(t string, d interface{}) PageData {
+	return PageData{
+		Title:      t,
+		StaticHost: self.StaticHost,
+		Data:       d,
+	}
 }
 
 func (self *Handler) Index(req *REQ, res *RES) {
@@ -25,12 +39,7 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 	pl := self.DS.Post.GetList(selData)
 
-	d := map[string]interface{}{
-		"PageTitle":  "home",
-		"StaticHost": self.StaticHost,
-		"PostList":   pl,
-	}
-
+	d := self.GetPD("tiny", pl)
 	res.Response = self.Tpl.Parse("index", d)
 }
 
@@ -44,7 +53,8 @@ func (self *Handler) Post(req *REQ, res *RES) {
 
 	p := self.DS.Post.GetOne(sel)
 
-	res.Response = self.Tpl.Parse("post", p)
+	d := self.GetPD(p.Title, p)
+	res.Response = self.Tpl.Parse("post", d)
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {
@@ -75,10 +85,7 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 		return
 	}
 
-	d := map[string]interface{}{
-		"PageTitle":  "~~login~~",
-		"StaticHost": self.StaticHost,
-	}
+	d := self.GetPD("login", nil)
 
 	res.Response = self.Tpl.Parse("login", d)
 }

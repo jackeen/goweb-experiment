@@ -1,4 +1,13 @@
 {{define "post"}}
-<h1>{{.Title}}</h1>
-<p>{{.Content}}</p>
+{{template "headContent" .}}
+{{template "header"}}
+<div class="g-container">
+	<div class="m-post-info">
+		<h1 class="title">{{.Data.Title}}</h1>
+		<p class="con">{{.Data.Content}}</p>
+		<p>{{.Data.Author}} {{.Data.CreateTime}}</p>
+	</div>
+</div>
+{{template "sidebar"}}
+{{template "footer"}}
 {{end}}

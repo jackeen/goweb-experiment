@@ -33,13 +33,20 @@ a:hover{
 	word-wrap: break-word;
 }
 
+/*common module*/
 .m-main-header{
 	height: 3em;
 	line-height: 3em;
 	margin-bottom: 1em;
 	background-color: #333;
 }
+.m-main-footer{
+	padding: 1em 0;
+	color: #666;
+	background-color: #ddd;
+}
 
+/**/
 .logo{
 	font-size: 1em;
 	color: #EABA11;
@@ -97,6 +104,15 @@ ul.m-post-list .title,
 ul.m-post-list .content{
 	margin-bottom: 0.5em;
 }
+.m-post-info{
+	margin-bottom: 1em;
+}
+.m-post-info .title{
+
+}
+.m-post-info .con{
+	
+}
 
 .login{
 	width: 20em;
@@ -114,17 +130,9 @@ ul.m-post-list .content{
 	padding: 0 1em;
 }
 
-.m-main-footer{
-	line-height: 2em;
-	padding: 1em 0;
-	color: #666;
-	background-color: #ddd;
-}
-
 /*unit*/
 .u-ipt-h{
 	height: 2em;
-	line-height: 2em;
 }
 
 /*animation*/
