@@ -3,26 +3,26 @@ html, body{
 }
 
 body{
-	font-size: 1em;
-}
-
-.ys{
-	margin-bottom: 10px;
+	font-size: 1rem;
 }
 
 .warp{
-	overflow: hidden;
+	display: flex;
+	padding-left: 1rem;
 }
 
 .home-header{
-	height: 40px;
-	border-bottom: #ccc solid 1px;
+	display: flex;
+	height: 2rem;
+	line-height: 2em;
+	padding: 0 1rem;
+	background-color: #efefef;
 }
-.home-header h1{
-	float: left;
-	padding: 0 10px;
-	font-size: 2em;
-	color: #ccc;
+.home-header .logo{
+	
+}
+.home-header .nav{
+	flex: auto;
 }
 
 .home-header,
@@ -38,8 +38,8 @@ body{
 	position: fixed;
 	top: 50px;
 	right: 0;
-	width: 300px;
-	padding: 10px;
+	width: 16rem;
+	padding: 1rem;
 	border: #ccc 1px solid;
 }
 .side-bar h3{
@@ -50,7 +50,6 @@ body{
 	width: calc(100% - 310px);
 	padding: 10px;
 	float: left;
-	background-color: #efefef;
 }
 
 .post-form p{
@@ -100,13 +99,8 @@ body{
 	border-radius: 0.7em;
 }
 
-footer{
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	line-height: 1em;
+.footer{
 	text-align: center;
-	font-size: .5em;
 	background-color: #efefef;
 	color: #ccc;
 }

@@ -1,18 +1,21 @@
 {{define "header"}}
 <header class="m-main-header">
-	<div class="g-max-flex">
-		<h1 class="logo">
+	<div class="g-max-flex m-h-con">
+		<div class="logo">
 			<a href="/">tinyNote</a>
-		</h1>
-		<nav class="nav">
-			<a href="/">F2E</a>
-			<a href="/">Note</a>
-			<a href="/">History</a>
-			<a href="/">Lab</a>
-			<a href="/">About</a>
-		</nav>
+		</div>
+		<ul class="nav">
+			<li><a href="/">F2E</a></li>
+			<li><a href="/">Note</a></li>
+			<li><a href="/">History</a></li>
+			<li><a href="/">Lab</a></li>
+			<li><a href="/">About</a></li>
+		</ul>
 		<div class="search">
 			<input class="a-trs" type="text" id="search" autocomplete="off">
+		</div>
+		<div class="usr">
+			<a class="link" href="/entry/">login</a>
 		</div>
 	</div>
 </header>

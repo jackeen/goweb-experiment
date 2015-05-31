@@ -47,47 +47,67 @@ a:hover{
 }
 
 /**/
-.logo{
+.m-h-con a{
+	color: #ddd;
+}
+.m-h-con a:hover{
+	color: #fff;
+}
+.m-h-con .logo{
 	line-height: 3rem;
 	margin-bottom: 0;
 	font-size: 1rem;
 	color: #EABA11;
 }
-.logo a{
+.m-h-con .logo a{
 	display: block;
 	color: #EABA11;
 }
-
-.nav{
-	flex: auto;
+.m-h-con .nav{
+	flex: 1.5;
 	display: flex;
 	margin: 0 1rem;
 }
-.nav a{
-	display: block;
+.m-h-con .nav li{
 	flex: 1;
-	text-align: center;
-	background: #009A7F;
-	color: #fff;
 }
-.nav a:hover{
-	background: #004D40;
+.m-h-con .nav a{
+	display: block;
+	text-align: center;
+	/*background: #009A7F;*/
+}
+.m-h-con .nav a:hover{
+	/*background: #004D40;*/
+	background: #009A7F;
 }
 
-.search{
+.m-h-con .search{
+	flex: 1;
+	display: flex;
+ 	justify-content: flex-end;
 }
-.search input{
+.m-h-con .search input{
 	display: block;
-	width: 3rem;
-	height: 3rem;
-	line-height: 3rem;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	margin-top: 0.5rem;
 	border: none;
 	opacity: 0.6;
 }
-.search input:focus{
+.m-h-con .search input:focus{
 	width: 20rem;
 	padding: 0 1rem;
 	opacity: 1;
+}
+.m-h-con .usr{
+	padding-left: 1rem;
+}
+.m-h-con .usr a{
+	/*color: #ddd;*/
+}
+.m-h-con .usr a:hover{
+	/*color: #fff;*/
 }
 
 /*post style module*/
@@ -132,6 +152,7 @@ a:hover{
 /*unit*/
 .u-ipt-h{
 	height: 2rem;
+	font-size: 1rem;
 }
 
 /*animation*/
