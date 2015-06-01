@@ -93,21 +93,17 @@ a:hover{
 	line-height: 2rem;
 	margin-top: 0.5rem;
 	border: none;
+	text-indent: -10rem;
 	opacity: 0.6;
 }
 .m-h-con .search input:focus{
 	width: 20rem;
 	padding: 0 1rem;
+	text-indent: 0;
 	opacity: 1;
 }
 .m-h-con .usr{
 	padding-left: 1rem;
-}
-.m-h-con .usr a{
-	/*color: #ddd;*/
-}
-.m-h-con .usr a:hover{
-	/*color: #fff;*/
 }
 
 /*post style module*/
@@ -115,10 +111,10 @@ a:hover{
 
 }
 .m-post-list li{
-	margin-bottom: 1rem;
+	margin-bottom: 1.5rem;
 }
 .m-post-list .title{
-	
+	margin-bottom: 0.5rem;
 }
 .m-post-list .meta{
 	
