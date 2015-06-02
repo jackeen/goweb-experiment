@@ -27,6 +27,7 @@ const (
 	UPDATE_SUCCESS   = "update success"
 	SAVE_FAIL        = "save fail"
 	DEL_FAIL         = "delete fail"
+	DEL_POWER_FAIL   = "delete power fail"
 	UPDATE_FAIL      = "update fail"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
@@ -36,6 +37,13 @@ const (
 	POST_MODE_CODE = "101"
 	USER_MODE_CODE = "102"
 	CATE_MODE_CODE = "103"
+)
+
+const (
+	GEUST_POWER_CODE  = -1
+	NORMAL_POWER_CODE = 0
+	EDITOR_POWER_CODE = 1
+	SYS_POWER_CODE    = 10
 )
 
 type ResMessage struct {
@@ -53,6 +61,7 @@ type SelectData struct {
 	Sort      string
 	Limit     int
 	Start     int
+	UUID      string
 	GT        string
 }
 

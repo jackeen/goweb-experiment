@@ -79,12 +79,3 @@ func (self *Session) IsLogin(uuid string) bool {
 		return false
 	}
 }
-
-func (self *Session) GetPowerCode(uuid string) int {
-	usrData := self.Data[uuid]
-	if usrData == nil {
-		return -1
-	} else {
-		return usrData.U.PowerCode
-	}
-}

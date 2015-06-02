@@ -29,6 +29,25 @@ func (self *PostService) Save(p *Post) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, POST_MODE_CODE)
 }
 
+func (self *PostService) Del(sel *SelectData) *ResMessage {
+
+	s := self.S.Get(sel.UUID)
+
+	if s == nil {
+		return getUserResMessage(false, DEL_POWER_FAIL, POST_MODE_CODE)
+	} else {
+
+		user := s.U
+
+		if user.PowerCode != SYS_POWER_CODE {
+			sel.Condition["author"] = user.Name
+		}
+
+		err := self.C.Remove(sel.Condition)
+		return getResMessage(err, DEL_SUCCESS, POST_MODE_CODE)
+	}
+}
+
 func (self *PostService) GetOne(sel *SelectData) *Post {
 
 	p := new(Post)
