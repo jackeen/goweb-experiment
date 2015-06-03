@@ -219,17 +219,24 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 
 	title := req.GetFormValue("title")
 	content := req.GetFormValue("content")
-	draft := req.GetFormValue("draft")
+	draftVal := req.GetFormValue("draft")
+	allowCommentVal := req.GetFormValue("allowcomment")
 
 	isDraft := false
-	if draft == "draft" {
+	if draftVal == "draft" {
 		isDraft = true
 	}
 
+	allowComment := false
+	if allowCommentVal == "allowcomment" {
+		allowComment = true
+	}
+
 	rs := self.DS.Post.Save(&Post{
-		Title:   title,
-		Content: content,
-		IsDraft: isDraft,
+		Title:        title,
+		Content:      content,
+		IsDraft:      isDraft,
+		AllowComment: allowComment,
 	})
 
 	r.State = rs.State

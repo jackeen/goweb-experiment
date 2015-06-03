@@ -56,6 +56,24 @@ type User struct {
 	Nick       string        `bson:"nick" json:"nick"`
 	Email      string        `bson:"email" json:"email"`
 	Face       string        `bson:"face" json:"face"`
-	PowerCode  int           `bson:"powercode" json:"powerCode"`
 	CreateTime time.Time     `bson:"createtime" json:"createTime"`
+	Active     bool          `bson:"active" json:"active"`
+	Power      PowerRule     `bson:"power" json:"power"`
 }
+
+type PowerRule struct {
+	Get []string
+	Set []string
+	Put []string
+	Del []string
+}
+
+/*type DataModCode struct {
+	Post    string
+	Cate    string
+	Tage    string
+	Comment string
+	User    string
+	Config  string
+	All     string
+}*/

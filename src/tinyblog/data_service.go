@@ -37,13 +37,9 @@ const (
 	POST_MODE_CODE = "101"
 	USER_MODE_CODE = "102"
 	CATE_MODE_CODE = "103"
-)
-
-const (
-	GEUST_POWER_CODE  = -1
-	NORMAL_POWER_CODE = 0
-	EDITOR_POWER_CODE = 1
-	SYS_POWER_CODE    = 10
+	TAGE_MODE_CODE = "104"
+	SYS_MODE_CODE  = "110"
+	ALL_MODE_CODE  = "200"
 )
 
 type ResMessage struct {
