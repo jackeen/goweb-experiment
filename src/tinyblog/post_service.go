@@ -31,7 +31,11 @@ func (self *PostService) Save(p *Post) *ResMessage {
 
 func (self *PostService) Del(sel *SelectData) *ResMessage {
 
-	s := self.S.Get(sel.UUID)
+}
+
+func (self *PostService) Discard(sel *SelectData) *ResMessage {
+
+	/*s := self.S.Get(sel.UUID)
 
 	if s == nil {
 		return getUserResMessage(false, DEL_POWER_FAIL, POST_MODE_CODE)
@@ -45,7 +49,7 @@ func (self *PostService) Del(sel *SelectData) *ResMessage {
 
 		err := self.C.Remove(sel.Condition)
 		return getResMessage(err, DEL_SUCCESS, POST_MODE_CODE)
-	}
+	}*/
 }
 
 func (self *PostService) GetOne(sel *SelectData) *Post {

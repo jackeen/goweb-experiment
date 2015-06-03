@@ -240,6 +240,9 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 	//var rm ResJsonMap
 	r := new(ResJson)
+
+	//uuid := self.S.Get(req.GetCookieValues("uuid"))
+
 	return r.TraceMsg()
 }
 

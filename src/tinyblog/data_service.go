@@ -169,6 +169,28 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 	return m
 }
 
+type Auth struct{}
+
+func (self *Auth) getUsr(req *REQ, s *Session) (bool, *User) {
+
+	var usr *User
+	uuid := req.GetOneCookieValue("uuid")
+
+	if uuid == "" {
+		return false, usr
+	}
+
+	return s.GetCurUsr(uuid)
+}
+
+func (self *Auth) EditPost(req *REQ, s *Session) bool {
+
+}
+
+func (self *Auth) DelPost(req *REQ, s *Session) bool {
+
+}
+
 //split page module
 /*
 type SplitPageCache struct {

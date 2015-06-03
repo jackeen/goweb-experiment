@@ -70,6 +70,16 @@ func (self *Session) Get(uuid string) *SessionData {
 	return self.Data[uuid]
 }
 
+func (self *Session) GetCurUsr(uuid string) (bool, *User) {
+
+	var usr *User
+	sd := self.Get(uuid)
+	if sd != nil {
+		return true, sd.U
+	}
+	return false, usr
+}
+
 func (self *Session) IsLogin(uuid string) bool {
 	u := self.Get(uuid)
 	if u != nil {
