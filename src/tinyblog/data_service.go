@@ -4,7 +4,6 @@ import (
 	"labix.org/v2/mgo"
 	//"labix.org/v2/mgo/bson"
 	"errors"
-	"reflect"
 	"time"
 )
 
@@ -136,55 +135,6 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
 	}
-}
-
-//
-type Format struct{}
-
-func (self *Format) DateString(t time.Time) string {
-	return t.Format(DATE_FORMAT_STR)
-}
-
-func (self *Format) O2M(o interface{}) map[string]interface{} {
-
-	m := map[string]interface{}{}
-
-	t := reflect.TypeOf(o)
-	v := reflect.ValueOf(o)
-
-	fieldNum := t.NumField()
-	for i := 0; i < fieldNum; i++ {
-		key := t.Field(i).Tag.Get("json")
-		val := v.Field(i)
-		if val.Type().String() == "time.Time" {
-			m[key] = self.DateString(val.Interface().(time.Time))
-		} else {
-			m[key] = val.Interface()
-		}
-	}
-	return m
-}
-
-type Auth struct{}
-
-func (self *Auth) getUsr(req *REQ, s *Session) (bool, *User) {
-
-	var usr *User
-	uuid := req.GetOneCookieValue("uuid")
-
-	if uuid == "" {
-		return false, usr
-	}
-
-	return s.GetCurUsr(uuid)
-}
-
-func (self *Auth) EditPost(req *REQ, s *Session) bool {
-
-}
-
-func (self *Auth) DelPost(req *REQ, s *Session) bool {
-
 }
 
 //split page module

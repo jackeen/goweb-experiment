@@ -6,10 +6,21 @@ import (
 	"time"
 )
 
+type UserGroup struct {
+	Name  string
+	Power map[string]bool
+}
+
 type UserService struct {
-	DBC *MDBC
-	C   *mgo.Collection
-	S   *Session
+	DBC            *MDBC
+	C              *mgo.Collection
+	S              *Session
+	UGMap          map[string]UserGroup
+	adminGroupName string
+}
+
+func (self *UserService) Init() {
+	self.adminGroupName = "admin"
 }
 
 func (self *UserService) Save(user *User) *ResMessage {
@@ -60,3 +71,31 @@ func (self *UserService) LoginSelect(u string, p string, res *User) {
 
 
 */
+
+/*type Author struct {
+	userGroupList []UserGroup
+}
+
+func (self *Author) Init() {
+
+}
+
+func (self *Author) getUsr(req *REQ, s *Session) (bool, *User) {
+
+	var usr *User
+	uuid := req.GetOneCookieValue("uuid")
+
+	if uuid == "" {
+		return false, usr
+	}
+
+	return s.GetCurUsr(uuid)
+}
+
+func (self *Author) EditPost(req *REQ, s *Session) bool {
+
+}
+
+func (self *Author) DelPost(req *REQ, s *Session) bool {
+
+}*/

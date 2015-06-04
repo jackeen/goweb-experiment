@@ -58,22 +58,5 @@ type User struct {
 	Face       string        `bson:"face" json:"face"`
 	CreateTime time.Time     `bson:"createtime" json:"createTime"`
 	Active     bool          `bson:"active" json:"active"`
-	Power      PowerRule     `bson:"power" json:"power"`
+	Group      string        `bson:"group" json:"group"`
 }
-
-type PowerRule struct {
-	Get []string
-	Set []string
-	Put []string
-	Del []string
-}
-
-/*type DataModCode struct {
-	Post    string
-	Cate    string
-	Tage    string
-	Comment string
-	User    string
-	Config  string
-	All     string
-}*/
