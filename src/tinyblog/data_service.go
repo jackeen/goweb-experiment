@@ -1,9 +1,10 @@
 package main
 
 import (
-	"labix.org/v2/mgo"
-	//"labix.org/v2/mgo/bson"
 	"errors"
+	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
+	"reflect"
 	"time"
 )
 
@@ -41,6 +42,12 @@ const (
 	ALL_MODE_CODE  = "200"
 )
 
+const (
+	MANAGE_USR_GROUP = "manage"
+	EDITOR_USR_GROUP = "editor"
+	NORMAL_USR_GROUP = "normal"
+)
+
 type ResMessage struct {
 	State   bool
 	Addr    string
@@ -52,7 +59,7 @@ func (self *ResMessage) TraceMixMsg() string {
 }
 
 type SelectData struct {
-	Condition interface{}
+	Condition bson.M
 	Sort      string
 	Limit     int
 	Start     int
@@ -112,13 +119,15 @@ func (self *MDBC) Init() {
 }
 
 type DataService struct {
-	DBC  *MDBC
-	Post *PostService
-	User *UserService
-	Cate *CateService
+	DBC           *MDBC
+	UserGroupRule map[string]map[string]bool
+	Post          *PostService
+	User          *UserService
+	Cate          *CateService
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
+	//
 	self.DBC = dbc
 	self.Post = &PostService{
 		DBC: dbc,
@@ -135,6 +144,47 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
 	}
+
+	//rule
+	ruleMap := make(map[string]map[string]bool)
+	manageRule := make(map[string]bool)
+	editorRule := make(map[string]bool)
+	normalRule := make(map[string]bool)
+	ruleMap[MANAGE_USR_GROUP] = manageRule
+	ruleMap[EDITOR_USR_GROUP] = editorRule
+	ruleMap[NORMAL_USR_GROUP] = normalRule
+	self.UserGroupRule = ruleMap
+}
+
+func (self *DataService) createGroupRule(mcode string) map[string]bool {
+	//........
+}
+
+//data format
+type Format struct{}
+
+func (self *Format) DateString(t time.Time) string {
+	return t.Format(DATE_FORMAT_STR)
+}
+
+func (self *Format) O2M(o interface{}) map[string]interface{} {
+
+	m := map[string]interface{}{}
+
+	t := reflect.TypeOf(o)
+	v := reflect.ValueOf(o)
+
+	fieldNum := t.NumField()
+	for i := 0; i < fieldNum; i++ {
+		key := t.Field(i).Tag.Get("json")
+		val := v.Field(i)
+		if val.Type().String() == "time.Time" {
+			m[key] = self.DateString(val.Interface().(time.Time))
+		} else {
+			m[key] = val.Interface()
+		}
+	}
+	return m
 }
 
 //split page module

@@ -6,21 +6,10 @@ import (
 	"time"
 )
 
-type UserGroup struct {
-	Name  string
-	Power map[string]bool
-}
-
 type UserService struct {
-	DBC            *MDBC
-	C              *mgo.Collection
-	S              *Session
-	UGMap          map[string]UserGroup
-	adminGroupName string
-}
-
-func (self *UserService) Init() {
-	self.adminGroupName = "admin"
+	DBC *MDBC
+	C   *mgo.Collection
+	S   *Session
 }
 
 func (self *UserService) Save(user *User) *ResMessage {
