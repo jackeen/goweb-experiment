@@ -119,11 +119,10 @@ func (self *MDBC) Init() {
 }
 
 type DataService struct {
-	DBC           *MDBC
-	UserGroupRule map[string]map[string]bool
-	Post          *PostService
-	User          *UserService
-	Cate          *CateService
+	DBC  *MDBC
+	Post *PostService
+	User *UserService
+	Cate *CateService
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
@@ -145,19 +144,25 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		C:   dbc.DB.C(CATE_TAB),
 	}
 
-	//rule
-	ruleMap := make(map[string]map[string]bool)
-	manageRule := make(map[string]bool)
-	editorRule := make(map[string]bool)
-	normalRule := make(map[string]bool)
-	ruleMap[MANAGE_USR_GROUP] = manageRule
-	ruleMap[EDITOR_USR_GROUP] = editorRule
-	ruleMap[NORMAL_USR_GROUP] = normalRule
-	self.UserGroupRule = ruleMap
 }
 
-func (self *DataService) createGroupRule(mcode string) map[string]bool {
-	//........
+type AuthCallFn func(req *REQ, s *Session, modName string, fnName string)
+
+type Author struct{}
+
+func (self *Author) GetCurUsr(req *REQ, s *Session) (bool, *User) {
+
+	var usr *User
+	uuid := req.GetCookieValues("uuid")
+	sd := s.Get(uuid)
+	if sd != nil {
+		return true, sd.U
+	}
+	return false, usr
+}
+
+func (self *Author) Then(success AuthCallFn, fail AuthCallFn) {
+
 }
 
 //data format
