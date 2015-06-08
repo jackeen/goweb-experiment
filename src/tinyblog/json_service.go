@@ -245,10 +245,21 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 }
 
 func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
-	//var rm ResJsonMap
-	r := new(ResJson)
 
-	//uuid := self.S.Get(req.GetCookieValues("uuid"))
+	r := new(ResJson)
+	uuid := self.S.Get(req.GetCookieValues("uuid"))
+
+	if self.DS.Auth.HasEditPost(uuid) {
+
+		r.State = true
+
+		if self.DS.Auth.IsManager(uuid) {
+			self.DS.Post.Del(&SelectData{})
+		}
+
+	} else {
+		r.State = false
+	}
 
 	return r.TraceMsg()
 }

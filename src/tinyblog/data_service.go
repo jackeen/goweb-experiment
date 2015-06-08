@@ -93,6 +93,57 @@ func getUserResMessage(s bool, msg string, code string) *ResMessage {
 	}
 }
 
+type Author struct {
+	S *Session
+}
+
+func (self *Author) GetCurUsr(uuid string) (bool, *User) {
+
+	var usr *User
+	sd := self.S.Get(uuid)
+	if sd != nil {
+		return true, sd.U
+	}
+	return false, usr
+}
+
+func (self *Author) IsManager(uuid string) bool {
+	b, usr := self.GetCurUsr(uuid)
+	if b {
+		if usr.Group == MANAGE_USR_GROUP {
+			return true
+		}
+	} else {
+		return false
+	}
+}
+
+func (self *Author) IsEditor(uuid string) bool {
+	b, usr := self.GetCurUsr(uuid)
+	if b {
+		if usr.Group == EDITOR_USR_GROUP {
+			return true
+		}
+	} else {
+		return false
+	}
+}
+
+func (self *Author) IsUser(uuid string) bool {
+	b, usr := self.GetCurUsr(uuid)
+	if b {
+		if usr.Group == NORMAL_USR_GROUP {
+			return true
+		}
+	} else {
+		return false
+	}
+}
+
+func (self *Author) HasEditPost(uuid string) bool {
+	return self.IsManager(uuid) || self.IsEditor(uuid)
+}
+
 //mdb connection
 type MDBC struct {
 	Host string
@@ -120,6 +171,7 @@ func (self *MDBC) Init() {
 
 type DataService struct {
 	DBC  *MDBC
+	Auth *Author
 	Post *PostService
 	User *UserService
 	Cate *CateService
@@ -128,6 +180,11 @@ type DataService struct {
 func (self *DataService) Init(dbc *MDBC, s *Session) {
 	//
 	self.DBC = dbc
+
+	self.Auth = &Author{
+		S: s,
+	}
+
 	self.Post = &PostService{
 		DBC: dbc,
 		S:   s,
@@ -143,25 +200,6 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
 	}
-
-}
-
-type AuthCallFn func(req *REQ, s *Session, modName string, fnName string)
-
-type Author struct{}
-
-func (self *Author) GetCurUsr(req *REQ, s *Session) (bool, *User) {
-
-	var usr *User
-	uuid := req.GetCookieValues("uuid")
-	sd := s.Get(uuid)
-	if sd != nil {
-		return true, sd.U
-	}
-	return false, usr
-}
-
-func (self *Author) Then(success AuthCallFn, fail AuthCallFn) {
 
 }
 
