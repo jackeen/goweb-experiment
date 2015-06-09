@@ -248,7 +248,7 @@ func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
 
-	id := req.GetFormValue("id")
+	/*id := req.GetFormValue("id")
 	uuid := req.GetCookieValues("uuid")
 
 	if self.DS.Auth.HasEditPost(uuid) {
@@ -267,7 +267,7 @@ func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 
 	} else {
 		r.State = false
-	}
+	}*/
 
 	return r.TraceMsg()
 }

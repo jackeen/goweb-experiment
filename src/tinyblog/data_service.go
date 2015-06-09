@@ -140,8 +140,23 @@ func (self *Author) IsUser(uuid string) bool {
 	}
 }
 
-func (self *Author) HasEditPost(uuid string) bool {
-	return self.IsManager(uuid) || self.IsEditor(uuid)
+func (self *Author) HasEditPost(uuid string, p *Post) bool {
+	if self.IsManager(uuid) {
+		return true
+	} else if self.IsEditor(uuid) {
+		_, usr := self.GetCurUsr(uuid)
+		if p.Author == usr.Name {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return false
+	}
+}
+
+func (self *Author) HasSavePost(uuid string) bool {
+
 }
 
 //mdb connection
@@ -202,10 +217,6 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
 	}
-
-}
-
-func (self *DataService) name() {
 
 }
 
