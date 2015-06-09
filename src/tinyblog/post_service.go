@@ -29,11 +29,14 @@ func (self *PostService) Save(p *Post) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, POST_MODE_CODE)
 }
 
-func (self *PostService) Del(sel *SelectData) *ResMessage {
-
+func (self *PostService) Del(id string) *ResMessage {
+	err := self.C.RemoveId(id)
+	return getResMessage(err, DEL_SUCCESS, POST_MODE_CODE)
 }
 
-func (self *PostService) Discard(sel *SelectData) *ResMessage {
+func (self *PostService) Discard(id string) *ResMessage {
+	err := self.C.UpdateId(id, bson.M{"isdiscard": true})
+	return getResMessage(err, UPDATE_SUCCESS, POST_MODE_CODE)
 
 	/*s := self.S.Get(sel.UUID)
 

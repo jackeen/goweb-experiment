@@ -247,15 +247,23 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
-	uuid := self.S.Get(req.GetCookieValues("uuid"))
+
+	id := req.GetFormValue("id")
+	uuid := req.GetCookieValues("uuid")
 
 	if self.DS.Auth.HasEditPost(uuid) {
 
 		r.State = true
-
-		if self.DS.Auth.IsManager(uuid) {
-			self.DS.Post.Del(&SelectData{})
+		sel := &SelectData{
+			Condition: bson.M{"_id": id},
 		}
+
+		if self.DS.Auth.IsEditor(uuid) {
+			_, usr := self.DS.Auth.GetCurUsr(uuid)
+			sel.Condition["author"] = usr.Name
+		}
+
+		rs := self.DS.Post.Del(sel)
 
 	} else {
 		r.State = false

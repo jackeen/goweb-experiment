@@ -15,7 +15,7 @@ type Post struct {
 	CreateTime   time.Time     `bson:"createtime" json:"createTime"`
 	EditTime     time.Time     `bson:"edittime" json:"editTime"`
 	IsDraft      bool          `bson:"isdraft" json:"isDraft"`
-	IsDeleted    bool          `bson:"isDeleted json:"isDeleted"`
+	IsDiscard    bool          `bson:"isdiscard json:"isDiscard"`
 	AllowComment bool          `bson:"allowcomment" json:"allowComment"`
 	Comment      []Comment     `bson:"comment" json:"comment"`
 }

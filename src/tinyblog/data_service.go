@@ -171,6 +171,7 @@ func (self *MDBC) Init() {
 
 type DataService struct {
 	DBC  *MDBC
+	S    *Session
 	Auth *Author
 	Post *PostService
 	User *UserService
@@ -178,8 +179,9 @@ type DataService struct {
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
-	//
+
 	self.DBC = dbc
+	self.S = s
 
 	self.Auth = &Author{
 		S: s,
@@ -200,6 +202,10 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
 	}
+
+}
+
+func (self *DataService) name() {
 
 }
 
