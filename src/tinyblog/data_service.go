@@ -141,11 +141,14 @@ func (self *Author) IsUser(uuid string) bool {
 }
 
 func (self *Author) HasEditPost(uuid string, p *Post) bool {
-	if self.IsManager(uuid) {
-		return true
-	} else if self.IsEditor(uuid) {
-		_, usr := self.GetCurUsr(uuid)
-		if p.Author == usr.Name {
+
+	isLogin, usr := self.GetCurUsr(uuid)
+
+	if isLogin {
+		usrGroup := usr.Group
+		if usrGroup == MANAGE_USR_GROUP {
+			return true
+		} else if usrGroup == EDITOR_USR_GROUP && p.Author == usr.Name {
 			return true
 		} else {
 			return false
@@ -157,7 +160,18 @@ func (self *Author) HasEditPost(uuid string, p *Post) bool {
 
 func (self *Author) HasSavePost(uuid string) bool {
 
+	isLogin, usr := self.GetCurUsr(uuid)
+	isM := usr.Group == MANAGE_USR_GROUP
+	isE := usr.Group == EDITOR_USR_GROUP
+
+	if isLogin && isE && isM {
+		return true
+	} else {
+		return false
+	}
 }
+
+func (self *Author) HasComment(uuid string) bool {}
 
 //mdb connection
 type MDBC struct {
