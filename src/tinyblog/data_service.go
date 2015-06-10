@@ -29,6 +29,8 @@ const (
 	DEL_FAIL         = "delete fail"
 	UPDATE_FAIL      = "update fail"
 	NOT_ENOUGH_POWER = "not enough power"
+	TARGET_HAS_EXIST = "target has exist"
+	TARGET_NOT_EXIST = "target not exist"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
 )
@@ -60,6 +62,7 @@ func (self *ResMessage) TraceMixMsg() string {
 
 type SelectData struct {
 	Condition bson.M
+	Filter    bson.M
 	Sort      string
 	Limit     int
 	Start     int
@@ -97,18 +100,18 @@ type Author struct {
 	S *Session
 }
 
-func (self *Author) GetCurUsr(uuid string) (bool, *User) {
+func (self *Author) GetCurUsr(uuid string) (*User, bool) {
 
 	var usr *User
 	sd := self.S.Get(uuid)
 	if sd != nil {
-		return true, sd.U
+		return sd.U, true
 	}
-	return false, usr
+	return usr, false
 }
 
 func (self *Author) IsManager(uuid string) bool {
-	b, usr := self.GetCurUsr(uuid)
+	usr, b := self.GetCurUsr(uuid)
 	if b && usr.Group == MANAGE_USR_GROUP {
 		return true
 	} else {
@@ -117,7 +120,7 @@ func (self *Author) IsManager(uuid string) bool {
 }
 
 func (self *Author) IsEditor(uuid string) bool {
-	b, usr := self.GetCurUsr(uuid)
+	usr, b := self.GetCurUsr(uuid)
 	if b && usr.Group == EDITOR_USR_GROUP {
 		return true
 	} else {
@@ -126,7 +129,7 @@ func (self *Author) IsEditor(uuid string) bool {
 }
 
 func (self *Author) IsUser(uuid string) bool {
-	b, usr := self.GetCurUsr(uuid)
+	usr, b := self.GetCurUsr(uuid)
 	if b && usr.Group == NORMAL_USR_GROUP {
 		return true
 	} else {
@@ -136,7 +139,7 @@ func (self *Author) IsUser(uuid string) bool {
 
 func (self *Author) HasEditPost(uuid string, p *Post) bool {
 
-	isLogin, usr := self.GetCurUsr(uuid)
+	usr, isLogin := self.GetCurUsr(uuid)
 
 	if isLogin {
 		usrGroup := usr.Group
@@ -154,12 +157,14 @@ func (self *Author) HasEditPost(uuid string, p *Post) bool {
 
 func (self *Author) HasSavePost(uuid string) bool {
 
-	isLogin, usr := self.GetCurUsr(uuid)
-	isM := usr.Group == MANAGE_USR_GROUP
-	isE := usr.Group == EDITOR_USR_GROUP
+	usr, isLogin := self.GetCurUsr(uuid)
 
-	if isLogin && isE && isM {
-		return true
+	if isLogin {
+		if usr.Group == MANAGE_USR_GROUP || usr.Group == EDITOR_USR_GROUP {
+			return true
+		} else {
+			return false
+		}
 	} else {
 		return false
 	}

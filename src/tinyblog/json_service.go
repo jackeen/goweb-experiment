@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"labix.org/v2/mgo/bson"
-	"log"
+	//"log"
 	"strconv"
 	//"strings"
 )
@@ -11,22 +11,22 @@ import (
 type ResJsonMap map[string]interface{}
 
 type ResJson struct {
-	State bool
-	Msg   string
-	Count int
-	Data  interface{}
+	State   bool
+	Message string
+	Count   int
+	Data    interface{}
 }
 
 func (self *ResJson) TraceMsg() ResJsonMap {
 	return ResJsonMap{
-		"state": self.State,
-		"msg":   self.Msg,
+		"state":   self.State,
+		"message": self.Message,
 	}
 }
 
 func (self *ResJson) TraceNotFound() ResJsonMap {
 	self.State = false
-	self.Msg = NOT_FOUND
+	self.Message = NOT_FOUND
 	return self.TraceMsg()
 }
 
@@ -83,7 +83,7 @@ func (self *CateJson) Put(req *REQ, res *RES) ResJsonMap {
 
 	if qName == "" {
 		r.State = false
-		r.Msg = REQUIRED_DEFAULT
+		r.Message = REQUIRED_DEFAULT
 		return r.TraceMsg()
 	}
 
@@ -94,7 +94,7 @@ func (self *CateJson) Put(req *REQ, res *RES) ResJsonMap {
 	rs := self.DS.Cate.Save(c)
 
 	r.State = rs.State
-	r.Msg = rs.TraceMixMsg()
+	r.Message = rs.TraceMixMsg()
 	return r.TraceMsg()
 }
 
@@ -217,7 +217,21 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
 
+	uuid := req.GetOneCookieValue("uuid")
+
+	if !self.DS.Auth.HasSavePost(uuid) {
+		r.State = false
+		r.Message = NOT_ENOUGH_POWER
+		return r.TraceMsg()
+	}
+
 	title := req.GetFormValue("title")
+	if self.DS.Post.IsExist(title) {
+		r.State = false
+		r.Message = TARGET_HAS_EXIST
+		return r.TraceMsg()
+	}
+
 	content := req.GetFormValue("content")
 	draftVal := req.GetFormValue("draft")
 	allowCommentVal := req.GetFormValue("allowcomment")
@@ -232,15 +246,18 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 		allowComment = true
 	}
 
+	usr, _ := self.DS.Auth.GetCurUsr(uuid)
+
 	rs := self.DS.Post.Save(&Post{
 		Title:        title,
 		Content:      content,
 		IsDraft:      isDraft,
 		AllowComment: allowComment,
+		Author:       usr.Name,
 	})
 
 	r.State = rs.State
-	r.Msg = rs.TraceMixMsg()
+	r.Message = rs.TraceMixMsg()
 	return r.TraceMsg()
 }
 
@@ -250,22 +267,28 @@ func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 
 	id := req.GetFormValue("id")
 	uuid := req.GetOneCookieValue("uuid")
-	p, isFound := self.DS.Post.GetOneById(id)
 
-	log.Println(id, uuid, p)
+	if self.S.IsLogin(uuid) {
 
-	if isFound {
-		if self.DS.Auth.HasEditPost(uuid, p) {
-			rs := self.DS.Post.Del(id)
-			r.State = rs.State
-			r.Msg = rs.Message
+		p, isFound := self.DS.Post.GetOneById(id)
+
+		if isFound {
+			if self.DS.Auth.HasEditPost(uuid, p) {
+				rs := self.DS.Post.Del(id)
+				r.State = rs.State
+				r.Message = rs.Message
+			} else {
+				r.State = false
+				r.Message = NOT_ENOUGH_POWER
+			}
 		} else {
 			r.State = false
-			r.Msg = NOT_ENOUGH_POWER
+			r.Message = TARGET_NOT_EXIST
 		}
+
 	} else {
 		r.State = false
-		r.Msg = NOT_FOUND
+		r.Message = NOT_ENOUGH_POWER
 	}
 
 	return r.TraceMsg()
@@ -292,13 +315,13 @@ func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
 			rm = r.TraceData()
 		} else {
 			r.State = false
-			r.Msg = NOT_FOUND
+			r.Message = NOT_FOUND
 			rm = r.TraceMsg()
 		}
 
 	} else {
 		r.State = false
-		r.Msg = REQUIRED_DEFAULT
+		r.Message = REQUIRED_DEFAULT
 		rm = r.TraceMsg()
 	}
 	return rm

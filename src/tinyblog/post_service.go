@@ -37,22 +37,6 @@ func (self *PostService) Del(id string) *ResMessage {
 func (self *PostService) Discard(id string) *ResMessage {
 	err := self.C.UpdateId(bson.ObjectIdHex(id), bson.M{"isdiscard": true})
 	return getResMessage(err, UPDATE_SUCCESS, POST_MODE_CODE)
-
-	/*s := self.S.Get(sel.UUID)
-
-	if s == nil {
-		return getUserResMessage(false, DEL_POWER_FAIL, POST_MODE_CODE)
-	} else {
-
-		user := s.U
-
-		if user.PowerCode != SYS_POWER_CODE {
-			sel.Condition["author"] = user.Name
-		}
-
-		err := self.C.Remove(sel.Condition)
-		return getResMessage(err, DEL_SUCCESS, POST_MODE_CODE)
-	}*/
 }
 
 func (self *PostService) GetOne(sel *SelectData) *Post {
@@ -70,6 +54,16 @@ func (self *PostService) GetOneById(id string) (*Post, bool) {
 		return p, true
 	} else {
 		return p, false
+	}
+}
+
+func (self *PostService) IsExist(title string) bool {
+	p := new(Post)
+	self.C.Find(bson.M{"title": title}).Select(bson.M{"title": 1}).One(p)
+	if p.Title != "" {
+		return true
+	} else {
+		return false
 	}
 }
 
