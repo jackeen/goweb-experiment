@@ -27,8 +27,8 @@ const (
 	UPDATE_SUCCESS   = "update success"
 	SAVE_FAIL        = "save fail"
 	DEL_FAIL         = "delete fail"
-	DEL_POWER_FAIL   = "delete power fail"
 	UPDATE_FAIL      = "update fail"
+	NOT_ENOUGH_POWER = "not enough power"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
 )
@@ -109,10 +109,8 @@ func (self *Author) GetCurUsr(uuid string) (bool, *User) {
 
 func (self *Author) IsManager(uuid string) bool {
 	b, usr := self.GetCurUsr(uuid)
-	if b {
-		if usr.Group == MANAGE_USR_GROUP {
-			return true
-		}
+	if b && usr.Group == MANAGE_USR_GROUP {
+		return true
 	} else {
 		return false
 	}
@@ -120,10 +118,8 @@ func (self *Author) IsManager(uuid string) bool {
 
 func (self *Author) IsEditor(uuid string) bool {
 	b, usr := self.GetCurUsr(uuid)
-	if b {
-		if usr.Group == EDITOR_USR_GROUP {
-			return true
-		}
+	if b && usr.Group == EDITOR_USR_GROUP {
+		return true
 	} else {
 		return false
 	}
@@ -131,10 +127,8 @@ func (self *Author) IsEditor(uuid string) bool {
 
 func (self *Author) IsUser(uuid string) bool {
 	b, usr := self.GetCurUsr(uuid)
-	if b {
-		if usr.Group == NORMAL_USR_GROUP {
-			return true
-		}
+	if b && usr.Group == NORMAL_USR_GROUP {
+		return true
 	} else {
 		return false
 	}
@@ -171,7 +165,9 @@ func (self *Author) HasSavePost(uuid string) bool {
 	}
 }
 
-func (self *Author) HasComment(uuid string) bool {}
+func (self *Author) HasComment(uuid string) bool {
+	return self.S.IsLogin(uuid)
+}
 
 //mdb connection
 type MDBC struct {

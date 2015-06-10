@@ -30,12 +30,12 @@ func (self *PostService) Save(p *Post) *ResMessage {
 }
 
 func (self *PostService) Del(id string) *ResMessage {
-	err := self.C.RemoveId(id)
+	err := self.C.RemoveId(bson.ObjectIdHex(id))
 	return getResMessage(err, DEL_SUCCESS, POST_MODE_CODE)
 }
 
 func (self *PostService) Discard(id string) *ResMessage {
-	err := self.C.UpdateId(id, bson.M{"isdiscard": true})
+	err := self.C.UpdateId(bson.ObjectIdHex(id), bson.M{"isdiscard": true})
 	return getResMessage(err, UPDATE_SUCCESS, POST_MODE_CODE)
 
 	/*s := self.S.Get(sel.UUID)
@@ -60,6 +60,17 @@ func (self *PostService) GetOne(sel *SelectData) *Post {
 	p := new(Post)
 	self.C.Find(sel.Condition).One(p)
 	return p
+}
+
+func (self *PostService) GetOneById(id string) (*Post, bool) {
+
+	p := new(Post)
+	err := self.C.FindId(bson.ObjectIdHex(id)).One(p)
+	if err == nil {
+		return p, true
+	} else {
+		return p, false
+	}
 }
 
 func (self *PostService) Count(sel *SelectData) int {

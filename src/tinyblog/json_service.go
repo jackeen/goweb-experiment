@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"labix.org/v2/mgo/bson"
-	//"log"
+	"log"
 	"strconv"
 	//"strings"
 )
@@ -248,26 +248,25 @@ func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 
 	r := new(ResJson)
 
-	/*id := req.GetFormValue("id")
-	uuid := req.GetCookieValues("uuid")
+	id := req.GetFormValue("id")
+	uuid := req.GetOneCookieValue("uuid")
+	p, isFound := self.DS.Post.GetOneById(id)
 
-	if self.DS.Auth.HasEditPost(uuid) {
+	log.Println(id, uuid, p)
 
-		r.State = true
-		sel := &SelectData{
-			Condition: bson.M{"_id": id},
+	if isFound {
+		if self.DS.Auth.HasEditPost(uuid, p) {
+			rs := self.DS.Post.Del(id)
+			r.State = rs.State
+			r.Msg = rs.Message
+		} else {
+			r.State = false
+			r.Msg = NOT_ENOUGH_POWER
 		}
-
-		if self.DS.Auth.IsEditor(uuid) {
-			_, usr := self.DS.Auth.GetCurUsr(uuid)
-			sel.Condition["author"] = usr.Name
-		}
-
-		rs := self.DS.Post.Del(sel)
-
 	} else {
 		r.State = false
-	}*/
+		r.Msg = NOT_FOUND
+	}
 
 	return r.TraceMsg()
 }
@@ -317,6 +316,8 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 		resJson = obj.Get(req, res)
 	case "put":
 		resJson = obj.Put(req, res)
+	case "del":
+		resJson = obj.Del(req, res)
 	default:
 		resJson = new(ResJson).TraceNotFound()
 	}
