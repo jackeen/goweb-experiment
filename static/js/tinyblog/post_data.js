@@ -6,7 +6,7 @@ define({
 
 	var http = modules.http;
 
-	var saveURL = '/json/savepost';
+	var saveURL = '/api/post/put';
 
 	function savePost(data, fn) {
 

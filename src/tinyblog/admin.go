@@ -42,6 +42,8 @@ func (self *Admin) Router(req *REQ, res *RES) {
 		self.home(req, res)
 	case "addpost":
 		self.addPost(req, res)
+	case "postlist":
+		self.postList(req, res)
 	default:
 		self.NotFound(req, res)
 	}
@@ -64,6 +66,15 @@ func (self *Admin) addPost(req *REQ, res *RES) {
 	}
 
 	res.Response = self.Tpl.Parse("add_post", d)
+}
+
+func (self *Admin) postList(req *REQ, res *RES) {
+
+	d := map[string]interface{}{
+		"PageTitle": "post list",
+	}
+
+	res.Response = self.Tpl.Parse("post_list", d)
 }
 
 func (self *Admin) NotFound(req *REQ, res *RES) {

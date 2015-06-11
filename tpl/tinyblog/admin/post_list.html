@@ -1,0 +1,19 @@
+{{define "post_list"}}
+<!DOCTYPE html>
+<html>
+{{template "m_head_content"}}
+<body>
+	{{template "m_header"}}
+	<div class="warp">
+		<div id="" class="content">
+
+			{{template "m_post_list"}}
+			
+		</div>
+		{{template "m_side_bar"}}
+	</div>
+	{{template "m_footer"}}
+	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/post_list"></script>
+</body>
+</html>
+{{end}}
