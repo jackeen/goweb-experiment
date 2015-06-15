@@ -5,12 +5,11 @@
 <body>
 	{{template "m_header"}}
 	<div class="warp">
-		<div id="" class="content">
-
-			{{template "m_post_list"}}
+		<div class="content">
 			
+			<ul id="postlist"></ul>
+
 		</div>
-		{{template "m_side_bar"}}
 	</div>
 	{{template "m_footer"}}
 	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/post_list"></script>
