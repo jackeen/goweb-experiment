@@ -7,10 +7,11 @@ body{
 }
 .home-header{
 	display: flex;
-	height: 2rem;
-	line-height: 2rem;
+	height: 3rem;
+	line-height: 3rem;
 	padding: 0 1rem;
 	background-color: #efefef;
+	box-shadow: 0 0.1rem 0.5rem #bbb;
 }
 .home-header a{
 	display: inline-block;
@@ -21,16 +22,31 @@ body{
 	color: #fff;
 }
 .home-header .logo{
-	color: #ccc;
+	color: #aaa;
 }
 .home-header .search{
 	flex: auto;
 	padding: 0 1rem;
 }
+.h-st-bar{
+	position: fixed;
+	top: -3rem;
+	z-index: 10;
+	width: 100%;
+	height: 3rem;
+	background-color: #38b3c3;
+	transition-property: all;
+ 	transition-duration: 0.2s;
+ 	transition-timing-function: ease-in;
+}
+.h-st-bar.show{
+	top: 0;
+}
+
+
 .side-bar{
 	flex: 1;
 	padding: 1rem;
-	border-left: #ccc solid 0.1rem;
 }
 .side-bar h3{
 	font-size: 1em;
@@ -41,9 +57,8 @@ body{
 }
 .footer{
 	padding: 1rem;
-	text-align: center;
 	background-color: #efefef;
-	color: #ccc;
+	color: #aaa;
 }
 
 
@@ -71,7 +86,9 @@ body{
 	background-color: #fff;
 }
 .post-list li{
-	padding: 0.5em 0;
+	height: 1rem;
+	line-height: 1rem;
+	padding: 0.5rem 0;
 	border-bottom: #dfdfdf 1px solid;
 }
 .post-list li:last-child{
@@ -79,4 +96,11 @@ body{
 }
 .post-list li:hover{
 	background-color: rgba(100, 200, 50, 0.1);
+}
+.post-list .title{
+	float: left;
+}
+.post-list .meta{
+	float: right;
+	color: #aaa;
 }
