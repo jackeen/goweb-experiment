@@ -5,7 +5,8 @@
 <body>
 	{{template "m_header"}}
 	<div class="warp">
-		
+		{{template "m_side_bar"}}
+
 		<div class="content">
 			<div class="post-sel-bar">
 				<div class="sel">
@@ -18,8 +19,11 @@
 				</div>
 			</div>
 			<ul id="postlist" class="post-list"></ul>
+			<div id="postinfocon" class="post-info-con">
+				
+			</div>
 		</div>
-		{{template "m_side_bar"}}
+		
 	</div>
 	{{template "m_footer"}}
 	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/post_list"></script>
