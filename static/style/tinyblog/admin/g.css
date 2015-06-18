@@ -5,6 +5,7 @@ body{
 .side-bar li,
 .h-st-bar,
 .post-list .title,
+.post-list .item-btns,
 .post-info-con{
 	transition-property: all;
  	transition-duration: 0.2s;
@@ -74,7 +75,7 @@ body{
 
 
 .content{
-	flex: 5;
+	flex: 7;
 	padding: 1rem;
 }
 .footer{
@@ -114,13 +115,42 @@ body{
 	border-top: #fff 1px solid;
 	border-bottom: #dfdfdf 1px solid;
 }
+.post-list .item-opt{
+	position: relative;
+	display: inline-block;
+	width: 3rem;
+	height: 3rem;
+	text-align: center;
+	cursor: pointer;
+}
+.post-list .item-btns{
+	position: absolute;
+	left: 3rem;
+	top: 0;
+	z-index: 1;
+	display: flex;
+	width: 0;
+	background-color: #fff;
+	box-shadow: 3px 0 5px #ddd;
+	overflow: hidden;
+}
+.post-list .item-btns.show{
+	width: 15rem;
+}
+.post-list .item-btns a{
+	flex: 1;
+	display: block;
+	line-height: 3rem;
+	color: #555;
+}
+.post-list .item-btns a:hover{
+	background-color: #555;
+	color: #fff;
+}
 .post-list .title{
 	flex: auto;
 }
 .post-list .title:hover{
-	padding-left: 1rem;
-}
-.post-list .title.selected{
 	color: #ed8e0f;
 }
 .post-list .meta{

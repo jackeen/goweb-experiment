@@ -10,6 +10,7 @@ define({
 	var headerFn = modules.headerFn;
 
 	const postListURL = "/api/postlist/get"
+	const delPostURL = "/api/post/del";
 
 	var selPost = {};
 	var curPostData = {};
@@ -25,6 +26,11 @@ define({
 			item = list[i];
 			listStr += `\
 				<li>\
+					<div class="j-itemopt item-opt">#<div class="j-itembtns item-btns">\
+						<a data-id="${item.id}" class="j-selpost" href="javascript:;">select</a>\
+						<a data-id="${item.id}" class="j-delpost" href="javascript:;">del</a>\
+						<a href="/post/${item.title}" target="_blank">outveiw</a>\
+					</div></div>\
 					<h2 data-id="${item.id}" class="title">${item.title}</h2>\
 					<p class="meta">${item.author} - ${item.createTime}</p>\
 				</li>`;
@@ -65,15 +71,69 @@ define({
 		});
 	}
 
+	function delPost(id, ballback) {
 
-	function optPostInfo(id, isShow) {
-		var con = document.querySelector("#postinfocon");
-		if(isShow) con.classList.add("show");
-		else con.classList.remove("show");
+		var url = delPostURL + "?id=" + id;
+
+		fetch(url).then(function (res) {
+			return res.json();
+		}).then(function (d) {
+
+			if (d.state) {
+				classList();
+			}
+
+		}).catch(function (err) {
+			alert(err);
+		});
+
 	}
 
-	function optPostList(ids) {
+
+	var UI = {
+		hideAllItemBtn: function () {
+			var btns = document.querySelectorAll("#postlist .j-itembtns.show");
+			btns = Array.prototype.slice.call(btns);
+			btns.forEach(function (elem) {
+				elem.classList.remove("show");
+			});
+		},
+		displayItemBtns: function (elem) {
+			var btnCon = elem.querySelector(".j-itembtns");
+			btnCon.classList.toggle("show");
+		},
+		displayPostInfo: function (isShow) {
+			var con = document.querySelector("#postinfocon");
+			if(isShow) con.classList.add("show");
+			else con.classList.remove("show");
+		}
+	};
+
+	function eventSwitch (elem) {
 		
+		var cList = elem.classList;
+
+		if(cList.contains("j-itemopt")) {
+			
+			UI.hideAllItemBtn();
+			UI.displayItemBtns(elem);
+
+		} else if(cList.contains("j-selpost")) {
+
+			let id = elem.getAttribute("data-id");
+			//selPost[id] = true;
+			UI.displayPostInfo(true);
+
+		} else if(cList.contains("j-delpost")) {
+
+			let id = elem.getAttribute("data-id");
+			delPost(id, function () {
+
+			});
+
+		} else {
+			UI.hideAllItemBtn();
+		}
 	}
 
 	
@@ -81,35 +141,11 @@ define({
 
 		refreshPostList();
 
-		//post list event router
-		document.querySelector("#postlist").onclick = function (e) {
-			
+		document.onclick = function (e) {
 			var t = e.target;
-			var id = t.getAttribute("data-id");
-			
-			if (id !== "") {
-				if (t.classList.contains("selected")) {
-					t.classList.remove("selected");
-					delete selPost[id];
-				} else {
-					t.classList.add("selected");
-					selPost[id] = true;
-				}
-			}
+			eventSwitch(t);
+		}
 
-			let ids = Object.keys(selPost);
-			if (ids.length > 1) {
-				optPostList(ids);
-				headerFn.display(true);
-				optPostInfo("", false);
-			} else if(ids.length === 1) {
-				optPostInfo(ids[0], true);
-				headerFn.display(false);
-			} else {
-				optPostInfo("", false);
-			}
-			
-		};
 	}
 
 	init();
