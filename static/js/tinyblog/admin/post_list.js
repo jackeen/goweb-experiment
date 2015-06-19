@@ -26,12 +26,8 @@ define({
 			item = list[i];
 			listStr += `\
 				<li>\
-					<div class="j-itemopt item-opt">#<div class="j-itembtns item-btns">\
-						<a data-id="${item.id}" class="j-selpost" href="javascript:;">select</a>\
-						<a data-id="${item.id}" class="j-delpost" href="javascript:;">del</a>\
-						<a href="/post/${item.title}" target="_blank">outveiw</a>\
-					</div></div>\
-					<h2 data-id="${item.id}" class="title">${item.title}</h2>\
+					<div data-id="${item.id}" class="j-itemopt item-opt"></div>\
+					<h2 class="title">${item.title}</h2>\
 					<p class="meta">${item.author} - ${item.createTime}</p>\
 				</li>`;
 			data[item.id] = item;
@@ -49,7 +45,7 @@ define({
 	function refreshPostList() {
 
 		fetch(postListURL, {
-			method: "get"
+			credentials: "same-origin"
 		}).then(function (res) {
 
 			return res.json();
@@ -75,12 +71,16 @@ define({
 
 		var url = delPostURL + "?id=" + id;
 
-		fetch(url).then(function (res) {
+		var req = new Request(url, {
+			credentials: "same-origin"
+		});
+
+		fetch(req).then(function (res) {
 			return res.json();
 		}).then(function (d) {
 
 			if (d.state) {
-				classList();
+				refreshPostList();
 			}
 
 		}).catch(function (err) {
@@ -91,32 +91,63 @@ define({
 
 
 	var UI = {
-		hideAllItemBtn: function () {
-			var btns = document.querySelectorAll("#postlist .j-itembtns.show");
-			btns = Array.prototype.slice.call(btns);
-			btns.forEach(function (elem) {
-				elem.classList.remove("show");
-			});
+		selectPostItem: function (elem) {
+			elem.classList.toggle("selected");
 		},
-		displayItemBtns: function (elem) {
-			var btnCon = elem.querySelector(".j-itembtns");
-			btnCon.classList.toggle("show");
+		unSelectAllPost: function () {
+			var postList = document.querySelectorAll("#postlist .j-itemopt.selected");
+			postList = Array.prototype.slice.call(postList);
+			postList.forEach(function (elem) {
+				elem.classList.remove("selected");
+			});
 		},
 		displayPostInfo: function (isShow) {
 			var con = document.querySelector("#postinfocon");
 			if(isShow) con.classList.add("show");
 			else con.classList.remove("show");
+		},
+		changeOptPanel: function (postNum) {
+			if (postNum == 1) {
+				UI.displayPostInfo(true);
+				headerFn.display(false);
+			} else if(postNum > 1) {
+				UI.displayPostInfo(false);
+				headerFn.display(true);
+			} else {
+				UI.displayPostInfo(false);
+				headerFn.display(false);
+			}
 		}
 	};
 
-	function eventSwitch (elem) {
-		
+	var Fn = {
+		selectPostItem: function (elem) {
+			var id = elem.getAttribute("data-id");
+			if(selPost[id]) {
+				delete selPost[id];
+			} else {
+				selPost[id] = true;
+			}
+			UI.selectPostItem(elem);
+
+			var postNum = Object.keys(selPost).length;
+			UI.changeOptPanel(postNum);
+		},
+		unSelectAllPost: function () {
+			selPost = {};
+			UI.unSelectAllPost();
+			UI.changeOptPanel(0);
+		}
+	};
+
+	function eventSwitch (e) {
+
+		var elem = e.target;
 		var cList = elem.classList;
 
 		if(cList.contains("j-itemopt")) {
 			
-			UI.hideAllItemBtn();
-			UI.displayItemBtns(elem);
+			Fn.selectPostItem(elem);
 
 		} else if(cList.contains("j-selpost")) {
 
@@ -132,7 +163,7 @@ define({
 			});
 
 		} else {
-			UI.hideAllItemBtn();
+			Fn.unSelectAllPost();
 		}
 	}
 
@@ -142,8 +173,7 @@ define({
 		refreshPostList();
 
 		document.onclick = function (e) {
-			var t = e.target;
-			eventSwitch(t);
+			eventSwitch(e);
 		}
 
 	}
