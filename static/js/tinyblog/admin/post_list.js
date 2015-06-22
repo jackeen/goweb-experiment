@@ -1,13 +1,14 @@
 define({
 
-	//postFn: 'tinyblog/post_data'
-	headerFn: 'tinyblog/admin/m_header'
+	headerFn: 'tinyblog/admin/m_header',
+	postPreView: 'tinyblog/admin/m_post_preview'
 
 }, function(global, modules){
 
 	"use strict"
 
 	var headerFn = modules.headerFn;
+	var postPreView = modules.postPreView;
 
 	const postListURL = "/api/postlist/get"
 	const delPostURL = "/api/post/del";
@@ -80,7 +81,7 @@ define({
 		}).then(function (d) {
 
 			if (d.state) {
-				refreshPostList();
+				ballback();
 			}
 
 		}).catch(function (err) {
@@ -101,28 +102,17 @@ define({
 				elem.classList.remove("selected");
 			});
 		},
-		displayPostInfo: function (isShow) {
-			var con = document.querySelector("#postinfocon");
-			if(isShow) con.classList.add("show");
-			else con.classList.remove("show");
-		},
-		changeOptPanel: function (postNum) {
-			if (postNum == 1) {
-				UI.displayPostInfo(true);
-				headerFn.display(false);
-			} else if(postNum > 1) {
-				UI.displayPostInfo(false);
-				headerFn.display(true);
-			} else {
-				UI.displayPostInfo(false);
-				headerFn.display(false);
-			}
+		hideAllPenal: function () {
+			postPreView.hide();
+			headerFn.display(false);
 		}
 	};
 
 	var Fn = {
 		selectPostItem: function (elem) {
+			
 			var id = elem.getAttribute("data-id");
+
 			if(selPost[id]) {
 				delete selPost[id];
 			} else {
@@ -131,12 +121,29 @@ define({
 			UI.selectPostItem(elem);
 
 			var postNum = Object.keys(selPost).length;
-			UI.changeOptPanel(postNum);
+
+			if (postNum == 1) {
+
+				let currId = Object.keys(selPost)[0];
+				let d = curPostData[currId];
+				postPreView.show(d);
+				headerFn.display(false);
+
+			} else if(postNum > 1) {
+
+				postPreView.hide();
+				headerFn.display(true);
+
+			} else {
+
+				UI.hideAllPenal();
+
+			}
 		},
 		unSelectAllPost: function () {
 			selPost = {};
 			UI.unSelectAllPost();
-			UI.changeOptPanel(0);
+			UI.hideAllPenal();
 		}
 	};
 
@@ -145,21 +152,15 @@ define({
 		var elem = e.target;
 		var cList = elem.classList;
 
-		if(cList.contains("j-itemopt")) {
+		if (cList.contains("j-itemopt")) {
 			
 			Fn.selectPostItem(elem);
 
-		} else if(cList.contains("j-selpost")) {
-
-			let id = elem.getAttribute("data-id");
-			//selPost[id] = true;
-			UI.displayPostInfo(true);
-
-		} else if(cList.contains("j-delpost")) {
+		} else if (cList.contains("j-delpost")) {
 
 			let id = elem.getAttribute("data-id");
 			delPost(id, function () {
-
+				refreshPostList();
 			});
 
 		} else {
