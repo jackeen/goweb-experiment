@@ -12,6 +12,24 @@ body{
  	transition-timing-function: ease-in;
 }
 
+.switch{
+	height: 2rem;
+	line-height: 2rem;
+	overflow: hidden;
+	background-color: #dfdfdf;
+	border: #ddd 1px solid;
+}
+.switch .btn{
+	height: 2rem;
+	padding: 0 1rem;
+	background-color: #38b3c3;
+	float: left;
+}
+.switch.off .btn{
+	float: right;
+	background-color: #ddd;
+}
+
 .warp{
 	display: flex;
 }
@@ -85,18 +103,23 @@ body{
 }
 
 
-
-.post-form p{
+.post-form{
+	display: flex;
+}
+.post-data{
+	flex: 3;
+}
+.post-data p{
 	margin-bottom: 1rem;
 }
-.post-form .post-name{
+.post-data .post-name{
 	width: calc(100% - 2rem);
 	height: 2rem;
 	line-height: 2rem;
 	padding: 0 1rem;
 	font-size: 1rem;
 }
-.post-form .post-content{
+.post-data .post-content{
 	width: calc(100% - 2rem);
 	height: 15rem;
 	line-height: 1rem;
@@ -104,7 +127,13 @@ body{
 	font-size: 1rem;
 	resize: none;
 }
-
+.post-meta{
+	flex: 1;
+	padding-left: 1rem;
+}
+.post-meta .switch{
+	margin-bottom: 1rem;
+}
 
 .post-list{
 	background-color: #fff;

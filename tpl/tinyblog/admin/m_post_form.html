@@ -1,6 +1,7 @@
 {{define "m_post_form"}}
-<div id="postForm" class="post-form">
-	<form name="postform">	
+<form name="postform" class="post-form">
+<div id="postForm" class="post-data">
+	
 	<p>
 		<input type="text" id="title" class="post-name" autofocus placeholder="" autocomplete="off">
 	</p>
@@ -8,13 +9,16 @@
 	<p>
 		<textarea id="content" class="post-content" disabled="disabled"></textarea>
 	</p>
-	
-	<p>
-		<input id="allowcomment" type="checkbox" name="allowcomment" value="allow">
-		<label for="allowcomment">allow comment</label>
-		<input id="draft" type="checkbox" name="draft" value="draft">
-		<label for="draft">draft</label>
-	</p>
-	</form>
 </div>
+<div id="postmeta" class="post-meta">
+	<div class="switch">
+		<div class="btn">allowcomment</div>
+		<input id="allowcomment" type="hidden" name="allowcomment" value="allow">
+	</div>
+	<div class="switch">
+		<div class="btn">draft</div>
+		<input id="draft" type="hidden" name="draft" value="draft">
+	</div>
+</div>
+</form>
 {{end}}
