@@ -11,7 +11,6 @@ define({
 	var postPreView = modules.postPreView;
 
 	const postListURL = "/api/postlist/get"
-	const delPostURL = "/api/post/del";
 
 	var selPost = {};
 	var curPostData = {};
@@ -67,29 +66,6 @@ define({
 			alert(err);
 		});
 	}
-
-	function delPost(id, ballback) {
-
-		var url = delPostURL + "?id=" + id;
-
-		var req = new Request(url, {
-			credentials: "same-origin"
-		});
-
-		fetch(req).then(function (res) {
-			return res.json();
-		}).then(function (d) {
-
-			if (d.state) {
-				ballback();
-			}
-
-		}).catch(function (err) {
-			alert(err);
-		});
-
-	}
-
 
 	var UI = {
 		selectPostItem: function (elem) {
@@ -156,13 +132,6 @@ define({
 			
 			Fn.selectPostItem(elem);
 
-		} else if (cList.contains("j-delpost")) {
-
-			let id = elem.getAttribute("data-id");
-			delPost(id, function () {
-				refreshPostList();
-			});
-
 		} else {
 			Fn.unSelectAllPost();
 		}
@@ -176,6 +145,14 @@ define({
 		document.onclick = function (e) {
 			eventSwitch(e);
 		}
+
+		postPreView.Event.onDelPost = function (id) {
+			refreshPostList();
+		};
+
+		postPreView.Event.onCancel = function () {
+			UI.unSelectAllPost();
+		};
 
 	}
 

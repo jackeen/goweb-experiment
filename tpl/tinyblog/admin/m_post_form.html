@@ -1,11 +1,12 @@
 {{define "m_post_form"}}
 <div id="postForm" class="post-form">
+	<form name="postform">	
 	<p>
 		<input type="text" id="title" class="post-name" autofocus placeholder="" autocomplete="off">
 	</p>
 
 	<p>
-		<textarea id="content" class="post-content"></textarea>
+		<textarea id="content" class="post-content" disabled="disabled"></textarea>
 	</p>
 	
 	<p>
@@ -14,7 +15,6 @@
 		<input id="draft" type="checkbox" name="draft" value="draft">
 		<label for="draft">draft</label>
 	</p>
-
-	<button id="savebtn">save</button>
+	</form>
 </div>
 {{end}}
