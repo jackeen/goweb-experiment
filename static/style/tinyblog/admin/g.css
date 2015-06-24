@@ -67,32 +67,45 @@ body{
 	min-height: 2rem;
 	line-height: 2rem;	
 }
-.tages .tt{
-	padding-left: 1rem;
-	border: #ddd 1px solid;
-}
-.tages dl{
+.tages .create{
 	display: flex;
-	border-top: #ddd 1px solid;
 }
-.tages dd{
+.tages .create input{
 	flex: 1;
 }
-.tages .entage .text{
-	color: #38b3c3;
-}
-.tages .item{
-	display: flex;
+.tages .create a{
 	padding: 0 1rem;
-	border: 1px solid #ddd;
-	background-color: #fff;
+	background-color: #555;
+	color: #fff;
+}
+.tages .list{
+	padding-top: 0.5rem;
+}
+.tages .list li{
+	display: flex;
+	border: 1px #ddd solid;
+	padding: 1px;
+	margin-bottom: .5rem;
 	cursor: pointer;
 }
-.tages .item:hover{
-	color: #38b3c3;
-}
-.tages .item .text{
+.tages .name{
 	flex: auto;
+	padding: 0 1rem;
+	background-color: #efefef;
+	border-right: #ddd 1px solid;
+}
+.tages .del{
+	padding: 0 1rem;
+	background-color: #555;
+	color: #fff;
+}
+.tages .name.selected{
+	background-color: #38b3c3;
+	color: #fff;
+}
+.tages .del:hover,
+.tages .name:hover{
+	opacity: 0.8;
 }
 
 
