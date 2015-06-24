@@ -3,7 +3,7 @@
 <div id="postForm" class="post-data">
 	
 	<p>
-		<input type="text" id="title" class="post-name" autofocus placeholder="" autocomplete="off">
+		<input type="text" id="title" class="post-name" autofocus placeholder="title" autocomplete="off">
 	</p>
 
 	<p>
@@ -13,11 +13,44 @@
 <div id="postmeta" class="post-meta">
 	<div class="switch">
 		<div class="btn">allowcomment</div>
-		<input id="allowcomment" type="hidden" name="allowcomment" value="allow">
+		<input id="allowcomment" name="allowcomment" type="hidden" value="allow">
 	</div>
 	<div class="switch">
 		<div class="btn">draft</div>
-		<input id="draft" type="hidden" name="draft" value="draft">
+		<input id="draft" name="draft" type="hidden" value="draft">
+	</div>
+	<div class="cate-sel">
+		<input id="cate" name="cate" type="hidden" value="none">
+		<p class="c">cate: <span id="catename">none</span></p>
+		<ul class="cates">
+			<li>
+				<p>web</p>
+				<ul>
+					<li><p>js</p></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="tages">
+		<p class="tt">tages</p>
+		<dl>
+			<dd id="entage" class="entage">
+				<div class="item">
+					<span class="text">js</span>
+					<b class="btn">-</b>
+				</div>
+				<div class="item">
+					<span class="text">css</span>
+					<b class="btn">-</b>
+				</div>
+			</dd>
+			<dd id="untage">
+				<div class="item">
+					<span class="text">ajax</span>
+					<b class="btn">+</b>
+				</div>
+			</dd>
+		</dl>
 	</div>
 </div>
 </form>

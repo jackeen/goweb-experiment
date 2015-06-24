@@ -1,6 +1,7 @@
 body{
 	font-size: 1rem;
 }
+::-webkit-input-placeholder::before{content:"must input : ";}
 
 .side-bar li,
 .h-st-bar,
@@ -15,9 +16,12 @@ body{
 .switch{
 	height: 2rem;
 	line-height: 2rem;
-	overflow: hidden;
-	background-color: #dfdfdf;
+	padding: 1px;
 	border: #ddd 1px solid;
+	overflow: hidden;
+	background-color: #efefef;
+	color: #fff;
+	cursor: pointer;
 }
 .switch .btn{
 	height: 2rem;
@@ -28,7 +32,69 @@ body{
 .switch.off .btn{
 	float: right;
 	background-color: #ddd;
+	color: #999;
 }
+
+.cate-sel{
+	min-height: 2rem;
+	line-height: 2rem;
+	padding: 1px;
+	border: #ddd 1px solid;
+}
+.cate-sel .c{
+	padding-left: 1rem;
+}
+.cate-sel ul{
+	padding-left: 1rem;
+}
+.cate-sel p{
+	padding-left: 1rem;
+	cursor: pointer;
+}
+.cate-sel p:hover{
+	background-color: #efefef;
+}
+.cate-sel .cates{
+	display: none;
+	padding: 0;
+	border-top: #ddd 1px solid;
+}
+.cate-sel .cates.show{
+	display: block;
+}
+
+.tages{
+	min-height: 2rem;
+	line-height: 2rem;	
+}
+.tages .tt{
+	padding-left: 1rem;
+	border: #ddd 1px solid;
+}
+.tages dl{
+	display: flex;
+	border-top: #ddd 1px solid;
+}
+.tages dd{
+	flex: 1;
+}
+.tages .entage .text{
+	color: #38b3c3;
+}
+.tages .item{
+	display: flex;
+	padding: 0 1rem;
+	border: 1px solid #ddd;
+	background-color: #fff;
+	cursor: pointer;
+}
+.tages .item:hover{
+	color: #38b3c3;
+}
+.tages .item .text{
+	flex: auto;
+}
+
 
 .warp{
 	display: flex;
@@ -130,7 +196,10 @@ body{
 .post-meta{
 	flex: 1;
 	padding-left: 1rem;
+	-webkit-user-select: none;
 }
+.post-meta .cate-sel,
+.post-meta .tages,
 .post-meta .switch{
 	margin-bottom: 1rem;
 }
@@ -204,7 +273,7 @@ body{
 	box-shadow: -0.5rem 0.5rem 1rem #ddd;
 }
 .post-info-con.show{
-	width: 70%;
+	width: 30%;
 	padding: 1rem;
 }
 .post-info-con .p-item{

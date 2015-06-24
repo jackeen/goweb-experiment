@@ -35,6 +35,8 @@ type Cate struct {
 	Name     string   `bson:"name" json:"name"`
 	Children []string `bson:"children" json:"children"`
 	Parent   string   `bson:"parent" json:"parent"`
+	PLink    string   `bson:"plink" json:"plink"`
+	//Level    int      `bson:"level" json:"level"`
 }
 
 type Tag struct {
