@@ -1,6 +1,7 @@
 define({
 
-	postFn: 'tinyblog/post_data'
+	postFn: 'tinyblog/post_data',
+	tag: 'tinyblog/admin/m_post_tag'
 
 }, function(global, modules){
 
