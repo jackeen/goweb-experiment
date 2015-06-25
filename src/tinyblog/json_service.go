@@ -327,6 +327,75 @@ func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
 	return rm
 }
 
+//tage api
+type TagJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *TagJson) Get(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+	ts := self.DS.Tag.GetList()
+	r.State = true
+	r.Data = ts
+	return r.TraceData()
+}
+
+func (self *TagJson) Set(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+func (self *TagJson) Put(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+
+	name := req.GetFormValue("n")
+	if name == "" {
+		r.State = false
+		r.Message = REQUIRED_DEFAULT
+		return r.TraceMsg()
+	}
+
+	if self.DS.Tag.IsExist(name) {
+		r.State = true
+		r.Message = SAVE_SUCCESS
+		return r.TraceMsg()
+	}
+
+	tag := &Tag{
+		Name: name,
+	}
+	rs := self.DS.Tag.Save(tag)
+	r.State = rs.State
+	r.Message = rs.TraceMixMsg()
+	return r.TraceMsg()
+}
+
+func (self *TagJson) Del(req *REQ, res *RES) ResJsonMap {
+
+	r := new(ResJson)
+
+	name := req.GetFormValue("n")
+	if name == "" {
+		r.State = false
+		r.Message = REQUIRED_DEFAULT
+		return r.TraceMsg()
+	}
+
+	if !self.DS.Tag.IsExist(name) {
+		r.State = true
+		r.Message = DEL_SUCCESS
+		return r.TraceMsg()
+	}
+
+	rs := self.DS.Tag.Del(name)
+	r.State = rs.State
+	r.Message = rs.TraceMixMsg()
+	return r.TraceMsg()
+}
+
 type JsonService struct {
 	S  *Session
 	DS *DataService
@@ -345,6 +414,13 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 		resJson = new(ResJson).TraceNotFound()
 	}
 	return resJson
+}
+
+func (self *JsonService) Tag(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&TagJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
 }
 
 func (self *JsonService) Cate(req *REQ, res *RES) ResJsonMap {
@@ -391,6 +467,8 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 			resJson = self.User(req, res)
 		case "cate":
 			resJson = self.Cate(req, res)
+		case "tag":
+			resJson = self.Tag(req, res)
 		default:
 			resJson = new(ResJson).TraceNotFound()
 		}

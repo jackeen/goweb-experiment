@@ -206,6 +206,7 @@ type DataService struct {
 	Post *PostService
 	User *UserService
 	Cate *CateService
+	Tag  *TagService
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
@@ -231,6 +232,11 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		DBC: dbc,
 		S:   s,
 		C:   dbc.DB.C(CATE_TAB),
+	}
+	self.Tag = &TagService{
+		DBC: dbc,
+		S:   s,
+		C:   dbc.DB.C(TAG_TAB),
 	}
 
 }
