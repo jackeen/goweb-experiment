@@ -41,6 +41,29 @@ define(function(global, modules){
 		});
 	}
 
+	function saveTag(name, resolve, reject) {
+
+		var url = "/api/tag/put" + "?n=" + name;
+
+		fetch(url, {
+			credentials: "same-origin"
+		}).then(function (res) {
+
+			return res.json();
+
+		}).then(function (d) {
+	 
+			if (d.state) {
+				resolve(d)
+			} else {
+				reject();
+			}
+
+		}).catch(function (err) {
+			alert(err);
+		});
+	}
+
 	function init() {
 
 		var tagList = document.querySelector("#taglist");
@@ -63,6 +86,11 @@ define(function(global, modules){
 
 		createBtn.onclick = function () {
 			var v = ipt.value;
+			saveTag(v, function () {
+
+			}, function () {
+
+			});
 		};
 
 		ipt.onblur = function () {
