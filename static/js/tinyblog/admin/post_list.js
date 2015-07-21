@@ -3,12 +3,12 @@ define({
 	headerFn: 'tinyblog/admin/m_header',
 	postPreView: 'tinyblog/admin/m_post_preview'
 
-}, function(global, modules){
+}, function(G){
 
 	"use strict"
 
-	var headerFn = modules.headerFn;
-	var postPreView = modules.postPreView;
+	var headerFn = G.require('headerFn');
+	var postPreView = G.require('postPreView');
 
 	const postListURL = "/api/postlist/get"
 

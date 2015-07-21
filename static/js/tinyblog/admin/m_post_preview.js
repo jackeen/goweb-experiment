@@ -1,8 +1,10 @@
 define({
-	postData: 'tinyblog/post_data'
-}, function (global, modules) {
 
-	var PD = modules.postData;
+	PD: 'tinyblog/post_data'
+
+}, function (G) {
+
+	var PD = G.require('PD');
 
 	var ModuleEvent = {
 		onDelPost: function (id) {},

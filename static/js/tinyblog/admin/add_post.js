@@ -3,12 +3,12 @@ define({
 	postFn: 'tinyblog/post_data',
 	tag: 'tinyblog/admin/m_post_tag'
 
-}, function(global, modules){
+}, function(G){
 
 	"use strict"
 
-	var postFn = modules.postFn;
-	var Tag = modules.tag;
+	var postFn = G.require('postFn');
+	var Tag = G.require('tag');
 	
 	var title = document.getElementById('title');
 	var content = document.getElementById('content');

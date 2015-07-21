@@ -2,9 +2,9 @@ define({
 
 	http: 'lib/http'
 
-}, function(global, modules){
+}, function(G){
 
-	var http = modules.http;
+	var http = G.require('http');
 
 	const saveURL = '/api/post/put';
 	const delURL = "/api/post/del";

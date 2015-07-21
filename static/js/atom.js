@@ -138,14 +138,18 @@ version: 0.1
 
 
 	//
-	function ModuleGlobal(modules) {
-		//this.m = modules;
-		this.query = function (name) {
-			return modules[name];
+	function getModuleGlobal(modules, runTime) {
+		
+		function F() {}
+		F.prototype = runTime;
+		var f = new F();
+		f.m = modules;
+		f.require = function (name) {
+			return this.m[name];
 		};
+		return f;
 	}
 
-	ModuleGlobal.prototype = runTime;
 
 	//
 	function ModuleLoader(modName, modAlias) {
@@ -197,10 +201,11 @@ version: 0.1
 			var depsList = self.allDeps;
 			var aliasList = self.allAlias;
 			var len = depsList.length;
-			var loader, alias, modules = {}, loadedModule;
+			var loader, alias, modules = {}, global = null, loadedModule;
 
 			if(len === 0) {
-				self.onload(self.factory(runTime, {}));
+				global = getModuleGlobal({}, runTime);
+				self.onload(self.factory(global));
 				return;
 			}
 
@@ -222,7 +227,8 @@ version: 0.1
 					self.loadedDepsNum++;
 					modules[this.alias] = module;
 					if(self.depsNum === self.loadedDepsNum) {
-						self.onload(self.factory(runTime, modules));
+						global = getModuleGlobal(modules, runTime);
+						self.onload(self.factory(global));
 					}
 
 					Fn.setModuleMap(this.name, module);

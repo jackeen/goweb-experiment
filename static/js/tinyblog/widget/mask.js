@@ -1,8 +1,8 @@
-define(function(G, M){
+define(function(G){
 
 	"use strict"
 
-	G.loadStyle('widget/base');
+	G.loadStyle('tinyblog/widget');
 
 	function getMask() {
 		var m = document.createElement('div');
