@@ -126,7 +126,6 @@ body{
 	line-height: 3rem;
 	padding: 0 1rem;
 	background-color: #38b3c3;
-	box-shadow: 0 0 1rem rgba(0,0,0,0.1), 0 0.3rem 1rem rgba(0,0,0,0.2);
 }
 .home-header a{
 	display: inline-block;
@@ -184,6 +183,7 @@ body{
 	padding: 1rem;
 }
 .footer{
+	display: none;
 	padding: 1rem;
 	background-color: #efefef;
 	color: #aaa;
@@ -283,19 +283,21 @@ body{
 
 
 .post-info-con{
-	position: absolute;
-	right: 0;
-	top: 3rem;
+	position: fixed;
+	right: -33rem;
+	top: 0;
 	z-index: 20;
-	width: 0;
+	width: 30rem;
+	height: 100%;
+	padding: 1rem;
 	overflow: hidden;
-	min-height: calc(100% - 4rem);
+	/* min-height: calc(100% - 4rem); */
 	background-color: #efefef;
-	box-shadow: -0.5rem 0.5rem 1rem #ddd;
+	box-shadow: -0.5rem 0.5rem 1rem rgba(0,0,0,0.2);
+	transition-duration: 0.5s;
 }
 .post-info-con.show{
-	width: 30%;
-	padding: 1rem;
+	right: 0;
 }
 .post-info-con .p-item{
 	margin-bottom: .5rem;
