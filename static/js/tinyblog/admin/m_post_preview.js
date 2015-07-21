@@ -49,6 +49,7 @@ define({
 				<a href="/post/${d.title}" target="_blank">veiw</a>\
 			</p>\
 			<div class="p-content p-item">${d.content}</div>\
+			<p>${d.tags.join()}</p>\
 			<p class="p-author-date">\
 				<a href="###">${d.author}</a>\
 				-\

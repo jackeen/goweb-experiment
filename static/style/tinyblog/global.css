@@ -33,3 +33,19 @@ a{
 a:hover{
 	color: blue;
 }
+
+/*font icon thanks for icomoon*/
+@font-face{
+	font-family: 'icomoon';
+	src: url('font/icomoon.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="icon-"], [class*=" icon-"]{
+	font-family: 'icomoon';
+	speak: none;
+	line-height: 1;
+}
+.icon-user::before{
+	content: "\e671";
+}

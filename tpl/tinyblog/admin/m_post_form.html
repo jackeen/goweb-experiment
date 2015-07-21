@@ -3,21 +3,25 @@
 <div id="postForm" class="post-data">
 	
 	<p>
-		<input type="text" id="title" class="post-name" autofocus placeholder="title" autocomplete="off">
+		<input type="text" name="title" id="title" class="post-name" autofocus placeholder="title" autocomplete="off">
 	</p>
 
 	<p>
-		<textarea id="content" class="post-content"></textarea>
+		<textarea id="content" name="content" class="post-content"></textarea>
 	</p>
 </div>
 <div id="postmeta" class="post-meta">
 	<div class="switch">
-		<div class="btn">allowcomment</div>
-		<input id="allowcomment" name="allowcomment" type="hidden" value="allow">
+		<label for="allowcomment" class="j-p-switch">
+			<span class="btn">allowcomment</span>
+		</label>
+		<input id="allowcomment" name="allowcomment" type="checkbox" value="allow" checked="checked">
 	</div>
 	<div class="switch">
-		<div class="btn">draft</div>
-		<input id="draft" name="draft" type="hidden" value="draft">
+		<label for="draft" class="j-p-switch">
+			<span class="btn">draft</span>
+		</label>
+		<input id="draft" name="draft" type="checkbox" value="draft" checked="checked">
 	</div>
 	<div class="cate-sel">
 		<input id="cate" name="cate" type="hidden" value="none">

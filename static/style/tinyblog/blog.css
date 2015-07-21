@@ -26,6 +26,7 @@ a:hover{
 .g-side-bar{
 	flex: 1;
 	padding-left: 1rem;
+	margin-bottom: 1rem;
 }
 .g-container{
 	flex: 2;
@@ -158,8 +159,8 @@ a:hover{
  	transition-timing-function: ease-in;
 }
 
-/*media*/
-@media screen and (max-width: 30rem) {
+/*media 640px*/
+@media screen and (max-width: 40rem) {
 	.g-max-flex.g-warp{
 		display: block;
 	}
@@ -168,5 +169,12 @@ a:hover{
 	}
 	.g-side-bar{
 		padding-left: 0;
+	}
+
+	.m-h-con .nav{
+		display: none;
+	}
+	.m-h-con .search input:focus{
+		width: 70%;
 	}
 }

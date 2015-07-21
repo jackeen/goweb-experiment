@@ -21,9 +21,17 @@ body{
 	overflow: hidden;
 	background-color: #efefef;
 	color: #fff;
+}
+.switch label{
+	display: block;
+	height: 100%;
 	cursor: pointer;
 }
+.switch input{
+	display: none;
+}
 .switch .btn{
+	display: block;
 	height: 2rem;
 	padding: 0 1rem;
 	background-color: #38b3c3;

@@ -12,12 +12,13 @@ version: 0.1
 
 	var config = {
 		basePath : "",
+		stylePath: "",
 		jsFileTail : ".js",
 		cssFileTail : ".css"
 	};
 
-	//
-	var runTime = {};
+	//storage loaded style module info
+	var sytleModuleMap = {};
 
 	//storage loaded module object
 	var moduleMap = {};
@@ -49,6 +50,16 @@ version: 0.1
 			b['name'] = name;
 			b['version'] = version;
 			return b;
+		},
+		loadStyle: function (css) {
+			if(sytleModuleMap[css]) return;
+			var s = d.createElement('link');
+			s.rel = 'stylesheet';
+			s.type = 'text/css';
+			s.href = config.stylePath + css + config.cssFileTail;
+			d.head.appendChild(s);
+			s = null;
+			sytleModuleMap[css] = true;
 		}
 	};
 
@@ -69,6 +80,11 @@ version: 0.1
 		}
 	};
 
+	//
+	var runTime = {
+		browser: null,
+		loadStyle: Utils.loadStyle
+	};
 
 	//
 	var ScriptLoader = {
@@ -85,9 +101,9 @@ version: 0.1
 
 			s.src = url;
 			d.body.appendChild(s);
-		},
+		}
 
-		addScript4IE: function (url, loaded) {
+		/*addScript4IE: function (url, loaded) {
 
 			var self = this;
 
@@ -116,9 +132,20 @@ version: 0.1
 
 			s.src = url;
 			d.body.appendChild(s);
-		}
+		}*/
 
 	};
+
+
+	//
+	function ModuleGlobal(modules) {
+		//this.m = modules;
+		this.query = function (name) {
+			return modules[name];
+		};
+	}
+
+	ModuleGlobal.prototype = runTime;
 
 	//
 	function ModuleLoader(modName, modAlias) {
@@ -240,11 +267,12 @@ version: 0.1
 
 		self = null;
 		config.basePath = Utils.getBasePath(selfUrl);
+		config.stylePath = config.basePath.replace('\/js\/', '/style/');
 
 		var b = Utils.getBrowser();
-		if(b.name === 'MSIE' && b.version <= 9) {
+/*		if(b.name === 'MSIE' && b.version <= 9) {
 			ScriptLoader.addScript = ScriptLoader.addScript4IE;
-		}
+		}*/
 		runTime['browser'] = b;
 		
 		w.onload = function () {
@@ -257,6 +285,7 @@ version: 0.1
 	init();
 
 	//debug
-	w.atomModuleMap = moduleMap;
+	w.atomconfig = config;
+	//w.atomModuleMap = moduleMap;
 
 })(window);

@@ -11,14 +11,7 @@ define({
 
 	function savePost(data, fn) {
 
-		http.post(saveURL, {
-
-			title: data.title,
-			content: data.content,
-			allowcomment: data.allowComment,
-			draft: data.isDraft
-
-		}, fn);
+		http.post(saveURL, data, fn);
 	}
 
 	function delPost(id, resolve, reject) {

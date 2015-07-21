@@ -5,7 +5,7 @@ import (
 	"labix.org/v2/mgo/bson"
 	//"log"
 	"strconv"
-	//"strings"
+	"strings"
 )
 
 type ResJsonMap map[string]interface{}
@@ -236,6 +236,8 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 	draftVal := req.GetFormValue("draft")
 	allowCommentVal := req.GetFormValue("allowcomment")
 
+	tagStr := req.GetFormValue("tags")
+
 	isDraft := false
 	if draftVal == "draft" {
 		isDraft = true
@@ -254,6 +256,7 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 		IsDraft:      isDraft,
 		AllowComment: allowComment,
 		Author:       usr.Name,
+		Tags:         strings.Split(tagStr, ","),
 	})
 
 	r.State = rs.State
