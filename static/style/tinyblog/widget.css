@@ -8,3 +8,11 @@
 	background: rgba(0,0,0,0.8);
 	overflow: hidden;
 }
+
+.m-dialog{
+	position: fixed;
+	z-index: 110;
+	width: 20rem;
+	
+}
+

@@ -2,9 +2,9 @@ define({
 
 	Mask: 'tinyblog/widget/mask'
 
-}, function(G, M){
+}, function (G) {
 
-	"use strict"
+	"use strict";
 
 	function buildTagList(list) {
 		var str = '';

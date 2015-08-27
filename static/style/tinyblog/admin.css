@@ -43,33 +43,16 @@ body{
 	color: #999;
 }
 
-.cate-sel{
+.m-cate-sel{
 	min-height: 2rem;
 	line-height: 2rem;
 	padding: 1px;
 	border: #ddd 1px solid;
 }
-.cate-sel .c{
-	padding-left: 1rem;
+.m-cate-con{
+
 }
-.cate-sel ul{
-	padding-left: 1rem;
-}
-.cate-sel p{
-	padding-left: 1rem;
-	cursor: pointer;
-}
-.cate-sel p:hover{
-	background-color: #efefef;
-}
-.cate-sel .cates{
-	display: none;
-	padding: 0;
-	border-top: #ddd 1px solid;
-}
-.cate-sel .cates.show{
-	display: block;
-}
+
 
 .tages{
 	min-height: 2rem;
@@ -194,7 +177,7 @@ body{
 	display: flex;
 }
 .post-data{
-	flex: 3;
+	flex: 4;
 }
 .post-data p{
 	margin-bottom: 1rem;
@@ -250,11 +233,12 @@ body{
 	outline: 0.1rem solid #dfdfdf;
 }
 .post-list .item-opt:hover::before{
-	box-shadow: inset 0.2rem 0.2rem 0.5rem 0.1rem #ddd;
+	background-color: #ddd;
+	/* box-shadow: inset 0.2rem 0.2rem 0.5rem 0.1rem #ddd; */
 }
 .post-list .item-opt.selected::before{
-	outline: 0.1rem solid #ed8e0f;
-	box-shadow: inset 0.2rem 0.2rem 0.2rem 0.1rem #ed8e0f;
+	background-color: #ed8e0f;
+	/* box-shadow: inset 0.2rem 0.2rem 0.2rem 0.1rem #ed8e0f; */
 }
 .post-list .title{
 	flex: auto;
@@ -290,14 +274,14 @@ body{
 	width: 30rem;
 	height: 100%;
 	padding: 1rem;
-	overflow: hidden;
-	/* min-height: calc(100% - 4rem); */
-	background-color: #efefef;
+	opacity: 0;
+	background-color: #fff;
 	box-shadow: -0.5rem 0.5rem 1rem rgba(0,0,0,0.2);
-	transition-duration: 0.5s;
+	overflow: hidden;
 }
 .post-info-con.show{
 	right: 0;
+	opacity: 1;
 }
 .post-info-con .p-item{
 	margin-bottom: .5rem;

@@ -10,8 +10,6 @@ define({
 	var postFn = G.require('postFn');
 	var Tag = G.require('tag');
 	
-	var title = document.getElementById('title');
-	var content = document.getElementById('content');
 	var saveBtn = document.getElementById('savebtn');
 
 	function clickPSwitch() {
@@ -31,12 +29,14 @@ define({
 	function savePost() {
 
 		var f = new FormData(document.forms["postform"]);
+		f.append('tags', Tag.getTags())
 
 		var req = new Request("/api/post/put", {
 			credentials: "same-origin",
 			method: "post",
 			headers: {
- 			   "Content-Type": "application/x-www-form-urlencoded"
+				"Accept": "application/json"
+ 				//"Content-Type": "application/x-www-form-urlencoded"
  			},
 			body: f
 		});
@@ -45,25 +45,13 @@ define({
 			return res.json();
 		}).then(function (d) {
 			
-
 		}).catch(function (err) {
-			
+			alert(err);
 		});
 	}
 
 	saveBtn.onclick = function () {
-
 		savePost();
-/*		var f = new FormData(document.forms["postform"]);
-		var xhr = new XMLHttpRequest();
-		xhr.open("post", "/api/post/put");
-		xhr.onload = function (e) {
-			var t = e.target;
-			if (t.status === 200) {
-				//t.response
-			}
-		}
-		xhr.send(f);*/
 	};
 
 });
