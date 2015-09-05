@@ -69,10 +69,14 @@ func main() {
 	serverIP := ""
 	serverAddress := serverIP + ":" + serverPort
 
-	tpl = new(TPL)
-	tpl.Pattern = tplDir + "blog/*.html"
-	adminTpl = new(TPL)
-	adminTpl.Pattern = tplDir + "admin/*.html"
+	tpl = &TPL{
+		Path:    tplDir + "blog/",
+		Pattern: tplDir + "blog/*.html",
+	}
+	adminTpl = &TPL{
+		Path:    tplDir + "admin/",
+		Pattern: tplDir + "admin/*.html",
+	}
 
 	dbc = &MDBC{
 		Host: "localhost",

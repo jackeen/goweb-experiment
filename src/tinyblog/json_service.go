@@ -173,15 +173,8 @@ func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 	pl := self.DS.Post.GetList(selData)
 	n := self.DS.Post.Count(selData)
 
-	f := new(Format)
-	pLen := len(pl)
-	plm := make([]map[string]interface{}, 0)
-	for i := 0; i < pLen; i++ {
-		plm = append(plm, f.O2M(pl[i]))
-	}
-
 	r.State = true
-	r.Data = plm
+	r.Data = self.DS.F.TranPost(pl)
 	r.Count = n
 
 	return r.TraceListData()

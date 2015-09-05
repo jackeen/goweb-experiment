@@ -174,6 +174,54 @@ func (self *Author) HasComment(uuid string) bool {
 	return self.S.IsLogin(uuid)
 }
 
+//data format
+type Format struct{}
+
+func (self *Format) DateString(t time.Time) string {
+	return t.Format(DATE_FORMAT_STR)
+}
+
+func (self *Format) O2M(o interface{}) map[string]interface{} {
+
+	m := map[string]interface{}{}
+
+	t := reflect.TypeOf(o)
+	v := reflect.ValueOf(o)
+
+	fieldNum := t.NumField()
+
+	for i := 0; i < fieldNum; i++ {
+
+		key := t.Field(i).Tag.Get("json")
+		val := v.Field(i)
+
+		if val.Type().String() == "time.Time" {
+
+			m[key] = self.DateString(val.Interface().(time.Time))
+
+		} else if key == "id" {
+
+			m[key] = val.Interface()
+			m[key] = val.Interface().(bson.ObjectId).Hex()
+
+		} else {
+
+			m[key] = val.Interface()
+
+		}
+	}
+	return m
+}
+
+func (self *Format) TranPost(pl []Post) []map[string]interface{} {
+	pLen := len(pl)
+	plm := make([]map[string]interface{}, pLen)
+	for i := 0; i < pLen; i++ {
+		plm[i] = self.O2M(pl[i])
+	}
+	return plm
+}
+
 //mdb connection
 type MDBC struct {
 	Host string
@@ -202,6 +250,7 @@ func (self *MDBC) Init() {
 type DataService struct {
 	DBC  *MDBC
 	S    *Session
+	F    *Format
 	Auth *Author
 	Post *PostService
 	User *UserService
@@ -213,6 +262,8 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 
 	self.DBC = dbc
 	self.S = s
+
+	self.F = &Format{}
 
 	self.Auth = &Author{
 		S: s,
@@ -239,33 +290,6 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		C:   dbc.DB.C(TAG_TAB),
 	}
 
-}
-
-//data format
-type Format struct{}
-
-func (self *Format) DateString(t time.Time) string {
-	return t.Format(DATE_FORMAT_STR)
-}
-
-func (self *Format) O2M(o interface{}) map[string]interface{} {
-
-	m := map[string]interface{}{}
-
-	t := reflect.TypeOf(o)
-	v := reflect.ValueOf(o)
-
-	fieldNum := t.NumField()
-	for i := 0; i < fieldNum; i++ {
-		key := t.Field(i).Tag.Get("json")
-		val := v.Field(i)
-		if val.Type().String() == "time.Time" {
-			m[key] = self.DateString(val.Interface().(time.Time))
-		} else {
-			m[key] = val.Interface()
-		}
-	}
-	return m
 }
 
 //split page module

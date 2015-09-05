@@ -3,14 +3,22 @@
 {{range .}}
 	<li>
 		<h2 class="title">
-			<a href="/post/{{.Title}}">{{.Title}}</a>
+			<a href="/post/{{.id}}">{{.title}}</a>
 		</h2>
-		<div class="content">{{.Content}}</div>
+		<div class="content">{{.content}}</div>
 		<p class="meta">
-			<span>{{.CreateTime}}</span>
-			<span>{{.Author}}</span>
+			<span>{{.createTime}}</span>
+			<span>{{.author}}</span>
+			{{range .tags}}
+			<span>{{.}}</span>
+			{{end}}
 		</p>
 	</li>
 {{end}}
 </ul>
+<ol class="m-page-num">
+	<li><a href="###">pro</a></li>
+	<li><a href="###">1</a></li>
+	<li><a href="###">next</a></li>
+</ol>
 {{end}}

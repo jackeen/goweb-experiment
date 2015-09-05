@@ -1,10 +1,15 @@
 package main
 
 import (
+	//"bytes"
 	"html/template"
 )
 
 var TPLFuncMap = template.FuncMap{
+	/*"include": func(name string, data interface{}) template.HTML {
+		buff := new(bytes.Buffer)
+
+	},*/
 	"attr": func(s string) template.HTMLAttr {
 		return template.HTMLAttr(s)
 	},
@@ -21,6 +26,7 @@ func (self *TPLWriteContent) Write(p []byte) (n int, err error) {
 
 //
 type TPL struct {
+	Path    string
 	Pattern string
 }
 

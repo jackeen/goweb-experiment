@@ -1,6 +1,6 @@
 /*global css*/
 body{
-	background-color: #f6f6f6;
+	background-color: #d8d8d8;
 }
 
 a{
@@ -14,24 +14,22 @@ a:hover{
 }
 
 /**/
-.g-max-flex{
-	display: flex;
+.g-max-w{
 	max-width: 60rem;
-	padding: 0 1rem;
 	margin: 0 auto;
 }
 .g-warp{
-
+	display: flex;
+	margin-bottom: 1rem;
+	border-radius: .5rem;
+	overflow: hidden;
 }
 .g-side-bar{
 	flex: 1;
-	padding-left: 1rem;
-	margin-bottom: 1rem;
 }
 .g-container{
 	flex: 2;
-	padding-right: 1rem;
-	word-wrap: break-word;
+	background-color: #fff;
 }
 
 /*common module*/
@@ -44,10 +42,13 @@ a:hover{
 .m-main-footer{
 	padding: 1rem 0;
 	color: #666;
-	background-color: #ddd;
+	background-color: #333;
 }
 
 /**/
+.m-h-con{
+	display: flex;
+}
 .m-h-con a{
 	color: #ddd;
 }
@@ -109,16 +110,20 @@ a:hover{
 
 /*post style module*/
 .m-post-list{
-
+	
 }
 .m-post-list li{
-	margin-bottom: 1.5rem;
+	padding: 1rem;
+	border-bottom: #ddd 1px dotted;
 }
 .m-post-list .title{
-	margin-bottom: 0.5rem;
+	margin-bottom: 1rem;
+}
+.m-post-list .content{
+	margin-bottom: 1rem;
 }
 .m-post-list .meta{
-	
+	color: #999;
 }
 .m-post-info{
 	margin-bottom: 1rem;
@@ -128,6 +133,33 @@ a:hover{
 }
 .m-post-info .con{
 	
+}
+
+.m-page-num{
+	line-height: 2rem;
+	background-color: #fff;
+	overflow: hidden;
+}
+.m-page-num li{
+	float: left;
+	
+}
+.m-page-num a{
+	padding: 0 1rem;
+	display: block;
+}
+.m-page-num a:hover{
+	background-color: #efefef;
+}
+
+.m-side-bar{
+	background-color: #f3f3f3;
+}
+.m-bar-item{
+	padding: 1rem;
+}
+.m-bar-item > h3{
+	margin-bottom: 1rem;
 }
 
 .login{

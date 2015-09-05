@@ -12,6 +12,7 @@ type PageData struct {
 	Title      string
 	StaticHost string
 	Data       interface{}
+	Sub        string
 }
 
 type Handler struct {
@@ -26,6 +27,7 @@ func (self *Handler) GetPD(t string, d interface{}) PageData {
 		Title:      t,
 		StaticHost: self.StaticHost,
 		Data:       d,
+		Sub:        "footer",
 	}
 }
 
@@ -39,21 +41,33 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 	pl := self.DS.Post.GetList(selData)
 
-	d := self.GetPD("tiny", pl)
+	d := self.GetPD("tiny", self.DS.F.TranPost(pl))
 	res.Response = self.Tpl.Parse("index", d)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {
 
-	sel := &SelectData{
-		Condition: bson.M{
+	fileName := req.PathParm.FileName
+
+	sel := &SelectData{}
+
+	if bson.IsObjectIdHex(fileName) {
+		sel.Condition = bson.M{
+			"_id": bson.ObjectIdHex(fileName),
+		}
+	} else {
+		sel.Condition = bson.M{
 			"title": req.PathParm.FileName,
-		},
+		}
 	}
 
 	p := self.DS.Post.GetOne(sel)
 
-	d := self.GetPD(p.Title, p)
+	if p.Title == "" {
+		//404
+	}
+
+	d := self.GetPD(p.Title, self.DS.F.O2M(*p))
 	res.Response = self.Tpl.Parse("post", d)
 }
 
