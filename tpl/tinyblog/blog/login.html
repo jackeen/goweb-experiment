@@ -1,8 +1,4 @@
-{{define "login"}}
-
-{{template "headContent" .}}
-{{template "header"}}
-
+{{define "container"}}
 <div class="login">
 <form action="/entry/login" method="post" name="login">
 	<p class="icon-user">
@@ -16,6 +12,12 @@
 	</p>
 </form>
 </div>
+{{end}}
 
-{{template "footer"}}
+{{define "sideBar"}}
+	{{template "normalSideBar"}}
+{{end}}
+
+{{define "script"}}
+
 {{end}}

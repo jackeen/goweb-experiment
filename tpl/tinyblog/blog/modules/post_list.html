@@ -1,6 +1,6 @@
 {{define "postList"}}
 <ul class="m-post-list">
-{{range .}}
+	{{range .}}
 	<li>
 		<h2 class="title">
 			<a href="/post/{{.id}}">{{.title}}</a>
@@ -14,7 +14,7 @@
 			{{end}}
 		</p>
 	</li>
-{{end}}
+	{{end}}
 </ul>
 <ol class="m-page-num">
 	<li><a href="###">pro</a></li>

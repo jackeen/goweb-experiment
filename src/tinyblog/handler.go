@@ -16,7 +16,7 @@ type PageData struct {
 }
 
 type Handler struct {
-	Tpl        *TPL
+	Tpl        *TplParse
 	StaticHost string
 	DS         *DataService
 	Session    *Session
@@ -27,7 +27,6 @@ func (self *Handler) GetPD(t string, d interface{}) PageData {
 		Title:      t,
 		StaticHost: self.StaticHost,
 		Data:       d,
-		Sub:        "footer",
 	}
 }
 
@@ -41,8 +40,8 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 	pl := self.DS.Post.GetList(selData)
 
-	d := self.GetPD("tiny", self.DS.F.TranPost(pl))
-	res.Response = self.Tpl.Parse("index", d)
+	d := self.GetPD("tinyhome", self.DS.F.TranPost(pl))
+	self.Tpl.Parse(res, "index.html", d)
 }
 
 func (self *Handler) Post(req *REQ, res *RES) {
@@ -68,7 +67,8 @@ func (self *Handler) Post(req *REQ, res *RES) {
 	}
 
 	d := self.GetPD(p.Title, self.DS.F.O2M(*p))
-	res.Response = self.Tpl.Parse("post", d)
+
+	self.Tpl.Parse(res, "post.html", d)
 }
 
 func (self *Handler) Cate(req *REQ, res *RES) {
@@ -101,7 +101,7 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 
 	d := self.GetPD("login", nil)
 
-	res.Response = self.Tpl.Parse("login", d)
+	self.Tpl.Parse(res, "login.html", d)
 }
 
 func (self *Handler) Login(req *REQ, res *RES) {

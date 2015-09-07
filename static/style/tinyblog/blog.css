@@ -21,8 +21,6 @@ a:hover{
 .g-warp{
 	display: flex;
 	margin-bottom: 1rem;
-	border-radius: .5rem;
-	overflow: hidden;
 }
 .g-side-bar{
 	flex: 1;
@@ -126,10 +124,10 @@ a:hover{
 	color: #999;
 }
 .m-post-info{
-	margin-bottom: 1rem;
+	padding: 1rem;
 }
 .m-post-info .title{
-
+	margin-bottom: 1rem;
 }
 .m-post-info .con{
 	
@@ -137,7 +135,6 @@ a:hover{
 
 .m-page-num{
 	line-height: 2rem;
-	background-color: #fff;
 	overflow: hidden;
 }
 .m-page-num li{

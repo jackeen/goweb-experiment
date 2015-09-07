@@ -17,7 +17,7 @@ var (
 	dbc         *MDBC
 	staticUrl   *StaticURL
 	moduleName  *ModuleName
-	tpl         *TPL
+	tpl         *TplParse
 	adminTpl    *TPL
 )
 
@@ -69,10 +69,16 @@ func main() {
 	serverIP := ""
 	serverAddress := serverIP + ":" + serverPort
 
-	tpl = &TPL{
+	/*tpl = &TPL{
 		Path:    tplDir + "blog/",
 		Pattern: tplDir + "blog/*.html",
+	}*/
+
+	tpl = &TplParse{
+		Path:    tplDir + "blog/",
+		Pattern: tplDir + "blog/modules/*.html",
 	}
+
 	adminTpl = &TPL{
 		Path:    tplDir + "admin/",
 		Pattern: tplDir + "admin/*.html",

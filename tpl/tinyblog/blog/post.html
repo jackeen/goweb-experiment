@@ -1,13 +1,15 @@
-{{define "post"}}
-{{template "headContent" .}}
-{{template "header"}}
-<div class="g-container">
-	<div class="m-post-info">
-		<h1 class="title">{{.Data.title}}</h1>
-		<p class="con">{{.Data.content}}</p>
-		<p>{{.Data.author}} {{.Data.createTime}}</p>
-	</div>
+{{define "container"}}
+<div class="m-post-info">
+	<h1 class="title">{{.Data.title}}</h1>
+	<p>{{.Data.author}} {{.Data.createTime}}</p>
+	<p class="con">{{.Data.content}}</p>
 </div>
-{{template "sidebar"}}
-{{template "footer"}}
+{{end}}
+
+{{define "sideBar"}}
+	{{template "normalSideBar"}}
+{{end}}
+
+{{define "script"}}
+
 {{end}}

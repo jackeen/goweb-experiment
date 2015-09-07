@@ -1,13 +1,11 @@
-{{define "index"}}
+{{define "container"}}
+	{{template "postList" .Data}}
+{{end}}
 
-{{template "headContent" .}}
-{{template "header"}}
+{{define "sideBar"}}
+	{{template "normalSideBar"}}
+{{end}}
 
-<div class="g-container">
-{{template "postList" .Data}}
-</div>
-
-{{template "sidebar"}}
-{{template "footer"}}
+{{define "script"}}
 
 {{end}}
