@@ -8,38 +8,30 @@
 	<link rel="stylesheet" type="text/css" href="{{.StaticHost}}/style/tinyblog/blog.css">
 </head>
 <body>
-<header class="m-main-header">
-	<div class="g-max-w m-h-con">
-		<div class="logo">
-			<a href="/">tinyNote</a>
-		</div>
-		<ul class="nav">
-			<li><a href="/">F2E</a></li>
-			<li><a href="/">Note</a></li>
-			<li><a href="/">History</a></li>
-			<li><a href="/">Lab</a></li>
-			<li><a href="/">About</a></li>
-		</ul>
-		<div class="search">
-			<input class="a-trs" type="text" id="search" autocomplete="off">
-		</div>
-		<div class="usr">
-			<a class="link" href="/entry/">login</a>
-		</div>
+
+<div class="g-warp">
+	<header class="m-nav">
+		<a href="###">home</a>
+	</header>
+	
+	<header class="m-header">
+	font to end
+	</header>
+	
+	<div class="m-con">
+	{{template "container" .}}
 	</div>
-</header>
-<div class="g-warp g-max-w">
-	<div class="g-container">
-		{{template "container" .}}
+
+	<div class="m-foot-nav">
+		nav...
 	</div>
-	{{template "sideBar"}}
-</div>
-<footer class="m-main-footer">
-	<div class="g-max-w">
+
+	<footer class="m-footer">
 		<p>build 1.0 beta</p>
 		<p>copyright 2015 design by zj</p>
-	</div>
-</footer>
+	</footer>	
+</div>
+<div class="u-bg-line"></div>
 {{template "script"}}
 </body>
 </html>

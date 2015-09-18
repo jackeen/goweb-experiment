@@ -1,3 +1,11 @@
+{{define "headBar"}}
+<div class="m-h-bar">
+	<div class="g-max-w">
+		<h1 class="title">{{.Data.title}}</h1>
+	</div>
+</div>
+{{end}}
+
 {{define "container"}}
 <div class="m-post-info">
 	<h1 class="title">{{.Data.title}}</h1>
@@ -7,7 +15,14 @@
 {{end}}
 
 {{define "sideBar"}}
-	{{template "normalSideBar"}}
+<div class="m-bar-item">
+	<h3>same</h3>
+	<ul>
+		<li>news list item</li>
+		<li>news list item</li>
+		<li>news list item</li>
+	</ul>
+</div>
 {{end}}
 
 {{define "script"}}

@@ -5,10 +5,9 @@
 		<h2 class="title">
 			<a href="/post/{{.id}}">{{.title}}</a>
 		</h2>
+		<p class="time">{{.createTime}}</p>
 		<div class="content">{{.content}}</div>
-		<p class="meta">
-			<span>{{.createTime}}</span>
-			<span>{{.author}}</span>
+		<p class="tags">
 			{{range .tags}}
 			<span>{{.}}</span>
 			{{end}}
