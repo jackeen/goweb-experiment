@@ -11,8 +11,8 @@ ul, ol{
 	list-style: none;
 	list-style-position: outside;
 }
-input[type=checkbox],input[type=radio]{
-	/*appearance: none;*/
+/*input[type=checkbox],input[type=radio]{
+	appearance: none;
 	width: 1rem;
 	height: 1rem;
 	margin: 0;
@@ -20,19 +20,19 @@ input[type=checkbox],input[type=radio]{
 }
 input:focus{
 	outline: none;
-}
+}*/
 
-button{
+/*button{
 	padding: 0.5rem 1rem;
-}
+}*/
 
-a{
+/*a{
 	text-decoration: none;
 	color: #333;
 }
 a:hover{
 	color: blue;
-}
+}*/
 
 /*font icon thanks for icomoon*/
 @font-face{

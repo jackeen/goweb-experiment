@@ -6,6 +6,7 @@ body{
 
 a:link{
 	color: #333;
+	text-decoration: none;
 	transition-property: all;
  	transition-duration: 0.2s;
  	transition-timing-function: ease-in;
@@ -17,42 +18,42 @@ a:active{
 
 }
 a:visited{
-	
+	color: #333;
 }
 
-/**/
+p{
+	margin-bottom: 1rem;
+}
+
+input[type=text], input[type=password]{
+	display: inline-block;
+	height: 1.5rem;
+	padding: .6rem 1rem;
+	border: #ddd solid 1px;
+	border-radius: .5rem;
+}
+input[type=button], input[type=submit], button{
+	display: inline-block;
+	padding: 0.6rem 1rem;
+	background-color: #fff;
+	border: #ddd solid 1px;
+	border-radius: .5rem;
+	cursor: pointer;
+}
+input[type=button]:hover, input[type=submit]:hover, button:hover{
+	background-color: #09BAD4;
+	color: #fff;
+}
+input:focus{
+	outline: none;
+}
+
+/*w*/
 .g-warp{
-	width: 36rem;
+	width: 48rem;
 	margin: 0 30% 0 20%;
 	padding: 3rem 0 2rem 0;
 }
-
-/*common module*/
-.m-nav{
-	height: 5rem;
-	line-height: 5rem;
-	padding: 0 1rem;
-	background-color: #eaeaea;
-	border-radius: .5rem .5rem 0 0;
-}
-.m-header{
-	height: 5rem;
-	line-height: 5rem;
-	padding: 0 1rem;
-	color: #fff;
-	background-color: #A2D409;
-}
-.m-con{
-	padding: 1rem;
-	background-color: #fff;
-}
-.m-footer{
-	padding: 1rem;
-	color: #ccc;
-	background-color: #333;
-	border-radius: 0 0 .5rem .5rem;
-}
-
 .u-bg-line{
 	position: absolute;
 	top: 8rem;
@@ -73,16 +74,63 @@ a:visited{
 	height: 3.5rem;
 	background-color: rgba(0,0,0,0.1);
 }
+.u-pd{
+	padding: 1rem 2rem;
+}
+
+/*common module*/
+.m-nav{
+	height: 3rem;
+	line-height: 3rem;
+	background-color: #eaeaea;
+	border-radius: .5rem .5rem 0 0;
+}
+.m-header{
+	height: 3rem;
+	line-height: 3rem;
+	color: #fff;
+	background-color: #A2D409;
+}
+.m-context{
+	line-height: 2;
+	background-color: #fff;
+}
+.m-footer{
+	color: #ccc;
+	background-color: #333;
+	border-radius: 0 0 .5rem .5rem;
+}
+.m-foot-nav{
+	background-color: #eaeaea;
+}
+
+.m-page-num{
+	text-align: center;
+}
+.m-page-num li{
+	display: inline-block;
+}
+.m-page-num a{
+	display: block;
+	padding: .5rem 1rem;
+}
 
 .m-post-list{
 
 }
+.m-post-list > li:first-child{
+	padding-top: 0;
+}
 .m-post-list > li{
-	border-bottom: #eee 1px solid;
-	padding: 1rem 0;
+	border-bottom: #ddd 1px dotted;
+	padding: 1.2rem 0;
 }
 
-.m-foot-nav{
-	padding: 1rem;
-	background-color: #eaeaea;
+
+/*login form*/
+.m-login{
+
+}
+.m-login{
+
 }
