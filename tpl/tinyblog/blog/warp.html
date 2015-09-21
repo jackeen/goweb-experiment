@@ -10,26 +10,29 @@
 <body>
 
 <div class="g-warp">
-	<header class="m-nav u-pd">
-		<a href="###">home</a>
+	<header class="m-nav">
+		<a href="###">blog</a>
+		<a href="###">lab</a>
+		<a href="###">about</a>
 	</header>
 	
-	<header class="m-header u-pd">
+	<header class="m-header">
 	{{template "headBar" .}}
 	</header>
 	
-	<div class="m-context u-pd">
+	<div class="m-context">
 	{{template "container" .}}
 	</div>
 
-	<div class="m-foot-nav u-pd">
-		nav...
+	<div class="m-foot-context">
+	{{template "footBar" .}}
 	</div>
 
-	<footer class="m-footer u-pd">
-		<p>build 1.0 beta</p>
-		<p>copyright 2015 design by zj</p>
-	</footer>	
+	<footer class="m-footer t-in">
+		<section>
+			<p>© 2015 tinyblog design and develp by zj</p>
+		</section>
+	</footer>
 </div>
 <div class="u-bg-line"></div>
 {{template "script"}}
