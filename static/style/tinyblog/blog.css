@@ -7,9 +7,6 @@ body{
 a:link{
 	color: #333;
 	text-decoration: none;
-	transition-property: all;
- 	transition-duration: 0.2s;
- 	transition-timing-function: ease-in;
 }
 a:hover{
 	color: #000;
@@ -46,7 +43,7 @@ input[type=button]:hover, input[type=submit]:hover, button:hover{
 }
 
 /*trans*/
-.t-in{
+a, .m-footer{
 	transition-property: all;
  	transition-duration: 0.2s;
  	transition-timing-function: ease-in;
@@ -123,6 +120,7 @@ input[type=button]:hover, input[type=submit]:hover, button:hover{
 	color: #555;
 	background-color: #333;
 	border-radius: 0 0 .5rem .5rem;
+	text-align: center;
 }
 .m-footer:hover{
 	color: #999;
@@ -157,6 +155,9 @@ input[type=button]:hover, input[type=submit]:hover, button:hover{
 	padding-bottom: 0;
 	border-bottom: none;
 } */
+.m-post-info{
+	text-align: justify;
+}
 
 
 /*login form*/
