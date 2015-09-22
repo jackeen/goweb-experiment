@@ -5,6 +5,7 @@ import (
 	//"strconv"
 	"net/http"
 	//"time"
+
 	"labix.org/v2/mgo/bson"
 )
 
@@ -84,6 +85,10 @@ func (self *Handler) Tag(req *REQ, res *RES) {
 func (self *Handler) Date(req *REQ, res *RES) {
 
 	res.Response = "Date"
+}
+
+func (self *Handler) File(req *REQ, res *RES) {
+
 }
 
 func (self *Handler) Entry(req *REQ, res *RES) {

@@ -43,6 +43,17 @@ type Tag struct {
 	Name string `bson:"name" json:"name"`
 }
 
+type Image struct {
+	Id_      bson.ObjectId `bson:"_id" json:"id"`
+	Sid      bson.ObjectId `bson:"_sid" json:"sid"`
+	Name     string        `bson:"name" json:"name"`
+	typeName string        `bson:"typeName" json:"typeName"`
+	Size     string        `bson:"size" json:"size"`
+	Width    string        `bson:"width" json:"width"`
+	Height   string        `bson:"height" json:"height"`
+	Data     string        `bson:"data" json:"data"`
+}
+
 type Config struct {
 	HostName   string    `bson:"hostname" json:"hostName"`
 	Copyright  string    `bson:"copyright" json:"copyRight"`

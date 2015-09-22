@@ -1,0 +1,41 @@
+{{define "add_image"}}
+<!DOCTYPE html>
+<html>
+{{template "m_head_content"}}
+<body>
+	{{template "m_header"}}
+	<div class="warp">
+		{{template "m_side_bar"}}
+
+		<div class="content">
+			
+
+			<form id="upload">
+				<input type="file" name="photo">
+			</form>
+			<button id="btn">upload</button>
+			<script>
+
+			var btn = document.querySelector('#btn');
+			var f = document.querySelector('#upload');
+
+			btn.onclick = function () {
+				var fd = new FormData(f);
+				var xhr = new XMLHttpRequest();
+				xhr.onload = function () {
+					console.log(this.responseText);
+				}
+				xhr.open('post', '/api/image/put');
+				xhr.send(fd);
+			};
+
+			</script>
+
+		</div>
+		
+	</div>
+	{{template "m_footer"}}
+	<script src="{{.StaticHost}}/js/atom.js" data-main="tinyblog/admin/add_image"></script>
+</body>
+</html>
+{{end}}

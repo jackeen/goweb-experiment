@@ -44,6 +44,10 @@ func (self *Admin) Router(req *REQ, res *RES) {
 		self.addPost(req, res)
 	case "postlist":
 		self.postList(req, res)
+	case "imagelist":
+		self.imageList(req, res)
+	case "addimage":
+		self.addImage(req, res)
 	default:
 		self.NotFound(req, res)
 	}
@@ -75,6 +79,22 @@ func (self *Admin) postList(req *REQ, res *RES) {
 	}
 
 	res.Response = self.Tpl.Parse("post_list", d)
+}
+
+func (self *Admin) imageList(req *REQ, res *RES) {
+	d := map[string]interface{}{
+		"PageTitle": "manage image",
+	}
+
+	res.Response = self.Tpl.Parse("image_list", d)
+}
+
+func (self *Admin) addImage(req *REQ, res *RES) {
+	d := map[string]interface{}{
+		"PageTitle": "add image",
+	}
+
+	res.Response = self.Tpl.Parse("add_image", d)
 }
 
 func (self *Admin) NotFound(req *REQ, res *RES) {

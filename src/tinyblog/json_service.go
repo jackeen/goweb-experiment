@@ -392,6 +392,30 @@ func (self *TagJson) Del(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
+/*image*/
+type ImageJson struct {
+	S  *Session
+	DS *DataService
+}
+
+func (self *ImageJson) Get(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+func (self *ImageJson) Set(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+func (self *ImageJson) Put(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+func (self *ImageJson) Del(req *REQ, res *RES) ResJsonMap {
+	r := new(ResJson)
+	return r.TraceMsg()
+}
+
+/*public router*/
 type JsonService struct {
 	S  *Session
 	DS *DataService
@@ -447,6 +471,13 @@ func (self *JsonService) Post(req *REQ, res *RES) ResJsonMap {
 	}, req, res)
 }
 
+func (self *JsonService) Image(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&ImageJson{
+		S:  self.S,
+		DS: self.DS,
+	}, req, res)
+}
+
 func (self *JsonService) Rout(req *REQ, res *RES) {
 
 	var resJson ResJsonMap
@@ -465,6 +496,8 @@ func (self *JsonService) Rout(req *REQ, res *RES) {
 			resJson = self.Cate(req, res)
 		case "tag":
 			resJson = self.Tag(req, res)
+		case "image":
+			resJson = self.Image(req, res)
 		default:
 			resJson = new(ResJson).TraceNotFound()
 		}
