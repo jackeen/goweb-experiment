@@ -39,8 +39,8 @@ func router(req *REQ, res *RES) {
 		handler.Tag(req, res)
 	case moduleName.Date:
 		handler.Date(req, res)
-	case moduleName.File:
-		handler.File(req, res)
+	case moduleName.Image:
+		handler.Image(req, res)
 	case moduleName.API:
 		jsonService.Rout(req, res)
 	case moduleName.Admin:
@@ -127,7 +127,7 @@ func main() {
 		Cate:  "cate",
 		Date:  "date",
 		Tag:   "tag",
-		File:  "file",
+		Image: "image",
 		API:   "api",
 		Entry: "entry",
 		Admin: "admin",

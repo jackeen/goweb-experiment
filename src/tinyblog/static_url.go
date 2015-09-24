@@ -31,7 +31,7 @@ type ModuleName struct {
 	Cate  string
 	Date  string
 	Tag   string
-	File  string
+	Image string
 	Entry string
 	API   string
 	Admin string

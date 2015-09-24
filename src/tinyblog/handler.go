@@ -87,7 +87,11 @@ func (self *Handler) Date(req *REQ, res *RES) {
 	res.Response = "Date"
 }
 
-func (self *Handler) File(req *REQ, res *RES) {
+func (self *Handler) Image(req *REQ, res *RES) {
+
+	f := req.PathParm.FileName
+
+	res.Response = f
 
 }
 
@@ -98,10 +102,8 @@ func (self *Handler) Entry(req *REQ, res *RES) {
 	switch f {
 	case "login":
 		self.Login(req, res)
-		return
 	case "logout":
 		self.Logout(req, res)
-		return
 	}
 
 	d := self.GetPD("login", nil)

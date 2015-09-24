@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"labix.org/v2/mgo/bson"
 	//"log"
+	//"ioutil"
+	"io/ioutil"
 	"strconv"
 	"strings"
 )
@@ -407,8 +409,28 @@ func (self *ImageJson) Set(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 func (self *ImageJson) Put(req *REQ, res *RES) ResJsonMap {
+
 	r := new(ResJson)
-	return r.TraceMsg()
+
+	file, header, err := req.R.FormFile("photo")
+	defer file.Close()
+
+	if err != nil {
+		return r.TraceMsg()
+	}
+
+	bytes, err := ioutil.ReadAll(file)
+
+	if err != nil {
+		return r.TraceMsg()
+	}
+
+	r.Data = map[string]interface{}{
+		"fileName": header.Filename,
+		"size":     len(bytes),
+	}
+
+	return r.TraceData()
 }
 func (self *ImageJson) Del(req *REQ, res *RES) ResJsonMap {
 	r := new(ResJson)

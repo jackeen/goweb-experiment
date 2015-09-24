@@ -45,7 +45,6 @@ type Tag struct {
 
 type Image struct {
 	Id_      bson.ObjectId `bson:"_id" json:"id"`
-	Sid      bson.ObjectId `bson:"_sid" json:"sid"`
 	Name     string        `bson:"name" json:"name"`
 	typeName string        `bson:"typeName" json:"typeName"`
 	Size     string        `bson:"size" json:"size"`
