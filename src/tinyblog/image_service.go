@@ -1,6 +1,6 @@
 package main
 
-/*import (
+import (
 	"io"
 	"log"
 	"os"
@@ -16,14 +16,14 @@ type FileService struct {
 	S   *Session
 }
 
-func (self *ImageService) Upload() {
+func (self *ImageService) Save(img *Image) *ResMessage {
 
 }
 
-func (self *ImageService) DownLoad() {
+func (self *ImageService) GetMeta() {
 
 }
 
-func (self *ImageService) File() {
+func (self *ImageService) GetFile() {
 
-}*/
+}

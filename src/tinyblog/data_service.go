@@ -14,13 +14,12 @@ const (
 )
 
 const (
-	POST_TAB        = "post"
-	CATE_TAB        = "cate"
-	USER_TAB        = "user"
-	TAG_TAB         = "tag"
-	BIG_IMAGE_TAB   = "bigimg"
-	SMALL_IMAGE_TAB = "smallimg"
-	CONFIG_TAB      = "config"
+	POST_TAB   = "post"
+	CATE_TAB   = "cate"
+	USER_TAB   = "user"
+	TAG_TAB    = "tag"
+	IMAGE_TAB  = "img"
+	CONFIG_TAB = "config"
 )
 
 const (
