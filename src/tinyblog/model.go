@@ -44,13 +44,15 @@ type Tag struct {
 }
 
 type Image struct {
-	Id_      bson.ObjectId `bson:"_id" json:"id"`
-	Name     string        `bson:"name" json:"name"`
-	typeName string        `bson:"typeName" json:"typeName"`
-	Size     string        `bson:"size" json:"size"`
-	Width    string        `bson:"width" json:"width"`
-	Height   string        `bson:"height" json:"height"`
-	Data     string        `bson:"data" json:"data"`
+	Id_         bson.ObjectId `bson:"_id" json:"id"`
+	FileName    string        `bson:"FileName" json:"fileName"`
+	Name        string        `bson:"name" json:"name"`
+	ContentName string        `bson:"ContentName" json:"contentName"`
+	Size        int           `bson:"size" json:"size"`
+	Cate        string        `bson:"cate" json:"cate"`
+	Author      string        `bson:"author" json:"author"`
+	CreateTime  time.Time     `bson:"createtime" json:"createTime"`
+	EditTime    time.Time     `bson:"edittime" json:"editTime"`
 }
 
 type Config struct {
@@ -69,6 +71,7 @@ type User struct {
 	Email      string        `bson:"email" json:"email"`
 	Face       string        `bson:"face" json:"face"`
 	CreateTime time.Time     `bson:"createtime" json:"createTime"`
+	ditTime    time.Time     `bson:"edittime" json:"editTime"`
 	Active     bool          `bson:"active" json:"active"`
 	Group      string        `bson:"group" json:"group"`
 }

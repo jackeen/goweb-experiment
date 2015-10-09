@@ -425,12 +425,12 @@ func (self *ImageJson) Put(req *REQ, res *RES) ResJsonMap {
 		return r.TraceMsg()
 	}
 
-	r.Data = map[string]interface{}{
-		"fileName": header.Filename,
-		"size":     len(bytes),
-	}
+	rs := self.DS.Img.Save(header.Filename, bytes)
 
-	return r.TraceData()
+	r.State = rs.State
+	r.Message = rs.TraceMixMsg()
+
+	return r.TraceMsg()
 }
 func (self *ImageJson) Del(req *REQ, res *RES) ResJsonMap {
 	r := new(ResJson)

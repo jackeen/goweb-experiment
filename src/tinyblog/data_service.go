@@ -18,8 +18,12 @@ const (
 	CATE_TAB   = "cate"
 	USER_TAB   = "user"
 	TAG_TAB    = "tag"
-	IMAGE_TAB  = "img"
+	IMAGE_TAB  = "image"
 	CONFIG_TAB = "config"
+)
+
+const (
+	IMAGE_FS = "image"
 )
 
 const (
@@ -41,6 +45,7 @@ const (
 	USER_MODE_CODE = "102"
 	CATE_MODE_CODE = "103"
 	TAGE_MODE_CODE = "104"
+	IMG_MODE_CODE  = "105"
 	SYS_MODE_CODE  = "110"
 	ALL_MODE_CODE  = "200"
 )
@@ -257,6 +262,7 @@ type DataService struct {
 	User *UserService
 	Cate *CateService
 	Tag  *TagService
+	Img  *ImageService
 }
 
 func (self *DataService) Init(dbc *MDBC, s *Session) {
@@ -289,6 +295,12 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		DBC: dbc,
 		S:   s,
 		C:   dbc.DB.C(TAG_TAB),
+	}
+	self.Img = &ImageService{
+		DBC: dbc,
+		S:   s,
+		C:   dbc.DB.C(IMAGE_TAB),
+		FS:  dbc.DB.GridFS(IMAGE_FS),
 	}
 
 }
