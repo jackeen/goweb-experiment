@@ -100,6 +100,19 @@ func (self *RES) SetHeader(k string, v string) {
 	self.W.Header().Set(k, v)
 }
 
+func (self *RES) SetJsonHeader() {
+	self.W.Header().Set("Content-Type", "application/json;charset=UTF-8")
+}
+
+func (self *RES) SetImageHeader() {
+	self.W.Header().Set("", "")
+}
+
+func (self *RES) SetDownloadHeader(name string) {
+	v := "attachment; filename=" + name
+	self.W.Header().Set("Content-Disposition", v)
+}
+
 //handler function type
 type RouterFunc func(req *REQ, res *RES)
 

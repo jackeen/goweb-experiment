@@ -1,10 +1,12 @@
 package main
 
 import (
-	//"log"
-	//"strconv"
+	//"fmt"
+	"log"
 	"net/http"
+	//"strconv"
 	//"time"
+	//"io"
 
 	"labix.org/v2/mgo/bson"
 )
@@ -89,11 +91,16 @@ func (self *Handler) Date(req *REQ, res *RES) {
 
 func (self *Handler) Image(req *REQ, res *RES) {
 
-	id := req.PathParm.FileName
-	//.........................
-	b, _ := self.DS.Img.GetFile(id)
-	res.SetHeader("Content-Type", "image/jpeg")
-	res.W.Write(b)
+	name := req.PathParm.FileName
+	b, _, _ := self.DS.Img.GetFile(name)
+
+	//res.SetHeader("Content-Type", "image/"+meta.ContentName)
+	//res.SetHeader("Content-Length", strconv.Itoa(len(b)))
+
+	size, err := res.W.Write(b)
+	if err != nil {
+		log.Println(err, size)
+	}
 
 }
 

@@ -55,6 +55,11 @@ type Image struct {
 	EditTime    time.Time     `bson:"edittime" json:"editTime"`
 }
 
+type ImageMeta struct {
+	ContentName string
+	Name        string
+}
+
 type Config struct {
 	HostName   string    `bson:"hostname" json:"hostName"`
 	Copyright  string    `bson:"copyright" json:"copyRight"`

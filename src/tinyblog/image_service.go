@@ -4,6 +4,7 @@ import (
 	//"io"
 	"log"
 	//"os"
+	"strings"
 	"time"
 
 	"labix.org/v2/mgo"
@@ -21,6 +22,7 @@ func (self *ImageService) Save(name string, data []byte) *ResMessage {
 
 	id := bson.NewObjectId()
 	ct := time.Now()
+	nameArr := strings.Split(name, ".")
 
 	gf, err := self.FS.Create(id.Hex())
 	if err != nil {
@@ -31,6 +33,10 @@ func (self *ImageService) Save(name string, data []byte) *ResMessage {
 	if err != nil {
 		log.Println(err)
 	}
+	gf.SetMeta(&ImageMeta{
+		ContentName: nameArr[1],
+		Name:        nameArr[0],
+	})
 	defer gf.Close()
 
 	if err != nil {
@@ -40,8 +46,8 @@ func (self *ImageService) Save(name string, data []byte) *ResMessage {
 	img := &Image{
 		Id_:         id,
 		FileName:    id.Hex(),
-		Name:        name,
-		ContentName: "",
+		Name:        nameArr[0],
+		ContentName: nameArr[1],
 		Size:        size,
 		Cate:        "",
 		CreateTime:  ct,
@@ -59,19 +65,25 @@ func (self *ImageService) GetOne(id string) *Image {
 	return img
 }
 
-func (self *ImageService) GetFile(id string) ([]byte, int) {
+func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 
-	gf, err := self.FS.OpenId(bson.ObjectIdHex(id))
+	gf, err := self.FS.Open(name)
 	if err != nil {
 		log.Println(err)
 	}
 	defer gf.Close()
 
-	b := make([]byte, 1000)
+	b := make([]byte, gf.Size())
 	size, err := gf.Read(b)
 	if err != nil {
 		log.Println(err)
 	}
 
-	return b, size
+	imgMeta := &ImageMeta{}
+	err = gf.GetMeta(imgMeta)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return b, size, imgMeta
 }
