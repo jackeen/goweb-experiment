@@ -18,11 +18,14 @@ type ImageService struct {
 	S   *Session
 }
 
-func (self *ImageService) Save(name string, data []byte) *ResMessage {
+func (self *ImageService) Save(fileName string, data []byte) *ResMessage {
 
 	id := bson.NewObjectId()
 	ct := time.Now()
-	nameArr := strings.Split(name, ".")
+
+	nameSub := strings.Split(fileName, ".")
+	name := nameSub[0]
+	extName := nameSub[1]
 
 	gf, err := self.FS.Create(id.Hex())
 	if err != nil {
@@ -34,8 +37,8 @@ func (self *ImageService) Save(name string, data []byte) *ResMessage {
 		log.Println(err)
 	}
 	gf.SetMeta(&ImageMeta{
-		ContentName: nameArr[1],
-		Name:        nameArr[0],
+		ContentName: extName,
+		Name:        name,
 	})
 	defer gf.Close()
 
@@ -46,8 +49,8 @@ func (self *ImageService) Save(name string, data []byte) *ResMessage {
 	img := &Image{
 		Id_:         id,
 		FileName:    id.Hex(),
-		Name:        nameArr[0],
-		ContentName: nameArr[1],
+		Name:        name,
+		ContentName: extName,
 		Size:        size,
 		Cate:        "",
 		CreateTime:  ct,
@@ -64,6 +67,10 @@ func (self *ImageService) GetOne(id string) *Image {
 	self.C.FindId(bson.ObjectIdHex(id)).One(img)
 	return img
 }
+
+/*func (self *ImageService) GetList() []Image {
+
+}*/
 
 func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 

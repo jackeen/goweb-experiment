@@ -74,9 +74,10 @@ func (self *REQ) GetHeaders(k string) []string {
 
 //response struct
 type RES struct {
-	W        http.ResponseWriter
-	State    int
-	Response string
+	W         http.ResponseWriter
+	State     int
+	Response  string
+	HasWriter bool
 }
 
 func (self *RES) Init(w http.ResponseWriter) {
@@ -133,8 +134,12 @@ func (self *blogHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	//execute define blog router
 	self.Router(dataReq, dataRes)
 
-	w.WriteHeader(dataRes.State)
-	io.WriteString(w, dataRes.Response)
+	//avoid rewirte state and its alert
+	if !dataRes.HasWriter {
+		w.WriteHeader(dataRes.State)
+		io.WriteString(w, dataRes.Response)
+	}
+
 }
 
 func MuxServe(conf *HttpConfig, h RouterFunc) {

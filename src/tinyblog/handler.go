@@ -94,13 +94,12 @@ func (self *Handler) Image(req *REQ, res *RES) {
 	name := req.PathParm.FileName
 	b, _, _ := self.DS.Img.GetFile(name)
 
-	//res.SetHeader("Content-Type", "image/"+meta.ContentName)
-	//res.SetHeader("Content-Length", strconv.Itoa(len(b)))
-
 	size, err := res.W.Write(b)
 	if err != nil {
 		log.Println(err, size)
 	}
+
+	res.HasWriter = true
 
 }
 
