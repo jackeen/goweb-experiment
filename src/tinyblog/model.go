@@ -60,6 +60,13 @@ type ImageMeta struct {
 	Name        string
 }
 
+type ImageCate struct {
+	Name       string    `bson:"name" json:"name"`
+	Explain    string    `bson:"explain" json:"explain"`
+	CreateTime time.Time `bson:"createtime" json:"createTime"`
+	EditTime   time.Time `bson:"edittime" json:"editTime"`
+}
+
 type Config struct {
 	HostName   string    `bson:"hostname" json:"hostName"`
 	Copyright  string    `bson:"copyright" json:"copyRight"`

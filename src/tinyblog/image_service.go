@@ -12,10 +12,11 @@ import (
 )
 
 type ImageService struct {
-	DBC *MDBC
-	C   *mgo.Collection
-	FS  *mgo.GridFS
-	S   *Session
+	DBC   *MDBC
+	C     *mgo.Collection
+	CateC *mgo.Collection
+	FS    *mgo.GridFS
+	S     *Session
 }
 
 func (self *ImageService) Save(fileName string, data []byte) *ResMessage {
@@ -61,6 +62,10 @@ func (self *ImageService) Save(fileName string, data []byte) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, IMG_MODE_CODE)
 }
 
+/*func (self *ImageService) Del(id string) *ResMessage {
+
+}*/
+
 func (self *ImageService) GetOne(id string) *Image {
 
 	img := &Image{}
@@ -68,9 +73,9 @@ func (self *ImageService) GetOne(id string) *Image {
 	return img
 }
 
-/*func (self *ImageService) GetList() []Image {
+func (self *ImageService) GetList() []Image {
 
-}*/
+}
 
 func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 
@@ -93,4 +98,37 @@ func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 	}
 
 	return b, size, imgMeta
+}
+
+func (self *ImageService) CreateCate(cate *ImageCate) {}
+
+func (self *ImageService) EditCate(id string, cate *ImageCate) {}
+
+func (self *ImageService) DeleteCate(id string) *ResMessage {
+
+	if !bson.IsObjectIdHex(id) {
+		return getUserResMessage(false, NOT_ID, IMG_CATE_MODE_CODE)
+	}
+
+	err := self.CateC.RemoveId(bson.ObjectIdHex(id))
+	return getResMessage(err, DEL_FAIL, IMG_CATE_MODE_CODE)
+
+}
+
+func (self *ImageService) CateList() []ImageCate {
+
+	req := self.CateC.Find(nil)
+
+	n, err := req.Count()
+	if err != nil {
+		n = 0
+	}
+
+	cateList := make([]ImageCate, n)
+
+	if n > 0 {
+		req.All(cateList)
+
+	}
+	return cateList
 }

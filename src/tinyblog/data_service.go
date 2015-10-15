@@ -14,12 +14,13 @@ const (
 )
 
 const (
-	POST_TAB   = "post"
-	CATE_TAB   = "cate"
-	USER_TAB   = "user"
-	TAG_TAB    = "tag"
-	IMAGE_TAB  = "image"
-	CONFIG_TAB = "config"
+	POST_TAB       = "post"
+	CATE_TAB       = "cate"
+	USER_TAB       = "user"
+	TAG_TAB        = "tag"
+	IMAGE_TAB      = "image"
+	IMAGE_CATE_TAB = "imagecate"
+	CONFIG_TAB     = "config"
 )
 
 const (
@@ -38,16 +39,18 @@ const (
 	TARGET_NOT_EXIST = "target not exist"
 	REQUIRED_DEFAULT = "required default"
 	NOT_FOUND        = "not found"
+	NOT_ID           = "not id"
 )
 
 const (
-	POST_MODE_CODE = "101"
-	USER_MODE_CODE = "102"
-	CATE_MODE_CODE = "103"
-	TAGE_MODE_CODE = "104"
-	IMG_MODE_CODE  = "105"
-	SYS_MODE_CODE  = "110"
-	ALL_MODE_CODE  = "200"
+	POST_MODE_CODE     = "101"
+	USER_MODE_CODE     = "102"
+	CATE_MODE_CODE     = "103"
+	TAGE_MODE_CODE     = "104"
+	IMG_MODE_CODE      = "105"
+	IMG_CATE_MODE_CODE = "106"
+	SYS_MODE_CODE      = "110"
+	ALL_MODE_CODE      = "200"
 )
 
 const (
@@ -297,10 +300,11 @@ func (self *DataService) Init(dbc *MDBC, s *Session) {
 		C:   dbc.DB.C(TAG_TAB),
 	}
 	self.Img = &ImageService{
-		DBC: dbc,
-		S:   s,
-		C:   dbc.DB.C(IMAGE_TAB),
-		FS:  dbc.DB.GridFS(IMAGE_FS),
+		DBC:   dbc,
+		S:     s,
+		C:     dbc.DB.C(IMAGE_TAB),
+		CateC: dbc.DB.C(IMAGE_CATE_TAB),
+		FS:    dbc.DB.GridFS(IMAGE_FS),
 	}
 
 }
