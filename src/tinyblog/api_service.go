@@ -5,7 +5,7 @@ import (
 	"labix.org/v2/mgo/bson"
 	//"log"
 	//"ioutil"
-	"io/ioutil"
+
 	"strconv"
 	"strings"
 )
@@ -394,56 +394,13 @@ func (self *TagJson) Del(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
-/*image*/
-type ImageJson struct {
-	S  *Session
-	DS *DataService
-}
-
-func (self *ImageJson) Get(req *REQ, res *RES) ResJsonMap {
-	r := new(ResJson)
-	return r.TraceMsg()
-}
-func (self *ImageJson) Set(req *REQ, res *RES) ResJsonMap {
-	r := new(ResJson)
-	return r.TraceMsg()
-}
-func (self *ImageJson) Put(req *REQ, res *RES) ResJsonMap {
-
-	r := new(ResJson)
-
-	file, header, err := req.R.FormFile("photo")
-	defer file.Close()
-
-	if err != nil {
-		return r.TraceMsg()
-	}
-
-	bytes, err := ioutil.ReadAll(file)
-
-	if err != nil {
-		return r.TraceMsg()
-	}
-
-	rs := self.DS.Img.Save(header.Filename, bytes)
-
-	r.State = rs.State
-	r.Message = rs.TraceMixMsg()
-
-	return r.TraceMsg()
-}
-func (self *ImageJson) Del(req *REQ, res *RES) ResJsonMap {
-	r := new(ResJson)
-	return r.TraceMsg()
-}
-
 /*public router*/
-type JsonService struct {
+type APIService struct {
 	S  *Session
 	DS *DataService
 }
 
-func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
+func (self *APIService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	var resJson ResJsonMap
 	switch req.PathParm.FileName {
 	case "get":
@@ -458,49 +415,49 @@ func (self *JsonService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	return resJson
 }
 
-func (self *JsonService) Tag(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Tag(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&TagJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) Cate(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Cate(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&CateJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) User(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) User(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&UserJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) PostList(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) PostList(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&PostListJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) Post(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Post(req *REQ, res *RES) ResJsonMap {
 	return self.matchFn(&PostJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) Image(req *REQ, res *RES) ResJsonMap {
-	return self.matchFn(&ImageJson{
+func (self *APIService) Image(req *REQ, res *RES) ResJsonMap {
+	return self.matchFn(&ImageAPI{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *JsonService) Rout(req *REQ, res *RES) {
+func (self *APIService) Rout(req *REQ, res *RES) {
 
 	var resJson ResJsonMap
 

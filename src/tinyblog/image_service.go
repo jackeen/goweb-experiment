@@ -75,6 +75,18 @@ func (self *ImageService) GetOne(id string) *Image {
 
 func (self *ImageService) GetList() []Image {
 
+	q := self.CateC.Find(nil)
+
+	n, err := q.Count()
+	if err != nil {
+		n = 0
+	}
+
+	imgList := make([]Image, n)
+	if n > 0 {
+		q.All(imgList)
+	}
+	return imgList
 }
 
 func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
@@ -100,9 +112,44 @@ func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 	return b, size, imgMeta
 }
 
-func (self *ImageService) CreateCate(cate *ImageCate) {}
+func (self *ImageService) CreateCate(cate *ImageCate) *ResMessage {
 
-func (self *ImageService) EditCate(id string, cate *ImageCate) {}
+	t := time.Now()
+
+	cate.Id_ = bson.NewObjectId()
+	cate.CreateTime = t
+	cate.EditTime = t
+
+	err := self.CateC.Insert(cate)
+	return getResMessage(err, SAVE_SUCCESS, IMG_CATE_MODE_CODE)
+}
+
+func (self *ImageService) EditCate(id string, cate *ImageCate) *ResMessage {
+
+	if !bson.IsObjectIdHex(id) {
+		return getUserResMessage(false, NOT_ID, IMG_CATE_MODE_CODE)
+	}
+
+	hexId := bson.ObjectIdHex(id)
+	curCate := &ImageCate{}
+
+	err := self.CateC.FindId(hexId).One(curCate)
+	if err != nil {
+		return getUserResMessage(false, TARGET_NOT_EXIST, IMG_CATE_MODE_CODE)
+	}
+
+	if cate.Name != "" {
+		curCate.Name = cate.Name
+	}
+
+	if cate.Explain != "" {
+		curCate.Explain = cate.Explain
+	}
+
+	err = self.CateC.UpdateId(id, curCate)
+	return getResMessage(err, UPDATE_SUCCESS, IMG_CATE_MODE_CODE)
+
+}
 
 func (self *ImageService) DeleteCate(id string) *ResMessage {
 

@@ -9,16 +9,16 @@ import (
 )
 
 var (
-	ds          *DataService
-	session     *Session
-	handler     *Handler
-	jsonService *JsonService
-	admin       *Admin
-	dbc         *MDBC
-	staticUrl   *StaticURL
-	moduleName  *ModuleName
-	tpl         *TplParse
-	adminTpl    *TPL
+	ds         *DataService
+	session    *Session
+	handler    *Handler
+	apiService *APIService
+	admin      *Admin
+	dbc        *MDBC
+	staticUrl  *StaticURL
+	moduleName *ModuleName
+	tpl        *TplParse
+	adminTpl   *TPL
 )
 
 func router(req *REQ, res *RES) {
@@ -42,7 +42,7 @@ func router(req *REQ, res *RES) {
 	case moduleName.Image:
 		handler.Image(req, res)
 	case moduleName.API:
-		jsonService.Rout(req, res)
+		apiService.Rout(req, res)
 	case moduleName.Admin:
 		admin.Router(req, res)
 	case moduleName.Entry:
@@ -109,7 +109,7 @@ func main() {
 		Session:    session,
 	}
 
-	jsonService = &JsonService{
+	apiService = &APIService{
 		S:  session,
 		DS: ds,
 	}
