@@ -19,7 +19,7 @@ type ImageService struct {
 	S     *Session
 }
 
-func (self *ImageService) Save(fileName string, data []byte) *ResMessage {
+func (self *ImageService) SaveImg(fileName string, data []byte) *ResMessage {
 
 	id := bson.NewObjectId()
 	ct := time.Now()
@@ -62,20 +62,26 @@ func (self *ImageService) Save(fileName string, data []byte) *ResMessage {
 	return getResMessage(err, SAVE_SUCCESS, IMG_MODE_CODE)
 }
 
-/*func (self *ImageService) Del(id string) *ResMessage {
+func (self *ImageService) DelImg(id string) *ResMessage {
 
-}*/
+	if !bson.IsObjectIdHex(id) {
+		return getUserResMessage(false, NOT_ID, IMG_MODE_CODE)
+	}
 
-func (self *ImageService) GetOne(id string) *Image {
+	err := self.C.RemoveId(bson.ObjectIdHex(id))
+	return getResMessage(err, DEL_SUCCESS, IMG_MODE_CODE)
+}
+
+/*func (self *ImageService) GetImg(id string) *Image {
 
 	img := &Image{}
 	self.C.FindId(bson.ObjectIdHex(id)).One(img)
 	return img
-}
+}*/
 
-func (self *ImageService) GetList() []Image {
+func (self *ImageService) GetImgList(cateName string) []Image {
 
-	q := self.CateC.Find(nil)
+	q := self.CateC.Find(bson.M{"cate": cateName})
 
 	n, err := q.Count()
 	if err != nil {
@@ -89,7 +95,7 @@ func (self *ImageService) GetList() []Image {
 	return imgList
 }
 
-func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
+func (self *ImageService) GetImgFile(name string) ([]byte, int, *ImageMeta) {
 
 	gf, err := self.FS.Open(name)
 	if err != nil {
@@ -112,7 +118,7 @@ func (self *ImageService) GetFile(name string) ([]byte, int, *ImageMeta) {
 	return b, size, imgMeta
 }
 
-func (self *ImageService) CreateCate(cate *ImageCate) *ResMessage {
+func (self *ImageService) SaveCate(cate *ImageCate) *ResMessage {
 
 	t := time.Now()
 
@@ -151,7 +157,7 @@ func (self *ImageService) EditCate(id string, cate *ImageCate) *ResMessage {
 
 }
 
-func (self *ImageService) DeleteCate(id string) *ResMessage {
+func (self *ImageService) DelCate(id string) *ResMessage {
 
 	if !bson.IsObjectIdHex(id) {
 		return getUserResMessage(false, NOT_ID, IMG_CATE_MODE_CODE)
@@ -162,7 +168,7 @@ func (self *ImageService) DeleteCate(id string) *ResMessage {
 
 }
 
-func (self *ImageService) CateList() []ImageCate {
+func (self *ImageService) GetCateList() []ImageCate {
 
 	req := self.CateC.Find(nil)
 

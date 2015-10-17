@@ -10,11 +10,17 @@ type ImageAPI struct {
 }
 
 func (self *ImageAPI) Get(req *REQ, res *RES) ResJsonMap {
+
 	r := new(ResJson)
+
+	imgList := self.DS.Img.GetImgList("")
+
 	return r.TraceMsg()
 }
 func (self *ImageAPI) Set(req *REQ, res *RES) ResJsonMap {
+
 	r := new(ResJson)
+
 	return r.TraceMsg()
 }
 func (self *ImageAPI) Put(req *REQ, res *RES) ResJsonMap {
@@ -34,7 +40,7 @@ func (self *ImageAPI) Put(req *REQ, res *RES) ResJsonMap {
 		return r.TraceMsg()
 	}
 
-	rs := self.DS.Img.Save(header.Filename, bytes)
+	rs := self.DS.Img.SaveImg(header.Filename, bytes)
 
 	r.State = rs.State
 	r.Message = rs.TraceMixMsg()

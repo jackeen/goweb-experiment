@@ -92,7 +92,7 @@ func (self *Handler) Date(req *REQ, res *RES) {
 func (self *Handler) Image(req *REQ, res *RES) {
 
 	name := req.PathParm.FileName
-	b, _, _ := self.DS.Img.GetFile(name)
+	b, _, _ := self.DS.Img.GetImgFile(name)
 
 	size, err := res.W.Write(b)
 	if err != nil {
