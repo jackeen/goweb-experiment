@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type ResJsonMap map[string]interface{}
+type apiResMap map[string]interface{}
 
 type ResJson struct {
 	State   bool
@@ -19,28 +19,28 @@ type ResJson struct {
 	Data    interface{}
 }
 
-func (self *ResJson) TraceMsg() ResJsonMap {
-	return ResJsonMap{
+func (self *ResJson) TraceMsg() apiResMap {
+	return apiResMap{
 		"state":   self.State,
 		"message": self.Message,
 	}
 }
 
-func (self *ResJson) TraceNotFound() ResJsonMap {
+func (self *ResJson) TraceNotFound() apiResMap {
 	self.State = false
 	self.Message = NOT_FOUND
 	return self.TraceMsg()
 }
 
-func (self *ResJson) TraceData() ResJsonMap {
-	return ResJsonMap{
+func (self *ResJson) TraceData() apiResMap {
+	return apiResMap{
 		"state": self.State,
 		"data":  self.Data,
 	}
 }
 
-func (self *ResJson) TraceListData() ResJsonMap {
-	return ResJsonMap{
+func (self *ResJson) TraceListData() apiResMap {
+	return apiResMap{
 		"state": self.State,
 		"count": self.Count,
 		"data":  self.Data,
@@ -48,10 +48,10 @@ func (self *ResJson) TraceListData() ResJsonMap {
 }
 
 type IJson interface {
-	Get(*REQ, *RES) ResJsonMap
-	Set(*REQ, *RES) ResJsonMap
-	Put(*REQ, *RES) ResJsonMap
-	Del(*REQ, *RES) ResJsonMap
+	Get(*REQ, *RES) apiResMap
+	Set(*REQ, *RES) apiResMap
+	Put(*REQ, *RES) apiResMap
+	Del(*REQ, *RES) apiResMap
 }
 
 //cate api
@@ -60,7 +60,7 @@ type CateJson struct {
 	DS *DataService
 }
 
-func (self *CateJson) Get(req *REQ, res *RES) ResJsonMap {
+func (self *CateJson) Get(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 	qParent := req.GetFormValue("p")
@@ -72,12 +72,12 @@ func (self *CateJson) Get(req *REQ, res *RES) ResJsonMap {
 	return r.TraceListData()
 }
 
-func (self *CateJson) Set(req *REQ, res *RES) ResJsonMap {
+func (self *CateJson) Set(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *CateJson) Put(req *REQ, res *RES) ResJsonMap {
+func (self *CateJson) Put(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 	qName := req.GetFormValue("n")
@@ -100,7 +100,7 @@ func (self *CateJson) Put(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
-func (self *CateJson) Del(req *REQ, res *RES) ResJsonMap {
+func (self *CateJson) Del(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
@@ -111,22 +111,22 @@ type UserJson struct {
 	DS *DataService
 }
 
-func (self *UserJson) Get(req *REQ, res *RES) ResJsonMap {
+func (self *UserJson) Get(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *UserJson) Set(req *REQ, res *RES) ResJsonMap {
+func (self *UserJson) Set(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *UserJson) Put(req *REQ, res *RES) ResJsonMap {
+func (self *UserJson) Put(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *UserJson) Del(req *REQ, res *RES) ResJsonMap {
+func (self *UserJson) Del(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
@@ -136,7 +136,7 @@ type PostListJson struct {
 	DS *DataService
 }
 
-func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
+func (self *PostListJson) Get(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 	page := 0
@@ -182,17 +182,17 @@ func (self *PostListJson) Get(req *REQ, res *RES) ResJsonMap {
 	return r.TraceListData()
 }
 
-func (self *PostListJson) Set(req *REQ, res *RES) ResJsonMap {
+func (self *PostListJson) Set(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *PostListJson) Put(req *REQ, res *RES) ResJsonMap {
+func (self *PostListJson) Put(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *PostListJson) Del(req *REQ, res *RES) ResJsonMap {
+func (self *PostListJson) Del(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
@@ -202,13 +202,13 @@ type PostJson struct {
 	DS *DataService
 }
 
-func (self *PostJson) Set(req *REQ, res *RES) ResJsonMap {
-	//var rm ResJsonMap
+func (self *PostJson) Set(req *REQ, res *RES) apiResMap {
+	//var rm apiResMap
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
+func (self *PostJson) Put(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
@@ -259,7 +259,7 @@ func (self *PostJson) Put(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
-func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
+func (self *PostJson) Del(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
@@ -292,9 +292,9 @@ func (self *PostJson) Del(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
-func (self *PostJson) Get(req *REQ, res *RES) ResJsonMap {
+func (self *PostJson) Get(req *REQ, res *RES) apiResMap {
 
-	var rm ResJsonMap
+	var rm apiResMap
 	r := new(ResJson)
 	t := req.GetUrlOneValue("t")
 
@@ -331,7 +331,7 @@ type TagJson struct {
 	DS *DataService
 }
 
-func (self *TagJson) Get(req *REQ, res *RES) ResJsonMap {
+func (self *TagJson) Get(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 	ts := self.DS.Tag.GetList()
@@ -340,12 +340,12 @@ func (self *TagJson) Get(req *REQ, res *RES) ResJsonMap {
 	return r.TraceData()
 }
 
-func (self *TagJson) Set(req *REQ, res *RES) ResJsonMap {
+func (self *TagJson) Set(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
 
-func (self *TagJson) Put(req *REQ, res *RES) ResJsonMap {
+func (self *TagJson) Put(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
@@ -371,7 +371,7 @@ func (self *TagJson) Put(req *REQ, res *RES) ResJsonMap {
 	return r.TraceMsg()
 }
 
-func (self *TagJson) Del(req *REQ, res *RES) ResJsonMap {
+func (self *TagJson) Del(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
@@ -400,8 +400,8 @@ type APIService struct {
 	DS *DataService
 }
 
-func (self *APIService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
-	var resJson ResJsonMap
+func (self *APIService) matchFn(obj IJson, req *REQ, res *RES) apiResMap {
+	var resJson apiResMap
 	switch req.PathParm.FileName {
 	case "get":
 		resJson = obj.Get(req, res)
@@ -415,42 +415,42 @@ func (self *APIService) matchFn(obj IJson, req *REQ, res *RES) ResJsonMap {
 	return resJson
 }
 
-func (self *APIService) Tag(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Tag(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&TagJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *APIService) Cate(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Cate(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&CateJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *APIService) User(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) User(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&UserJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *APIService) PostList(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) PostList(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&PostListJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *APIService) Post(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Post(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&PostJson{
 		S:  self.S,
 		DS: self.DS,
 	}, req, res)
 }
 
-func (self *APIService) Image(req *REQ, res *RES) ResJsonMap {
+func (self *APIService) Image(req *REQ, res *RES) apiResMap {
 	return self.matchFn(&ImageAPI{
 		S:  self.S,
 		DS: self.DS,
@@ -459,7 +459,7 @@ func (self *APIService) Image(req *REQ, res *RES) ResJsonMap {
 
 func (self *APIService) Rout(req *REQ, res *RES) {
 
-	var resJson ResJsonMap
+	var resJson apiResMap
 
 	p := req.PathParm.PathItems
 

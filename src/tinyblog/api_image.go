@@ -9,21 +9,22 @@ type ImageAPI struct {
 	DS *DataService
 }
 
-func (self *ImageAPI) Get(req *REQ, res *RES) ResJsonMap {
+func (self *ImageAPI) Get(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
 	imgList := self.DS.Img.GetImgList("")
+	n = len(imgList)
 
 	return r.TraceMsg()
 }
-func (self *ImageAPI) Set(req *REQ, res *RES) ResJsonMap {
+func (self *ImageAPI) Set(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
 	return r.TraceMsg()
 }
-func (self *ImageAPI) Put(req *REQ, res *RES) ResJsonMap {
+func (self *ImageAPI) Put(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
@@ -47,7 +48,7 @@ func (self *ImageAPI) Put(req *REQ, res *RES) ResJsonMap {
 
 	return r.TraceMsg()
 }
-func (self *ImageAPI) Del(req *REQ, res *RES) ResJsonMap {
+func (self *ImageAPI) Del(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 	return r.TraceMsg()
 }
