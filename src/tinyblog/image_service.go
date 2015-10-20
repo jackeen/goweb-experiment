@@ -4,6 +4,7 @@ import (
 	//"io"
 	"log"
 	//"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -52,7 +53,7 @@ func (self *ImageService) SaveImg(fileName string, data []byte) *ResMessage {
 		FileName:    id.Hex(),
 		Name:        name,
 		ContentName: extName,
-		Size:        size,
+		Size:        strconv.Itoa(size),
 		Cate:        "",
 		CreateTime:  ct,
 		EditTime:    ct,
@@ -81,7 +82,7 @@ func (self *ImageService) DelImg(id string) *ResMessage {
 
 func (self *ImageService) GetImgList(cateName string) []Image {
 
-	q := self.CateC.Find(bson.M{"cate": cateName})
+	q := self.C.Find(bson.M{"cate": cateName})
 
 	n, err := q.Count()
 	if err != nil {
@@ -90,8 +91,9 @@ func (self *ImageService) GetImgList(cateName string) []Image {
 
 	imgList := make([]Image, n)
 	if n > 0 {
-		q.All(imgList)
+		q.All(&imgList)
 	}
+
 	return imgList
 }
 

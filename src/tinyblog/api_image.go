@@ -14,16 +14,20 @@ func (self *ImageAPI) Get(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
 
 	imgList := self.DS.Img.GetImgList("")
-	n = len(imgList)
+	r.State = true
+	r.Count = len(imgList)
+	r.Data = self.DS.F.TransImageList(imgList)
 
-	return r.TraceMsg()
+	return r.TraceListData()
 }
+
 func (self *ImageAPI) Set(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
 
 	return r.TraceMsg()
 }
+
 func (self *ImageAPI) Put(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
@@ -50,5 +54,8 @@ func (self *ImageAPI) Put(req *REQ, res *RES) apiResMap {
 }
 func (self *ImageAPI) Del(req *REQ, res *RES) apiResMap {
 	r := new(ResJson)
+
+	//id := req.GetFormValue("id")
+
 	return r.TraceMsg()
 }

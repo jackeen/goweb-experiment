@@ -176,7 +176,7 @@ func (self *PostListJson) Get(req *REQ, res *RES) apiResMap {
 	n := self.DS.Post.Count(selData)
 
 	r.State = true
-	r.Data = self.DS.F.TranPost(pl)
+	r.Data = self.DS.F.TransPostList(pl)
 	r.Count = n
 
 	return r.TraceListData()

@@ -2,10 +2,11 @@ package main
 
 import (
 	"errors"
-	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
 	"reflect"
 	"time"
+
+	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 )
 
 const (
@@ -222,7 +223,16 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 	return m
 }
 
-func (self *Format) TranPost(pl []Post) []map[string]interface{} {
+func (self *Format) TransImageList(list []Image) []map[string]interface{} {
+	length := len(list)
+	ml := make([]map[string]interface{}, length)
+	for i, v := range list {
+		ml[i] = self.O2M(v)
+	}
+	return ml
+}
+
+func (self *Format) TransPostList(pl []Post) []map[string]interface{} {
 	pLen := len(pl)
 	plm := make([]map[string]interface{}, pLen)
 	for i := 0; i < pLen; i++ {

@@ -45,10 +45,10 @@ type Tag struct {
 
 type Image struct {
 	Id_         bson.ObjectId `bson:"_id" json:"id"`
-	FileName    string        `bson:"FileName" json:"fileName"`
+	FileName    string        `bson:"filename" json:"fileName"`
 	Name        string        `bson:"name" json:"name"`
-	ContentName string        `bson:"ContentName" json:"contentName"`
-	Size        int           `bson:"size" json:"size"`
+	ContentName string        `bson:"contentname" json:"contentName"`
+	Size        string        `bson:"size" json:"size"`
 	Cate        string        `bson:"cate" json:"cate"`
 	Author      string        `bson:"author" json:"author"`
 	CreateTime  time.Time     `bson:"createtime" json:"createTime"`

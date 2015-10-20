@@ -43,7 +43,7 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 	pl := self.DS.Post.GetList(selData)
 
-	d := self.GetPD("tinyhome", self.DS.F.TranPost(pl))
+	d := self.GetPD("tinyhome", self.DS.F.TransPostList(pl))
 	self.Tpl.Parse(res, "index.html", d)
 }
 
