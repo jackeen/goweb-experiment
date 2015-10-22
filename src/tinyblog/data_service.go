@@ -185,6 +185,10 @@ func (self *Author) HasComment(uuid string) bool {
 }
 
 //data format
+
+type FormatData interface{}
+type FormatDataList []FormatData
+
 type Format struct{}
 
 func (self *Format) DateString(t time.Time) string {
@@ -221,6 +225,24 @@ func (self *Format) O2M(o interface{}) map[string]interface{} {
 		}
 	}
 	return m
+}
+
+func (self *Format) TransList(list FormatDataList) []map[string]interface{} {
+	length := len(list)
+	ml := make([]map[string]interface{}, length)
+	for i, v := range list {
+		ml[i] = self.O2M(v)
+	}
+	return ml
+}
+
+func (self *Format) TransImgCateList(list []ImageCate) []map[string]interface{} {
+	length := len(list)
+	ml := make([]map[string]interface{}, length)
+	for i, v := range list {
+		ml[i] = self.O2M(v)
+	}
+	return ml
 }
 
 func (self *Format) TransImageList(list []Image) []map[string]interface{} {

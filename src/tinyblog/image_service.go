@@ -69,16 +69,14 @@ func (self *ImageService) DelImg(id string) *ResMessage {
 		return getUserResMessage(false, NOT_ID, IMG_MODE_CODE)
 	}
 
-	err := self.C.RemoveId(bson.ObjectIdHex(id))
+	err := self.FS.Remove(id)
+	if err != nil {
+		return getUserResMessage(false, DEL_FAIL, IMG_MODE_CODE)
+	}
+
+	err = self.C.RemoveId(bson.ObjectIdHex(id))
 	return getResMessage(err, DEL_SUCCESS, IMG_MODE_CODE)
 }
-
-/*func (self *ImageService) GetImg(id string) *Image {
-
-	img := &Image{}
-	self.C.FindId(bson.ObjectIdHex(id)).One(img)
-	return img
-}*/
 
 func (self *ImageService) GetImgList(cateName string) []Image {
 
