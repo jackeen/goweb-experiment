@@ -2,7 +2,6 @@ package main
 
 import (
 	"labix.org/v2/mgo/bson"
-	"time"
 )
 
 type Post struct {
@@ -12,8 +11,8 @@ type Post struct {
 	Author       string        `bson:"author" json:"author"`
 	Cate         string        `bson:"cate" json:"cate"`
 	Tags         []string      `bson:"tags" json:"tags"`
-	CreateTime   time.Time     `bson:"createtime" json:"createTime"`
-	EditTime     time.Time     `bson:"edittime" json:"editTime"`
+	CreateTime   TimeData      `bson:"createtime" json:"createTime"`
+	EditTime     TimeData      `bson:"edittime" json:"editTime"`
 	IsDraft      bool          `bson:"isdraft" json:"isDraft"`
 	IsDiscard    bool          `bson:"isdiscard" json:"isDiscard"`
 	AllowComment bool          `bson:"allowcomment" json:"allowComment"`
@@ -26,8 +25,8 @@ type Comment struct {
 	Auth       string        `bson:"auth" json:"auth"`
 	Ip         string        `bson:"ip" json:"ip"`
 	IsDisplay  bool          `bson:"isdisplay" json:"isDisplay"`
-	CreateTime time.Time     `bson:"createtime" json:"createTime"`
-	EditTIme   time.Time     `bson:"edittime" json:"editTime"`
+	CreateTime TimeData      `bson:"createtime" json:"createTime"`
+	EditTIme   TimeData      `bson:"edittime" json:"editTime"`
 	Reply      string        `bson:"reply" json:"reply"`
 }
 
@@ -51,8 +50,8 @@ type Image struct {
 	Size        string        `bson:"size" json:"size"`
 	Cate        string        `bson:"cate" json:"cate"`
 	Author      string        `bson:"author" json:"author"`
-	CreateTime  time.Time     `bson:"createtime" json:"createTime"`
-	EditTime    time.Time     `bson:"edittime" json:"editTime"`
+	CreateTime  TimeData      `bson:"createtime" json:"createTime"`
+	EditTime    TimeData      `bson:"edittime" json:"editTime"`
 }
 
 type ImageMeta struct {
@@ -64,16 +63,16 @@ type ImageCate struct {
 	Id_        bson.ObjectId `bson:"_id" json:"id"`
 	Name       string        `bson:"name" json:"name"`
 	Explain    string        `bson:"explain" json:"explain"`
-	CreateTime time.Time     `bson:"createtime" json:"createTime"`
-	EditTime   time.Time     `bson:"edittime" json:"editTime"`
+	CreateTime TimeData      `bson:"createtime" json:"createTime"`
+	EditTime   TimeData      `bson:"edittime" json:"editTime"`
 }
 
 type Config struct {
-	HostName   string    `bson:"hostname" json:"hostName"`
-	Copyright  string    `bson:"copyright" json:"copyRight"`
-	Explain    string    `bson:"explain" json:"explain"`
-	CreateTime time.Time `bson:"createtime" json:"createTime"`
-	EditTime   time.Time `bson:"edittime" json:"editTime"`
+	HostName   string   `bson:"hostname" json:"hostName"`
+	Copyright  string   `bson:"copyright" json:"copyRight"`
+	Explain    string   `bson:"explain" json:"explain"`
+	CreateTime TimeData `bson:"createtime" json:"createTime"`
+	EditTime   TimeData `bson:"edittime" json:"editTime"`
 }
 
 type User struct {
@@ -83,8 +82,8 @@ type User struct {
 	Nick       string        `bson:"nick" json:"nick"`
 	Email      string        `bson:"email" json:"email"`
 	Face       string        `bson:"face" json:"face"`
-	CreateTime time.Time     `bson:"createtime" json:"createTime"`
-	ditTime    time.Time     `bson:"edittime" json:"editTime"`
+	CreateTime TimeData      `bson:"createtime" json:"createTime"`
+	ditTime    TimeData      `bson:"edittime" json:"editTime"`
 	Active     bool          `bson:"active" json:"active"`
 	Group      string        `bson:"group" json:"group"`
 }

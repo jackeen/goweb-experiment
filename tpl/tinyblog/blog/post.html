@@ -1,11 +1,11 @@
 {{define "headBar"}}
-<h1>{{.Data.title}}</h1>
+<h1>{{.Data.Title}}</h1>
 {{end}}
 
 {{define "container"}}
 <div class="m-post-info">
-	<p>{{.Data.author}} {{.Data.createTime}}</p>
-	<p class="con">{{.Data.content}}</p>
+	<p>{{.Data.Author}} {{.Data.CreateTime.DateString}}</p>
+	<p class="con">{{.Data.Content}}</p>
 </div>
 {{end}}
 

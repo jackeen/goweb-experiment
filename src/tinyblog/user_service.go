@@ -3,7 +3,6 @@ package main
 import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	"time"
 )
 
 type UserService struct {
@@ -15,7 +14,7 @@ type UserService struct {
 func (self *UserService) Save(user *User) *ResMessage {
 
 	user.Id_ = bson.NewObjectId()
-	user.CreateTime = time.Now()
+	user.CreateTime = TimeData{}
 	err := self.C.Insert(user)
 
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)

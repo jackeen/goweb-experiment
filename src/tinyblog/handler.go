@@ -43,7 +43,9 @@ func (self *Handler) Index(req *REQ, res *RES) {
 
 	pl := self.DS.Post.GetList(selData)
 
-	d := self.GetPD("tinyhome", self.DS.F.TransPostList(pl))
+	//log.Println(pl)
+
+	d := self.GetPD("tinyhome", pl)
 	self.Tpl.Parse(res, "index.html", d)
 }
 
@@ -69,7 +71,7 @@ func (self *Handler) Post(req *REQ, res *RES) {
 		//404
 	}
 
-	d := self.GetPD(p.Title, self.DS.F.O2M(*p))
+	d := self.GetPD(p.Title, p)
 
 	self.Tpl.Parse(res, "post.html", d)
 }

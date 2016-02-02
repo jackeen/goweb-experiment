@@ -3,12 +3,12 @@
 	{{range .}}
 	<li>
 		<h2 class="title">
-			<a href="/post/{{.id}}">{{.title}}</a>
+			<a href="/post/{{.Id_.Hex}}">{{.Title}}</a>
 		</h2>
-		<p class="time">{{.createTime}}</p>
-		<div class="content">{{.content}}</div>
+		<p class="time">{{.CreateTime.DateString}}</p>
+		<div class="content">{{.Content}}</div>
 		<p class="tags">
-			{{range .tags}}
+			{{range .Tags}}
 			<span>{{.}}</span>
 			{{end}}
 		</p>

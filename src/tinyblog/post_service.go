@@ -3,7 +3,8 @@ package main
 import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	"time"
+	//"time"
+	//"log"
 )
 
 type PostService struct {
@@ -14,15 +15,15 @@ type PostService struct {
 
 func (self *PostService) Save(p *Post) *ResMessage {
 
-	currentTime := time.Now()
+	t := TimeData{}
 
 	if p.Title == "" || p.Content == "" {
 		return getUserResMessage(false, REQUIRED_DEFAULT, POST_MODE_CODE)
 	}
 
 	p.Id_ = bson.NewObjectId()
-	p.CreateTime = currentTime
-	p.EditTime = currentTime
+	p.CreateTime = t
+	p.EditTime = t
 
 	err := self.C.Insert(p)
 
@@ -84,6 +85,9 @@ func (self *PostService) GetList(sel *SelectData) []Post {
 	q := self.C.Find(sel.Condition)
 	q = q.Sort(sel.Sort).Skip(sel.Start).Limit(sel.Limit)
 	q.All(&pl)
+
+	//log.Println("----------------------------", pl)
+
 	return pl
 }
 

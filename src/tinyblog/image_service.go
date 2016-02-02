@@ -6,7 +6,7 @@ import (
 	//"os"
 	"strconv"
 	"strings"
-	"time"
+	//"time"
 
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
@@ -23,7 +23,7 @@ type ImageService struct {
 func (self *ImageService) SaveImg(fileName string, data []byte) *ResMessage {
 
 	id := bson.NewObjectId()
-	ct := time.Now()
+	ct := TimeData{}
 
 	nameSub := strings.Split(fileName, ".")
 	name := nameSub[0]
@@ -120,7 +120,7 @@ func (self *ImageService) GetImgFile(name string) ([]byte, int, *ImageMeta) {
 
 func (self *ImageService) SaveCate(cate *ImageCate) *ResMessage {
 
-	t := time.Now()
+	t := TimeData{}
 
 	cate.Id_ = bson.NewObjectId()
 	cate.CreateTime = t

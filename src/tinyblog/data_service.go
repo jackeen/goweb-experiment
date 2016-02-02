@@ -10,11 +10,6 @@ import (
 )
 
 const (
-	TIME_FORMAT_STR = "2006-01-02 15:04:05"
-	DATE_FORMAT_STR = "2006-01-02"
-)
-
-const (
 	POST_TAB       = "post"
 	CATE_TAB       = "cate"
 	USER_TAB       = "user"
