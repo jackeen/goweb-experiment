@@ -15,7 +15,7 @@ type PostService struct {
 
 func (self *PostService) Save(p *Post) *ResMessage {
 
-	t := TimeData{}
+	t := &TimeData{}
 
 	if p.Title == "" || p.Content == "" {
 		return getUserResMessage(false, REQUIRED_DEFAULT, POST_MODE_CODE)
@@ -24,6 +24,8 @@ func (self *PostService) Save(p *Post) *ResMessage {
 	p.Id_ = bson.NewObjectId()
 	p.CreateTime = t
 	p.EditTime = t
+
+	//log.Println(t)
 
 	err := self.C.Insert(p)
 

@@ -11,8 +11,8 @@ type Post struct {
 	Author       string        `bson:"author" json:"author"`
 	Cate         string        `bson:"cate" json:"cate"`
 	Tags         []string      `bson:"tags" json:"tags"`
-	CreateTime   TimeData      `bson:"createtime" json:"createTime"`
-	EditTime     TimeData      `bson:"edittime" json:"editTime"`
+	CreateTime   *TimeData     `bson:"createtime" json:"createTime"`
+	EditTime     *TimeData     `bson:"edittime" json:"editTime"`
 	IsDraft      bool          `bson:"isdraft" json:"isDraft"`
 	IsDiscard    bool          `bson:"isdiscard" json:"isDiscard"`
 	AllowComment bool          `bson:"allowcomment" json:"allowComment"`
