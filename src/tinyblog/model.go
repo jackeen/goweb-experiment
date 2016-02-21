@@ -25,8 +25,8 @@ type Comment struct {
 	Auth       string        `bson:"auth" json:"auth"`
 	Ip         string        `bson:"ip" json:"ip"`
 	IsDisplay  bool          `bson:"isdisplay" json:"isDisplay"`
-	CreateTime TimeData      `bson:"createtime" json:"createTime"`
-	EditTIme   TimeData      `bson:"edittime" json:"editTime"`
+	CreateTime *TimeData     `bson:"createtime" json:"createTime"`
+	EditTIme   *TimeData     `bson:"edittime" json:"editTime"`
 	Reply      string        `bson:"reply" json:"reply"`
 }
 
@@ -50,8 +50,8 @@ type Image struct {
 	Size        string        `bson:"size" json:"size"`
 	Cate        string        `bson:"cate" json:"cate"`
 	Author      string        `bson:"author" json:"author"`
-	CreateTime  TimeData      `bson:"createtime" json:"createTime"`
-	EditTime    TimeData      `bson:"edittime" json:"editTime"`
+	CreateTime  *TimeData     `bson:"createtime" json:"createTime"`
+	EditTime    *TimeData     `bson:"edittime" json:"editTime"`
 }
 
 type ImageMeta struct {
@@ -63,16 +63,16 @@ type ImageCate struct {
 	Id_        bson.ObjectId `bson:"_id" json:"id"`
 	Name       string        `bson:"name" json:"name"`
 	Explain    string        `bson:"explain" json:"explain"`
-	CreateTime TimeData      `bson:"createtime" json:"createTime"`
-	EditTime   TimeData      `bson:"edittime" json:"editTime"`
+	CreateTime *TimeData     `bson:"createtime" json:"createTime"`
+	EditTime   *TimeData     `bson:"edittime" json:"editTime"`
 }
 
 type Config struct {
-	HostName   string   `bson:"hostname" json:"hostName"`
-	Copyright  string   `bson:"copyright" json:"copyRight"`
-	Explain    string   `bson:"explain" json:"explain"`
-	CreateTime TimeData `bson:"createtime" json:"createTime"`
-	EditTime   TimeData `bson:"edittime" json:"editTime"`
+	HostName   string    `bson:"hostname" json:"hostName"`
+	Copyright  string    `bson:"copyright" json:"copyRight"`
+	Explain    string    `bson:"explain" json:"explain"`
+	CreateTime *TimeData `bson:"createtime" json:"createTime"`
+	EditTime   *TimeData `bson:"edittime" json:"editTime"`
 }
 
 type User struct {
@@ -82,8 +82,8 @@ type User struct {
 	Nick       string        `bson:"nick" json:"nick"`
 	Email      string        `bson:"email" json:"email"`
 	Face       string        `bson:"face" json:"face"`
-	CreateTime TimeData      `bson:"createtime" json:"createTime"`
-	ditTime    TimeData      `bson:"edittime" json:"editTime"`
+	CreateTime *TimeData     `bson:"createtime" json:"createTime"`
+	ditTime    *TimeData     `bson:"edittime" json:"editTime"`
 	Active     bool          `bson:"active" json:"active"`
 	Group      string        `bson:"group" json:"group"`
 }

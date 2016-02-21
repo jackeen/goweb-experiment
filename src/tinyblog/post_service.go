@@ -16,6 +16,7 @@ type PostService struct {
 func (self *PostService) Save(p *Post) *ResMessage {
 
 	t := &TimeData{}
+	t.Now()
 
 	if p.Title == "" || p.Content == "" {
 		return getUserResMessage(false, REQUIRED_DEFAULT, POST_MODE_CODE)

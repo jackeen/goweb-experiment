@@ -3,7 +3,7 @@ package main
 import (
 	//"fmt"
 	"labix.org/v2/mgo/bson"
-	"log"
+	//"log"
 	"strconv"
 	"time"
 )
@@ -36,12 +36,12 @@ func (self TimeData) UnmarshalJSON(b []byte) error {
 //mgo getter interface
 func (self *TimeData) GetBSON() (interface{}, error) {
 
-	log.Println("^^^^^^^^^^^^get", self)
+	//log.Println("^^^^^^^^^^^^get", self)
 
 	t := time.Time(*self)
 
 	if t.IsZero() {
-		return time.Now(), nil
+		return nil, nil
 	}
 
 	return t, nil
@@ -61,6 +61,10 @@ func (self *TimeData) SetBSON(raw bson.Raw) error {
 	//log.Println("^^^^^^^^^^^^set", self)
 
 	return nil
+}
+
+func (self *TimeData) Now() {
+	*self = TimeData(time.Now())
 }
 
 func (self *TimeData) DateString() string {

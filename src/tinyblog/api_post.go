@@ -15,8 +15,9 @@ type PostListJson struct {
 func (self *PostListJson) Get(req *REQ, res *RES) apiResMap {
 
 	r := new(ResJson)
+	pageNum := 10
 	page := 0
-	limit := 5
+	limit := pageNum
 
 	reqTitle := req.GetFormValue("t")
 
@@ -32,8 +33,9 @@ func (self *PostListJson) Get(req *REQ, res *RES) apiResMap {
 
 	if reqLimit != "" {
 		l, err := strconv.ParseInt(reqLimit, 10, 32)
-		if err == nil && l < 5 {
-			limit = int(l)
+		intLen := int(l)
+		if err == nil && intLen < pageNum {
+			limit = intLen
 		}
 	}
 

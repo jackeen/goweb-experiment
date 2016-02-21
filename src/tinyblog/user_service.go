@@ -13,8 +13,10 @@ type UserService struct {
 
 func (self *UserService) Save(user *User) *ResMessage {
 
+	t := &TimeData{}
+	t.Now()
 	user.Id_ = bson.NewObjectId()
-	user.CreateTime = TimeData{}
+	user.CreateTime = t
 	err := self.C.Insert(user)
 
 	return getResMessage(err, SAVE_SUCCESS, USER_MODE_CODE)
